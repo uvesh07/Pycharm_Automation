@@ -6,7 +6,9 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
 from rocketchat_API.rocketchat import RocketChat
-from global_variables import my_variable
+import requests
+
+message = "This is for testing purpose."
 
 
 @pytest.fixture(scope="session", autouse=True, name="driver")
@@ -23,10 +25,69 @@ def setup():
     driver.maximize_window()
 
     print("Launch browser")
-    print(my_variable)
 
     return driver
 
+
+def pytest_runtest_makereport(item, call):
+    global message
+
+    outcome = call.excinfo is None
+
+    # Determine the status message based on the outcome
+    status = "Pass" if outcome else "Fail" if call.excinfo is not None else "Error"
+
+    # Get the test case name
+    test_case_name = item.nodeid
+
+    # Get the test case execution time
+    execution_time = call.duration
+
+    # Print or process the collected information as per your requirement
+    message += f"Test Case: {test_case_name} \n"
+    message += f"Status: {status}\n"
+    message += f"Execution Time: {execution_time} seconds \n"
+
+    # print(message)
+
+
+def send_to_channel():
+    global message
+    # Connect to Rocket.Chat instance
+    rocket = RocketChat('riddhi@addwebsolution.in', 'Riddhi_chat_123', server_url='https://chat.addwebsolution.in/')
+
+    # Set the channel or user to whom you want to send the test report
+    team_room = 'team-circuit-breakers'
+
+    # Specify the path to your test report file
+    # test_report_path = 'Reports/Final_Report.html'
+
+    # Upload and send the test report
+    # rocket.chat_upload_file(room_id=channel, file_path=test_report_path)
+
+    # Specify the message content
+    # message = 'Hello, this is a test message.'
+
+    # print(message)
+
+    # Send the message to the channel
+    response = rocket.chat_post_message(room_id=team_room, text=message)
+    # print(response.content)
+    message = ""
+
+
+# Hook to display a summary after all tests have finished
+def pytest_terminal_summary(terminalreporter):
+    send_to_channel()
+
+# Optionally, you can also capture the stdout and stderr of each test case
+# @pytest.hookimpl(tryfirst=True)
+# def pytest_runtest_protocol(item, nextitem):
+#     # Capture stdout and stderr for each test case
+#     capture = pytest.stdout_capture.getcapture(item.config)
+#     outcome = yield
+#     capture.reset()
+#
 
 # @pytest.hookimpl(hookwrapper=True)
 # def pytest_runtest_makereport(item, call):
@@ -78,33 +139,12 @@ def setup():
 #         # Send the message to the channel
 #         response = rocket.chat_post_message(room_id=team_room, text=message)
 #         print(response.content)
+
+
 #
-
-def send_to_channel():
-
-    # Connect to Rocket.Chat instance
-    rocket = RocketChat('riddhi@addwebsolution.in', 'Riddhi_chat_123', server_url='https://chat.addwebsolution.in/')
-
-    # Set the channel or user to whom you want to send the test report
-    team_room = 'team-circuit-breakers'
-
-    # Specify the path to your test report file
-    test_report_path = 'Reports/Final_Report.html'
-
-    # Upload and send the test report
-    # rocket.chat_upload_file(room_id=channel, file_path=test_report_path)
-
-    # Specify the message content
-    message = 'Hello, this is a test message.'
-
-    # Send the message to the channel
-    response = rocket.chat_post_message(room_id=team_room, text=message)
-    print(response.content)
-
-
-def pytest_terminal_summary(terminalreporter, exitstatus, config):
-    # send_to_channel()
-    print(my_variable)
+# def pytest_terminal_summary(terminalreporter, exitstatus, config):
+#     # send_to_channel()
+#     print(my_variable)
 
 #
 # def send_email(sender, password, receiver, subject, body, attachment_path):
