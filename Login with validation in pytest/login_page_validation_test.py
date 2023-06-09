@@ -1,5 +1,6 @@
 import pytest
 import logging
+from selenium.common import NoSuchElementException, StaleElementReferenceException
 from selenium.webdriver.common.by import By
 import time
 
@@ -7,8 +8,8 @@ import time
 logger = logging.getLogger(__name__)
 
 # Global variables used for different methods
-valid_email = "saurabhdhariwal.com@gmail.com"
-invalid_email = "saurabhdhariwal.comgmail.com"
+valid_email = "uvesh@addwebsolution.in"
+invalid_email = "uveshaddwebsolution.in"
 blank_email = ""
 valid_pass = "addweb123"
 invalid_pass = "addweb1234"
@@ -16,7 +17,7 @@ blank_pass = ""
 
 
 @pytest.fixture(name="var")
-def Test_Var(driver):
+def test_Var(driver):
     email = driver.find_element(By.XPATH, '//*[@id="email"]')
     passwrd = driver.find_element(By.XPATH, '//*[@id="password"]')
     login = driver.find_element(By.XPATH, '//*[@id="submit-login"]')
@@ -24,7 +25,7 @@ def Test_Var(driver):
 
 
 @pytest.mark.order(1)
-def Test_Login_Page(driver, selenium):
+def test_Login_Page(driver, selenium):
     assert driver.title == "AddWeb Solution"
     print("Successfully reached at Login page")
     logger.info("Successfully reached at Login page")
@@ -32,7 +33,7 @@ def Test_Login_Page(driver, selenium):
 
 
 @pytest.mark.order(2)
-def Test_Validate_Textbox_Button(driver, var):
+def test_Validate_Textbox_Button(driver, var):
     email, passwrd, login = var
 
     assert email.is_enabled()
@@ -49,7 +50,7 @@ def Test_Validate_Textbox_Button(driver, var):
 
 
 @pytest.mark.order(3)
-def Test_Enter_blank_Creadential(driver, var):
+def test_Enter_blank_Creadential(driver, var):
     email, passwrd, login = var
     global blank_email
     global blank_pass
@@ -72,7 +73,7 @@ def Test_Enter_blank_Creadential(driver, var):
 
 
 @pytest.mark.order(4)
-def Test_Enter_invalid_Email(driver, var):
+def test_Enter_invalid_Email(driver, var):
     email, passwrd, login = var
     global invalid_email
     global valid_pass
@@ -90,7 +91,7 @@ def Test_Enter_invalid_Email(driver, var):
 
 
 @pytest.mark.order(5)
-def Test_Enter_invalid_Pass(driver, var):
+def test_Enter_invalid_Pass(driver, var):
     email, passwrd, login = var
     global valid_email
     global invalid_pass
@@ -110,7 +111,7 @@ def Test_Enter_invalid_Pass(driver, var):
 
 
 @pytest.mark.order(6)
-def Test_Enter_valid_Creadential(driver, var):
+def test_Enter_valid_Creadential(driver, var):
     email, passwrd, login = var
     global valid_email
     global valid_pass
@@ -120,10 +121,50 @@ def Test_Enter_valid_Creadential(driver, var):
     passwrd.send_keys(valid_pass)
     login.click()
 
-    time.sleep(3)
+    time.sleep(5)
 
-    if(driver.title == "Dashboard"):
-        print("Successfully Logged in.")
-        logger.info("Successfully Logged in.")
+    # if driver.title == "Dashboard":
+    #     print("Successfully Logged in.")
+    #     logger.info("Successfully Logged in.")
+    #
+    # else:
+    ul = driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul')
+    lis = ul.find_elements(By.TAG_NAME, 'li')
+    i = 0
+
+    for li in lis:
+        i = i + 1
+        try:
+            if li.find_element(By.TAG_NAME, 'a').text == "Dashboard":
+                class_attribute = li.get_attribute('class')
+                if 'closeIt' in class_attribute:
+                    # Click on Dashboard dropdown
+                    li.find_element(By.TAG_NAME, 'a').click()
+
+                    try:
+                        # find <a> tag in work dropdown
+                        a_links = li.find_elements(By.TAG_NAME, 'a')
+
+                        for a in a_links:
+                            if a.text == "Private Dashboard":
+                                a.click()
+
+                    except NoSuchElementException:
+                        print("You do not have access to Private Dashboard Page.")
+
+                else:
+                    try:
+                        # find <a> tag in work dropdown
+                        a_links = li.find_elements(By.TAG_NAME, 'a')
+
+                        for a in a_links:
+                            if a.text == "Private Dashboard":
+                                a.click()
+
+                    except NoSuchElementException:
+                        print("You do not have access to Private Dashboard Page.")
+
+        except StaleElementReferenceException:
+            continue
 
     time.sleep(3)

@@ -1,11 +1,15 @@
 import pytest
 import logging
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import StaleElementReferenceException
+from selenium.common.exceptions import StaleElementReferenceException, NoSuchElementException
 import time
 
 # create a logger instance
 logger = logging.getLogger(__name__)
+
+# Global variables used for different methods POC-QA-Automation
+valid_email = "saurabhdhariwal.com@gmail.com"
+valid_pass = "addweb123"
 
 # Global variables used for different methods POC-QA-Automation
 valid_project = "Project Testing"
@@ -30,8 +34,22 @@ valid_memo = "Testing......"
 invalid_memo = "Testing......"
 
 
+# def test_enter_valid_creadential(driver):
+#     email = driver.find_element(By.XPATH, '//*[@id="email"]')
+#     passwrd = driver.find_element(By.XPATH, '//*[@id="password"]')
+#     login = driver.find_element(By.XPATH, '//*[@id="submit-login"]')
+#     global valid_email
+#     global valid_pass
+#
+#     email.send_keys(valid_email)
+#     passwrd.send_keys(valid_pass)
+#     login.click()
+#
+#     time.sleep(7)
+
+
 @pytest.fixture(name="nvar")
-def Test_New_Var(driver):
+def test_New_Var(driver):
     project = driver.find_element(By.XPATH,
                                   '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[1]/div[1]/div/div/button')
     task = driver.find_element(By.XPATH,
@@ -50,18 +68,59 @@ def Test_New_Var(driver):
     return project, task, employee, date, hr, min, memo, save, cancel, add_more
 
 
-@pytest.mark.order(25)
-def Test_Click_on_Timelog_page(driver, selenium):
+@pytest.mark.order(29)
+def test_Click_on_Timelog_page(driver, selenium):
     # driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul/li[5]/a').click()
-    driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul/li[5]/div/a[4]').click()
+    # driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul/li[5]/div/a[4]').click()
+
+    ul = driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul')
+    lis = ul.find_elements(By.TAG_NAME, 'li')
+    i = 0
+
+    # Click on Work dropdown
+    for li in lis:
+        i = i + 1
+        try:
+            if li.find_element(By.TAG_NAME, 'a').text == "Work":
+                class_attribute = li.get_attribute('class')
+                if 'closeIt' in class_attribute:
+                    # Click on work dropdown
+                    li.find_element(By.TAG_NAME, 'a').click()
+
+                    try:
+                        # find <a> tag in work dropdown
+                        a_links = li.find_elements(By.TAG_NAME, 'a')
+
+                        for a in a_links:
+                            if a.text == "Time Logs":
+                                a.click()
+
+                    except NoSuchElementException:
+                        print("You do not have access to Time Logs Page.")
+
+                else:
+                    try:
+                        # find <a> tag in work dropdown
+                        a_links = li.find_elements(By.TAG_NAME, 'a')
+
+                        for a in a_links:
+                            if a.text == "Time Logs":
+                                a.click()
+
+                    except NoSuchElementException:
+                        print("You do not have access to Time Logs Page.")
+
+        except StaleElementReferenceException:
+            continue
+
     time.sleep(3)
     if driver.title == "Time Logs":
         print("Successfully reached at Time Logs page")
         logger.info("Successfully reached at Time Logs page")
 
 
-@pytest.mark.order(26)
-def Test_Log_time_Button(driver):
+@pytest.mark.order(30)
+def test_Log_time_Button(driver):
     log_time = driver.find_element(By.XPATH, '//*[@id="table-actions"]/a')
     assert log_time.is_enabled()
     print("The Log Time button is Enabled.")
@@ -70,8 +129,8 @@ def Test_Log_time_Button(driver):
     time.sleep(7)
 
 
-@pytest.mark.order(27)
-def Test_Validate_Components(driver, nvar):
+@pytest.mark.order(31)
+def test_Validate_Components(driver, nvar):
     project, task, employee, date, hr, min, memo, save, cancel, add_more = nvar
 
     assert project.is_enabled()
@@ -115,8 +174,8 @@ def Test_Validate_Components(driver, nvar):
     logger.info("The Add more is Enabled.")
 
 
-@pytest.mark.order(28)
-def Test_with_Blank_Value(driver, nvar):
+@pytest.mark.order(32)
+def test_with_Blank_Value(driver, nvar):
     project, task, employee, date, hr, min, memo, save, cancel, add_more = nvar
 
     save.click()
@@ -153,8 +212,8 @@ def Test_with_Blank_Value(driver, nvar):
         logger.info('"Please enter Memo" Message displayed successfully.')
 
 
-@pytest.mark.order(29)
-def Test_with_Invalid_value(driver, nvar):
+@pytest.mark.order(33)
+def test_with_Invalid_value(driver, nvar):
     project, task, employee, date, hr, min, memo, save, cancel, add_more = nvar
 
     # Click on project dropdown
@@ -302,8 +361,8 @@ def Test_with_Invalid_value(driver, nvar):
     # driver.close()
 
 
-@pytest.mark.order(30)
-def Test_with_Invalid_date_Value(driver, nvar):
+@pytest.mark.order(34)
+def test_with_Invalid_date_Value(driver, nvar):
     project, task, employee, date, hr, min, memo, save, cancel, add_more = nvar
 
     # Click on project dropdown
@@ -463,8 +522,8 @@ def Test_with_Invalid_date_Value(driver, nvar):
     time.sleep(3)
 
 
-@pytest.mark.order(31)
-def Test_with_Valid_Value(driver, nvar):
+@pytest.mark.order(35)
+def test_with_Valid_Value(driver, nvar):
     project, task, employee, date, hr, min, memo, save, cancel, add_more = nvar
 
     # Click on project dropdown
@@ -624,8 +683,8 @@ def Test_with_Valid_Value(driver, nvar):
         print("The form with valid data saved successfully.")
 
 
-@pytest.mark.order(32)
-def Test_Search_in_Table(driver):
+@pytest.mark.order(36)
+def test_Search_in_Table(driver):
     # find the saved lead in table and click on edit button
     row1 = driver.find_element(By.XPATH, '//table//tbody//tr[1]')
     cell1 = row1.find_element(By.XPATH, './/td[2]')
@@ -637,8 +696,8 @@ def Test_Search_in_Table(driver):
     time.sleep(2)
 
 
-@pytest.mark.order(33)
-def Test_Edit_and_Save(driver):
+@pytest.mark.order(37)
+def test_Edit_and_Save(driver):
     memo = driver.find_element(By.XPATH, '//*[@id="memo"]')
 
     # Search for valid option
@@ -655,4 +714,4 @@ def Test_Edit_and_Save(driver):
 
     # Close the web driver
     time.sleep(3)
-    driver.close()
+    # driver.close()

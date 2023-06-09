@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException
 from datetime import datetime
 import time
+import sys
 
 
 # create a logger instance
@@ -18,18 +19,18 @@ expected_clockin_time = "Nothing"
 user_name = "Nothing"
 
 
-def test_enter_valid_credential(driver):
-    email = driver.find_element(By.XPATH, '//*[@id="email"]')
-    passwrd = driver.find_element(By.XPATH, '//*[@id="password"]')
-    login = driver.find_element(By.XPATH, '//*[@id="submit-login"]')
-    global valid_email
-    global valid_pass
-
-    email.send_keys(valid_email)
-    passwrd.send_keys(valid_pass)
-    login.click()
-    time.sleep(5)
-
+# def test_enter_valid_credential(driver):
+#     email = driver.find_element(By.XPATH, '//*[@id="email"]')
+#     passwrd = driver.find_element(By.XPATH, '//*[@id="password"]')
+#     login = driver.find_element(By.XPATH, '//*[@id="submit-login"]')
+#     global valid_email
+#     global valid_pass
+#
+#     email.send_keys(valid_email)
+#     passwrd.send_keys(valid_pass)
+#     login.click()
+#     time.sleep(5)
+#
 
 @pytest.mark.order(7)
 def test_Click_on_Clockin(driver, selenium):
@@ -53,6 +54,7 @@ def test_Click_on_Clockin(driver, selenium):
         print("The User is already Clocked-in")
 
 
+@pytest.mark.order(8)
 def test_Verify_Clockin_time_and_Get_username(driver, selenium):
     global clockin_time
     global expected_clockin_time
@@ -68,7 +70,9 @@ def test_Verify_Clockin_time_and_Get_username(driver, selenium):
     # Get Clock-in time
     clockin_at = driver.find_element(By.XPATH, '//*[@id="fullscreen"]/div[3]/div[1]/div[2]/p/span').text
     expected_clockin_time = clockin_at[14:22]
+    print("expected time at verify clockin : " + expected_clockin_time)
     clockin_time = clockin_at[14:19]
+    print("clockin time at verify clockin : " + clockin_time)
     print("The clockin time is", clockin_time)
     currentDateAndTime = datetime.now()
 
@@ -85,6 +89,7 @@ def test_Verify_Clockin_time_and_Get_username(driver, selenium):
     time.sleep(5)
 
 
+@pytest.mark.order(9)
 def test_Verify_clockin_and_attendance(driver, selenium):
     global clockin_time
     global expected_clockin_time
@@ -102,12 +107,28 @@ def test_Verify_clockin_and_attendance(driver, selenium):
                 if 'closeIt' in class_attribute:
                     # Click on HR dropdown
                     li.find_element(By.TAG_NAME, 'a').click()
-                    # Click on Attendance
-                    driver.find_element(By.XPATH, f'//*[@id="sideMenuScroll"]/ul/li[{i}]/div/a[3]').click()
+                    try:
+                        # find <a> tag in work dropdown
+                        a_links = li.find_elements(By.TAG_NAME, 'a')
+
+                        for a in a_links:
+                            if a.text == "Attendance":
+                                a.click()
+
+                    except NoSuchElementException:
+                        print("You do not have access to Attendance Page.")
 
                 else:
-                    # Click on Attendance
-                    driver.find_element(By.XPATH, f'//*[@id="sideMenuScroll"]/ul/li[{i}]/div/a[3]').click()
+                    try:
+                        # find <a> tag in work dropdown
+                        a_links = li.find_elements(By.TAG_NAME, 'a')
+
+                        for a in a_links:
+                            if a.text == "Attendance":
+                                a.click()
+
+                    except NoSuchElementException:
+                        print("You do not have access to Attendance Page.")
 
         except StaleElementReferenceException:
             continue
@@ -146,7 +167,7 @@ def test_Verify_clockin_and_attendance(driver, selenium):
     # Verify the Employee name
     if employee_name == user_name:
         print("The Employee's Name has been matched.")
-        print(current_day)
+        # print(current_day)
     # Verify the day and click
     date_tr = driver.find_element(By.XPATH, '//*[@id="example"]/thead/tr')
     date_th = date_tr.find_elements(By.TAG_NAME, 'th')
@@ -161,12 +182,33 @@ def test_Verify_clockin_and_attendance(driver, selenium):
 
     time.sleep(5)
 
-    # Verify the clockin time
-    actual_clockin_time = driver.find_element(By.XPATH,
-                                              '//*[@id="myModalXl"]/div/div/div[2]/div[2]/div[1]/div/div[2]/div/div[1]/p').text
+    clockin_ul = driver.find_element(By.XPATH, '//*[@id="myModalXl"]/div/div/div[2]/div[2]/div[2]/div/div[2]/div')
+    clockin_lis = clockin_ul.find_elements(By.TAG_NAME, 'li')
+    size = sys.getsizeof(clockin_lis)
+    # print("The size of all li's is : " + str(size))
 
-    if actual_clockin_time == expected_clockin_time:
-        print("The Actual Clockin time is matched with Expected Clockin Time")
+    flag = 0
+
+    for i in range(1, size):
+        try:
+            untrimmed = driver.find_element(By.XPATH, f'/html/body/div[4]/div/div/div[2]/div[2]/div[2]/div/div[2]/div/div[{i}]/ul/li[1]/p[2]').text
+            actual_clockin_time = untrimmed[0:8]
+
+            if actual_clockin_time == expected_clockin_time:
+                print("The actual clockin : " + actual_clockin_time + " matched with expected clockin time : " + expected_clockin_time + "")
+                flag = 1
+        except NoSuchElementException:
+            continue
+
+    if flag == 0:
+        print("The actual clockin time does not match with expected clockin time.")
+
+    # # Verify the clockin time
+    # actual_clockin_time = driver.find_element(By.XPATH,
+    #                                           '//*[@id="myModalXl"]/div/div/div[2]/div[2]/div[1]/div/div[2]/div/div[1]/p').text
+    #
+    # if actual_clockin_time == expected_clockin_time:
+    #     print("The Actual Clockin time is matched with Expected Clockin Time")
 
     # Close the pop-up
     driver.find_element(By.XPATH, '//*[@id="myModalXl"]/div/div/div[1]/button').click()
@@ -174,12 +216,14 @@ def test_Verify_clockin_and_attendance(driver, selenium):
     time.sleep(3)
 
 
+@pytest.mark.order(10)
 def test_Clock_out(driver):
 
     ul = driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul')
     lis = ul.find_elements(By.TAG_NAME, 'li')
     i = 0
 
+    # Clcik on Private Dashboard
     for li in lis:
         i = i + 1
         try:
@@ -190,19 +234,27 @@ def test_Clock_out(driver):
                     li.find_element(By.TAG_NAME, 'a').click()
 
                     try:
-                        # Click on Private Dashboard
-                        driver.find_element(By.XPATH, f'//*[@id="sideMenuScroll"]/ul/li[{i}]/div/a[2]').click()
+                        # find <a> tag in work dropdown
+                        a_links = li.find_elements(By.TAG_NAME, 'a')
+
+                        for a in a_links:
+                            if a.text == "Private Dashboard":
+                                a.click()
 
                     except NoSuchElementException:
-                        driver.find_element(By.XPATH, f'//*[@id="sideMenuScroll"]/ul/li[{i}]/div/a').click()
+                        print("You do not have access to Private Dashboard Page.")
 
                 else:
                     try:
-                        # Click on Private Dashboard
-                        driver.find_element(By.XPATH, f'/*[@id="sideMenuScroll"]/ul/li[{i}]/div/a[2]').click()
+                        # find <a> tag in work dropdown
+                        a_links = li.find_elements(By.TAG_NAME, 'a')
+
+                        for a in a_links:
+                            if a.text == "Private Dashboard":
+                                a.click()
 
                     except NoSuchElementException:
-                        driver.find_element(By.XPATH, f'//*[@id="sideMenuScroll"]/ul/li[{i}]/div/a').click()
+                        print("You do not have access to Private Dashboard Page.")
 
         except StaleElementReferenceException:
             continue
@@ -211,6 +263,9 @@ def test_Clock_out(driver):
 
     # Click on Clock out
     driver.find_element(By.XPATH, '//*[@id="clock-out"]').click()
+
+    # /html/body/div[4]/div/div/div[2]/div[2]/div[2]/div/div[2]/div/div[1]/ul/li[1]
+    # /html/body/div[4]/div/div/div[2]/div[2]/div[2]/div/div[2]/div/div[2]/ul/li[1]
 
     time.sleep(5)
 

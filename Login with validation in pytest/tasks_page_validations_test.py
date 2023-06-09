@@ -1,7 +1,7 @@
 import pytest
 import logging
 
-from selenium.common import NoSuchElementException, ElementNotInteractableException
+from selenium.common import NoSuchElementException, ElementNotInteractableException, StaleElementReferenceException
 from selenium.webdriver.common.by import By
 import time
 
@@ -55,7 +55,7 @@ invalid_description = "$$ Nothing $$"
 
 
 @pytest.fixture(name="nvar")
-def Test_new_Var(driver):
+def test_new_Var(driver):
     title = driver.find_element(By.XPATH, '//*[@id="heading"]')
     category = driver.find_element(By.XPATH, '//*[@id="save-task-data-form"]/div/div[1]/div[2]/div/div[1]/button')
     project = driver.find_element(By.XPATH, '//*[@id="save-task-data-form"]/div/div[1]/div[3]/div/div/button')
@@ -76,18 +76,59 @@ def Test_new_Var(driver):
         other_topics, milestone, priority, save, cancel
 
 
-@pytest.mark.order(18)
-def Test_Click_on_Task(driver, selenium):
+@pytest.mark.order(22)
+def test_Click_on_Task(driver, selenium):
     # driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul/li[5]/a').click()
-    driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul/li[5]/div/a[3]').click()
+    # driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul/li[5]/div/a[3]').click()
+
+    ul = driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul')
+    lis = ul.find_elements(By.TAG_NAME, 'li')
+    i = 0
+
+    # Click on Work dropdown
+    for li in lis:
+        i = i + 1
+        try:
+            if li.find_element(By.TAG_NAME, 'a').text == "Work":
+                class_attribute = li.get_attribute('class')
+                if 'closeIt' in class_attribute:
+                    # Click on work dropdown
+                    li.find_element(By.TAG_NAME, 'a').click()
+
+                    try:
+                        # find <a> tag in work dropdown
+                        a_links = li.find_elements(By.TAG_NAME, 'a')
+
+                        for a in a_links:
+                            if a.text == "Tasks":
+                                a.click()
+
+                    except NoSuchElementException:
+                        print("You do not have access to Tasks Page.")
+
+                else:
+                    try:
+                        # find <a> tag in work dropdown
+                        a_links = li.find_elements(By.TAG_NAME, 'a')
+
+                        for a in a_links:
+                            if a.text == "Tasks":
+                                a.click()
+
+                    except NoSuchElementException:
+                        print("You do not have access to Tasks Page.")
+
+        except StaleElementReferenceException:
+            continue
+
     time.sleep(4)
     if driver.title == "Tasks":
         print("Successfully reached at Tasks page")
         logger.info("Successfully reached at Tasks page")
 
 
-@pytest.mark.order(19)
-def Test_Searchbox_on_Task_page(driver):
+@pytest.mark.order(23)
+def test_Searchbox_on_Task_page(driver):
     search_box = driver.find_element(By.XPATH, '//*[@id="search-text-field"]')
     search_box.send_keys("Testing")
     time.sleep(8)
@@ -97,12 +138,13 @@ def Test_Searchbox_on_Task_page(driver):
         cell1 = row1.find_element(By.XPATH, './/td[3]')
         if cell1.text == "Testing":
             print("The search functionality is working properly.")
+
     except NoSuchElementException:
         print("The value is not found in the table")
 
 
-@pytest.mark.order(20)
-def Test_Add_task_Button(driver):
+@pytest.mark.order(24)
+def test_Add_task_Button(driver):
     add_task = driver.find_element(By.XPATH, '//*[@id="table-actions"]/a[1]')
     assert add_task.is_enabled()
     print("The Add Task button is Enabled.")
@@ -111,8 +153,8 @@ def Test_Add_task_Button(driver):
     time.sleep(5)
 
 
-@pytest.mark.order(21)
-def Test_Validate_Components(driver, nvar):
+@pytest.mark.order(25)
+def test_Validate_Components(driver, nvar):
     title, category, project, start_date, duedate, without_duedate, assigned, lable, status, description, \
         other_topics, milestone, priority, save, cancel = nvar
 
@@ -179,8 +221,8 @@ def Test_Validate_Components(driver, nvar):
     logger.info("The cancel button is Enabled.")
 
 
-@pytest.mark.order(22)
-def Test_with_Valid_Data(driver, nvar):
+@pytest.mark.order(26)
+def test_with_Valid_Data(driver, nvar):
     title, category, project, start_date, duedate, without_duedate, assigned, lable, status, description, \
         other_topics, milestone, priority, save, cancel = nvar
 
@@ -231,6 +273,8 @@ def Test_with_Valid_Data(driver, nvar):
     # Click on the active <li> element
     if active_a is not None:
         active_a.click()
+
+    time.sleep(4)
 
     # Click on Start Date input
     start_date.click()
@@ -337,8 +381,8 @@ def Test_with_Valid_Data(driver, nvar):
     time.sleep(8)
 
 
-@pytest.mark.order(23)
-def Test_Search_in_Table(driver):
+@pytest.mark.order(27)
+def test_Search_in_Table(driver):
     # find the saved lead in table and click on edit button
     row1 = driver.find_element(By.XPATH, '//table//tbody//tr[1]')
     cell1 = row1.find_element(By.XPATH, './/td[2]')
@@ -350,11 +394,10 @@ def Test_Search_in_Table(driver):
     time.sleep(10)
 
 
-@pytest.mark.order(24)
-def Test_Edit_and_Save(driver):
+@pytest.mark.order(28)
+def test_Edit_and_Save(driver):
 
-# Edit status of project
-
+    # Edit status of project
     status = driver.find_element(By.XPATH, '//*[@id="save-task-data-form"]/div/div[1]/div[11]/div/div/button')
     status.click()
 

@@ -1,7 +1,8 @@
 import pytest
 import logging
 from datetime import datetime, timedelta
-from selenium.common import NoSuchElementException, ElementNotInteractableException
+from selenium.common import NoSuchElementException, ElementNotInteractableException, StaleElementReferenceException
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 import time
 
@@ -70,7 +71,7 @@ invalid_hr = "Nothing"
 
 
 @pytest.fixture(name="nvar")
-def Test_new_Var(driver):
+def test_new_Var(driver):
     project = driver.find_element(By.XPATH, '//*[@id="project_name"]')
     start_date = driver.find_element(By.XPATH, '//*[@id="start_date"]')
     deadline = driver.find_element(By.XPATH, '//*[@id="deadline"]')
@@ -98,18 +99,55 @@ def Test_new_Var(driver):
         member, channel, topic, other_topics, add_file, currency, budget, hr, manual, client_manage, save, cancel
 
 
-@pytest.mark.order(7)
-def Test_Click_on_Projects(driver, selenium):
-    driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul/li[5]/a').click()
-    driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul/li[5]/div/a[2]').click()
+@pytest.mark.order(11)
+def test_Click_on_Projects(driver, selenium):
+    ul = driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul')
+    lis = ul.find_elements(By.TAG_NAME, 'li')
+    i = 0
+
+    # Click on Work dropdown
+    for li in lis:
+        i = i + 1
+        try:
+            if li.find_element(By.TAG_NAME, 'a').text == "Work":
+                class_attribute = li.get_attribute('class')
+                if 'closeIt' in class_attribute:
+                    # Click on work dropdown
+                    li.find_element(By.TAG_NAME, 'a').click()
+
+                    try:
+                        # find <a> tag in work dropdown
+                        a_links = li.find_elements(By.TAG_NAME, 'a')
+
+                        for a in a_links:
+                            if a.text == "Projects":
+                                a.click()
+
+                    except NoSuchElementException:
+                        print("You do not have access to Projects Page.")
+
+                else:
+                    try:
+                        # find <a> tag in work dropdown
+                        a_links = li.find_elements(By.TAG_NAME, 'a')
+
+                        for a in a_links:
+                            if a.text == "Projects":
+                                a.click()
+
+                    except NoSuchElementException:
+                        print("You do not have access to Projects Page.")
+
+        except StaleElementReferenceException:
+            continue
+
     time.sleep(4)
     if driver.title == "Projects":
         print("Successfully reached at Projects page")
-        logger.info("Successfully reached at Projects page")
 
 
-@pytest.mark.order(8)
-def Test_Seachbox_on_Projects_page(driver):
+@pytest.mark.order(12)
+def test_Seachbox_on_Projects_page(driver):
     search_box = driver.find_element(By.XPATH, '//*[@id="search-text-field"]')
     search_box.send_keys("Testing123")
     time.sleep(8)
@@ -123,8 +161,8 @@ def Test_Seachbox_on_Projects_page(driver):
         print("The value is not found in the table")
 
 
-@pytest.mark.order(9)
-def Test_Add_project_Button(driver):
+@pytest.mark.order(13)
+def test_Add_project_Button(driver):
     add_project = driver.find_element(By.XPATH, '//*[@id="table-actions"]/a[1]')
     assert add_project.is_enabled()
     print("The Add project button is Enabled.")
@@ -133,8 +171,8 @@ def Test_Add_project_Button(driver):
     time.sleep(8)
 
 
-@pytest.mark.order(10)
-def Test_Validate_Components(driver, nvar):
+@pytest.mark.order(14)
+def test_Validate_Components(driver, nvar):
     project, start_date, deadline, deadline_check, category, department, client, summary, notes, public_project, \
         member, channel, topic, other_topics, add_file, currency, budget, hr, manual, client_manage, save, cancel = nvar
 
@@ -229,8 +267,8 @@ def Test_Validate_Components(driver, nvar):
     logger.info("The cancel button is Enabled.")
 
 
-@pytest.mark.order(11)
-def Test_with_Blank_Value(driver, nvar):
+@pytest.mark.order(15)
+def test_with_Blank_Value(driver, nvar):
     project, start_date, deadline, deadline_check, category, department, client, summary, notes, public_project, \
         member, channel, topic, other_topics, add_file, currency, budget, hr, manual, client_manage, save, cancel = nvar
 
@@ -259,8 +297,8 @@ def Test_with_Blank_Value(driver, nvar):
         logger.info('"Select at least 1 member" Message displayed successfully.')
 
 
-@pytest.mark.order(12)
-def Test_with_Invalid_Value(driver, nvar):
+@pytest.mark.order(16)
+def test_with_Invalid_Value(driver, nvar):
     project, start_date, deadline, deadline_check, category, department, client, summary, notes, public_project, \
         member, channel, topic, other_topics, add_file, currency, budget, hr, manual, client_manage, save, cancel = nvar
 
@@ -442,12 +480,7 @@ def Test_with_Invalid_Value(driver, nvar):
 
 # Click on Hours input
     hr.clear()
-    hr.send_keys(invalid_budget)
-
-
-# Click on Hours input
-    hr.clear()
-    hr.send_keys(invalid_budget)
+    hr.send_keys(invalid_hr)
 
 
 # Click on Manual timelog checkbox
@@ -469,8 +502,8 @@ def Test_with_Invalid_Value(driver, nvar):
         logger.info('"The deadline does not match the format d-m-Y." Message displayed successfully.')
 
 
-@pytest.mark.order(13)
-def Test_with_Invalid_Startdate_and_Deadline(driver, nvar):
+@pytest.mark.order(17)
+def test_with_Invalid_Startdate_and_Deadline(driver, nvar):
     project, start_date, deadline, deadline_check, category, department, client, summary, notes, public_project, \
         member, channel, topic, other_topics, add_file, currency, budget, hr, manual, client_manage, save, cancel = nvar
 
@@ -652,13 +685,7 @@ def Test_with_Invalid_Startdate_and_Deadline(driver, nvar):
 
 # Click on Hours input
     hr.clear()
-    hr.send_keys(valid_budget)
-
-
-# Click on Hours input
-    hr.clear()
-    hr.send_keys(valid_budget)
-
+    hr.send_keys(valid_hr)
 
 # Click on Manual timelog checkbox
     manual.click()
@@ -674,8 +701,8 @@ def Test_with_Invalid_Startdate_and_Deadline(driver, nvar):
         logger.info('"The deadline must be a date after or equal to start date." Message displayed successfully.')
 
 
-@pytest.mark.order(14)
-def Test_with_Valid_Data_and_Checkbox(driver, nvar):
+@pytest.mark.order(18)
+def test_with_Valid_Data_and_Checkbox(driver, nvar):
     project, start_date, deadline, deadline_check, category, department, client, summary, notes, public_project, \
         member, channel, topic, other_topics, add_file, currency, budget, hr, manual, client_manage, save, cancel = nvar
 
@@ -785,8 +812,8 @@ def Test_with_Valid_Data_and_Checkbox(driver, nvar):
 #     try:
 #         member.click()
 #
-#     except ElementNotInteractableException:
-#         print('When user check the "Create Public Project" checkbox the Add project member element removed successfully')
+# except ElementNotInteractableException: print('When user check the "Create Public Project" checkbox the Add project
+    # member element removed successfully')
 
     member.click()
 
@@ -835,10 +862,29 @@ def Test_with_Valid_Data_and_Checkbox(driver, nvar):
     topic.clear()
     topic.send_keys(valid_topic)
 
+    # driver.switch_to_frame(0)
+
 # Click on Add files input
-#     valid_addfile = "/home/addweb/Downloads/activity_D-transformed.jpeg"
-#     invalid_addfile = "/home/addweb/Downloads///"
-#     add_file.send_keys(invalid_addfile)
+    valid_addfile = "/home/addweb/PycharmProjects/Ticktalk leads automation/Images/bg color.jpeg"
+
+    # Find the dropzone element
+    dropzone = driver.find_element(By.XPATH, '//*[@id="file-upload-dropzone"]')
+
+    # Create an ActionChains object to perform actions on the dropzone
+    actions = ActionChains(driver)
+
+    # Click on the dropzone to activate the file input
+    actions.move_to_element(dropzone).click().perform()
+
+    # Locate the file input element within the dropzone
+    file_input = dropzone.find_element(By.XPATH, '//*[@id="file-upload-dropzone"]/input')
+
+    driver.execute_script("arguments[0].type = 'file';", file_input)
+    driver.execute_script("arguments[0].style.display = 'block';", file_input)
+    # Set the file path in the file input
+    file_input.send_keys(valid_addfile)
+
+    time.sleep(20)
 
 # Click on Currency dropdown
     currency.click()
@@ -866,15 +912,9 @@ def Test_with_Valid_Data_and_Checkbox(driver, nvar):
     budget.clear()
     budget.send_keys(valid_budget)
 
-
 # Click on Hours input
     hr.clear()
-    hr.send_keys(valid_budget)
-
-
-# Click on Hours input
-    hr.clear()
-    hr.send_keys(valid_budget)
+    hr.send_keys(valid_hr)
 
 
 # Click on Manual timelog checkbox
@@ -898,8 +938,8 @@ def Test_with_Valid_Data_and_Checkbox(driver, nvar):
     time.sleep(8)
 
 
-@pytest.mark.order(15)
-def Test_Search_in_Table(driver):
+@pytest.mark.order(19)
+def test_Search_in_Table(driver):
     # find the saved lead in table and click on edit button
     row1 = driver.find_element(By.XPATH, '//table//tbody//tr[1]')
     cell1 = row1.find_element(By.XPATH, './/td[2]')
@@ -911,8 +951,8 @@ def Test_Search_in_Table(driver):
     time.sleep(10)
 
 
-@pytest.mark.order(16)
-def Test_Edit_and_Save(driver):
+@pytest.mark.order(20)
+def test_Edit_and_Save(driver):
 
     project = driver.find_element(By.XPATH, '//*[@id="project_name"]')
 
@@ -955,8 +995,8 @@ def Test_Edit_and_Save(driver):
     # driver.close()
 
 
-@pytest.mark.order(17)
-def Test_add_Sprint(driver):
+@pytest.mark.order(21)
+def test_add_Sprint(driver):
     # find the saved lead in table and click on edit button
     row1 = driver.find_element(By.XPATH, '//table//tbody//tr[1]')
     cell1 = row1.find_element(By.XPATH, './/td[2]')
@@ -999,9 +1039,44 @@ def Test_add_Sprint(driver):
 
     time.sleep(10)
 
-    # Open work dropdown
-    driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul/li[5]/a').click()
-    # Goto projects page
-    driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul/li[5]/div/a[2]').click()
+    ul = driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul')
+    lis = ul.find_elements(By.TAG_NAME, 'li')
+    i = 0
+
+    # Click on Work dropdown
+    for li in lis:
+        i = i + 1
+        try:
+            if li.find_element(By.TAG_NAME, 'a').text == "Work":
+                class_attribute = li.get_attribute('class')
+                if 'closeIt' in class_attribute:
+                    # Click on work dropdown
+                    li.find_element(By.TAG_NAME, 'a').click()
+
+                    try:
+                        # find <a> tag in work dropdown
+                        a_links = li.find_elements(By.TAG_NAME, 'a')
+
+                        for a in a_links:
+                            if a.text == "Projects":
+                                a.click()
+
+                    except NoSuchElementException:
+                        print("You do not have access to Projects Page.")
+
+                else:
+                    try:
+                        # find <a> tag in work dropdown
+                        a_links = li.find_elements(By.TAG_NAME, 'a')
+
+                        for a in a_links:
+                            if a.text == "Projects":
+                                a.click()
+
+                    except NoSuchElementException:
+                        print("You do not have access to Projects Page.")
+
+        except StaleElementReferenceException:
+            continue
 
     time.sleep(5)

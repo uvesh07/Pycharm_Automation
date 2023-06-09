@@ -1,11 +1,15 @@
 import pytest
 import logging
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import StaleElementReferenceException
+from selenium.common.exceptions import StaleElementReferenceException, NoSuchElementException
 import time
 
 # create a logger instance
 logger = logging.getLogger(__name__)
+
+# Global variables used for different methods POC-QA-Automation
+valid_email = "saurabhdhariwal.com@gmail.com"
+valid_pass = "addweb123"
 
 # Global variables used for different methods POC-QA-Automation
 valid_email = "saurabhdhariwal.com@gmail.com"
@@ -33,52 +37,107 @@ valid_memo = "Testing......"
 invalid_memo = "Testing......"
 
 
-@pytest.fixture(name="var")
-def Test_Var(driver):
-    email = driver.find_element(By.XPATH, '//*[@id="email"]')
-    passwrd = driver.find_element(By.XPATH, '//*[@id="password"]')
-    login = driver.find_element(By.XPATH, '//*[@id="submit-login"]')
-    return email, passwrd, login
+# def test_enter_valid_creadential(driver):
+#     email = driver.find_element(By.XPATH, '//*[@id="email"]')
+#     passwrd = driver.find_element(By.XPATH, '//*[@id="password"]')
+#     login = driver.find_element(By.XPATH, '//*[@id="submit-login"]')
+#     global valid_email
+#     global valid_pass
+#
+#     email.send_keys(valid_email)
+#     passwrd.send_keys(valid_pass)
+#     login.click()
+#
+#     time.sleep(5)
 
 
-def test_Enter_valid_Creadential(driver, var):
-    email, passwrd, login = var
-    global valid_email
-    global valid_pass
-    email.clear()
-    passwrd.clear()
-    email.send_keys(valid_email)
-    passwrd.send_keys(valid_pass)
-    login.click()
+# @pytest.fixture(name="var")
+# def Test_Var(driver):
+#     email = driver.find_element(By.XPATH, '//*[@id="email"]')
+#     passwrd = driver.find_element(By.XPATH, '//*[@id="password"]')
+#     login = driver.find_element(By.XPATH, '//*[@id="submit-login"]')
+#     return email, passwrd, login
+#
 
-    time.sleep(3)
+# def test_Enter_valid_Creadential(driver, var):
+#     email, passwrd, login = var
+#     global valid_email
+#     global valid_pass
+#     email.clear()
+#     passwrd.clear()
+#     email.send_keys(valid_email)
+#     passwrd.send_keys(valid_pass)
+#     login.click()
+#
+#     time.sleep(3)
+#
+#     if driver.title == "Dashboard":
+#         print("Successfully Logged in.")
+#         logger.info("Successfully Logged in.")
+#
+#     time.sleep(3)
+#
 
-    if driver.title == "Dashboard":
-        print("Successfully Logged in.")
-        logger.info("Successfully Logged in.")
-
-    time.sleep(3)
-
-
-# @pytest.mark.order(25)
+@pytest.mark.order(38)
 def test_Click_on_Timelog_page(driver, selenium):
-    driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul/li[5]/a').click()
-    driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul/li[5]/div/a[4]').click()
+    # driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul/li[5]/a').click()
+    # driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul/li[5]/div/a[4]').click()
+
+    ul = driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul')
+    lis = ul.find_elements(By.TAG_NAME, 'li')
+    i = 0
+
+    # Click on Work dropdown
+    for li in lis:
+        i = i + 1
+        try:
+            if li.find_element(By.TAG_NAME, 'a').text == "Work":
+                class_attribute = li.get_attribute('class')
+                if 'closeIt' in class_attribute:
+                    # Click on work dropdown
+                    li.find_element(By.TAG_NAME, 'a').click()
+
+                    try:
+                        # find <a> tag in work dropdown
+                        a_links = li.find_elements(By.TAG_NAME, 'a')
+
+                        for a in a_links:
+                            if a.text == "Time Logs":
+                                a.click()
+
+                    except NoSuchElementException:
+                        print("You do not have access to Time Logs Page.")
+
+                else:
+                    try:
+                        # find <a> tag in work dropdown
+                        a_links = li.find_elements(By.TAG_NAME, 'a')
+
+                        for a in a_links:
+                            if a.text == "Time Logs":
+                                a.click()
+
+                    except NoSuchElementException:
+                        print("You do not have access to Time Logs Page.")
+
+        except StaleElementReferenceException:
+            continue
+
     time.sleep(3)
     if driver.title == "Time Logs":
         print("Successfully reached at Time Logs page")
         logger.info("Successfully reached at Time Logs page")
 
 
-# @pytest.mark.order(32)
+@pytest.mark.order(39)
 def test_Time_log_Search(driver):
     # find the saved Time log in
     search = driver.find_element(By.XPATH, '//*[@id="search-text-field"]')
     search.send_keys("Task Testing")
-    time.sleep(7)
+    time.sleep(10)
 
 
-# @pytest.mark.order(26)
+@pytest.mark.order(40)
 def test_Delete_Time_log(driver):
     time.sleep(5)
 
@@ -112,17 +171,58 @@ def test_Delete_Time_log(driver):
             print("The " + task_name + " Log deleted successfully from the table")
 
 
-# @pytest.mark.order(25)
+@pytest.mark.order(41)
 def test_Click_on_Tasks_page(driver, selenium):
     # driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul/li[5]/a').click()
-    driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul/li[5]/div/a[3]').click()
+    # driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul/li[5]/div/a[3]').click()
+
+    ul = driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul')
+    lis = ul.find_elements(By.TAG_NAME, 'li')
+    i = 0
+
+    # Click on Work dropdown
+    for li in lis:
+        i = i + 1
+        try:
+            if li.find_element(By.TAG_NAME, 'a').text == "Work":
+                class_attribute = li.get_attribute('class')
+                if 'closeIt' in class_attribute:
+                    # Click on work dropdown
+                    li.find_element(By.TAG_NAME, 'a').click()
+
+                    try:
+                        # find <a> tag in work dropdown
+                        a_links = li.find_elements(By.TAG_NAME, 'a')
+
+                        for a in a_links:
+                            if a.text == "Tasks":
+                                a.click()
+
+                    except NoSuchElementException:
+                        print("You do not have access to Time Logs Page.")
+
+                else:
+                    try:
+                        # find <a> tag in work dropdown
+                        a_links = li.find_elements(By.TAG_NAME, 'a')
+
+                        for a in a_links:
+                            if a.text == "Tasks":
+                                a.click()
+
+                    except NoSuchElementException:
+                        print("You do not have access to Time Logs Page.")
+
+        except StaleElementReferenceException:
+            continue
+
     time.sleep(3)
     if driver.title == "Tasks":
         print("Successfully reached at Tasks page")
         logger.info("Successfully reached at Tasks page")
 
 
-# @pytest.mark.order(32)
+@pytest.mark.order(42)
 def test_Task_Search(driver):
     # find the saved Tasks
     search = driver.find_element(By.XPATH, '//*[@id="search-text-field"]')
@@ -130,7 +230,7 @@ def test_Task_Search(driver):
     time.sleep(7)
 
 
-# @pytest.mark.order(26)
+@pytest.mark.order(43)
 def test_Delete_Task(driver):
     time.sleep(5)
 
@@ -165,17 +265,58 @@ def test_Delete_Task(driver):
             print("The '" + task_name + "' Task deleted successfully from the table")
 
 
-# @pytest.mark.order(25)
+@pytest.mark.order(44)
 def test_Click_on_Projects_page(driver, selenium):
     # driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul/li[5]/a').click()
-    driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul/li[5]/div/a[2]').click()
+    # driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul/li[5]/div/a[2]').click()
+
+    ul = driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul')
+    lis = ul.find_elements(By.TAG_NAME, 'li')
+    i = 0
+
+    # Click on Work dropdown
+    for li in lis:
+        i = i + 1
+        try:
+            if li.find_element(By.TAG_NAME, 'a').text == "Work":
+                class_attribute = li.get_attribute('class')
+                if 'closeIt' in class_attribute:
+                    # Click on work dropdown
+                    li.find_element(By.TAG_NAME, 'a').click()
+
+                    try:
+                        # find <a> tag in work dropdown
+                        a_links = li.find_elements(By.TAG_NAME, 'a')
+
+                        for a in a_links:
+                            if a.text == "Projects":
+                                a.click()
+
+                    except NoSuchElementException:
+                        print("You do not have access to Time Logs Page.")
+
+                else:
+                    try:
+                        # find <a> tag in work dropdown
+                        a_links = li.find_elements(By.TAG_NAME, 'a')
+
+                        for a in a_links:
+                            if a.text == "Projects":
+                                a.click()
+
+                    except NoSuchElementException:
+                        print("You do not have access to Time Logs Page.")
+
+        except StaleElementReferenceException:
+            continue
+
     time.sleep(3)
     if driver.title == "Projects":
         print("Successfully reached at Projects page")
         logger.info("Successfully reached at Projects page")
 
 
-# @pytest.mark.order(32)
+@pytest.mark.order(45)
 def test_Project_Search(driver):
     # find the saved Tasks
     search = driver.find_element(By.XPATH, '//*[@id="search-text-field"]')
@@ -183,7 +324,7 @@ def test_Project_Search(driver):
     time.sleep(7)
 
 
-# @pytest.mark.order(26)
+@pytest.mark.order(46)
 def test_Delete_Project(driver):
     time.sleep(5)
 
@@ -191,7 +332,7 @@ def test_Delete_Project(driver):
     rows = table.find_elements(By.TAG_NAME, 'tr')
     length = len(rows)
 
-    print("There are %s rows in Tasks" % length)
+    print("There are %s rows in Projects" % length)
 
     for i in range(1,length):
         new_length = len(rows)
@@ -218,7 +359,7 @@ def test_Delete_Project(driver):
                                         '/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr/td[3]/div/div/h5')
             project_name = cell1.text
 
-            if project_name == "Task Testing":
+            if project_name == "Project Testing":
                 driver.find_element(By.XPATH,
                                     f'/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr/td[10]/div/div/a').click()
                 driver.find_element(By.XPATH,
@@ -230,5 +371,5 @@ def test_Delete_Project(driver):
 
                 time.sleep(3)
 
-                print("The '" + project_name + "' Task deleted successfully from the table")
+                print("The '" + project_name + "' Project deleted successfully from the table")
 
