@@ -39,7 +39,7 @@ def setup():
 #         xfail = hasattr(report, "wasxfail")
 #         if report.failed or xfail and "page" in item.funcargs:
 #             page = item.funcargs["page"]
-#             screenshot_dir = Path("screenshots")
+#             screenshot_dir = Path("Screenshots")
 #             screenshot_dir.mkdir(exist_ok=True)
 #             screen_file = str(screenshot_dir / f"{slugify(item.nodeid)}.png")
 #             page.screenshot(path=screen_file)

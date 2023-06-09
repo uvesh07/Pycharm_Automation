@@ -26,7 +26,7 @@ def setup():
     global driver
     driver = webdriver.Chrome(service=service)
     # Login to the site
-    driver.get('https://ttstage.addwebprojects.com/login')
+    driver.get('https://demo.aedu.co.in/site/login')
     driver.maximize_window()
     print("Launch browser")
     return driver

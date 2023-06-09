@@ -8,111 +8,85 @@ import time
 logger = logging.getLogger(__name__)
 
 # Global variables used for different methods POC-QA-Automation
-valid_email = "saurabhdhariwal.com@gmail.com"
-valid_pass = "addweb123"
+ValidEmail = "saurabhdhariwal.com@gmail.com"
+ValidPass = "addweb123"
 
 # Global variables used for different methods POC-QA-Automation
-valid_project = "Project Testing"
-invalid_project = "Nothing"
+ValidProject = "Project Testing"
+InvalidProject = "Nothing"
 
-valid_task = "Task Testing"
-invalid_task = "Nothing"
+ValidTask = "Task Testing"
+InvalidTask = "Nothing"
 
-valid_employee = "Pathan UveshMohammad"
-invalid_employee = "Nothing"
+ValidEmployee = "Pathan UveshMohammad"
+InvalidEmployee = "Nothing"
 
-valid_date = "17-05-2023"
-invalid_date = "32-05-2023"
+ValidDate = "17-05-2023"
+InvalidDate = "32-05-2023"
 
-valid_hour = "3"
-invalid_hour = "12"
+ValidHour = "3"
+InvalidHour = "12"
 
-valid_min = "30"
-invalid_min = "60"
+ValidMin = "30"
+InvalidMin = "60"
 
-valid_memo = "Testing......"
-invalid_memo = "Testing......"
-
-
-# def test_enter_valid_creadential(driver):
-#     email = driver.find_element(By.XPATH, '//*[@id="email"]')
-#     passwrd = driver.find_element(By.XPATH, '//*[@id="password"]')
-#     login = driver.find_element(By.XPATH, '//*[@id="submit-login"]')
-#     global valid_email
-#     global valid_pass
-#
-#     email.send_keys(valid_email)
-#     passwrd.send_keys(valid_pass)
-#     login.click()
-#
-#     time.sleep(7)
+ValidMemo = "Testing......"
+InvalidMemo = "Testing......"
 
 
 @pytest.fixture(name="nvar")
-def test_New_Var(driver):
-    project = driver.find_element(By.XPATH,
+def test_NewVar(driver):
+    Project = driver.find_element(By.XPATH,
                                   '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[1]/div[1]/div/div/button')
-    task = driver.find_element(By.XPATH,
+    Task = driver.find_element(By.XPATH,
                                '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[1]/div[2]/div/div/button')
-    employee = driver.find_element(By.XPATH,
+    Employee = driver.find_element(By.XPATH,
                                    '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[1]/div[3]/div/div/button')
-    date = driver.find_element(By.XPATH, '//*[@id="start_date"]')
-    hr = driver.find_element(By.XPATH,
+    Date = driver.find_element(By.XPATH, '//*[@id="start_date"]')
+    Hr = driver.find_element(By.XPATH,
                              '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[2]/div[5]/div/div/button')
-    min = driver.find_element(By.XPATH,
+    Min = driver.find_element(By.XPATH,
                               '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[2]/div[6]/div/div/button')
-    memo = driver.find_element(By.XPATH, '//*[@id="memo"]')
-    save = driver.find_element(By.XPATH, '//*[@id="save-timelog-form"]')
-    cancel = driver.find_element(By.XPATH, '//*[@id="right-modal-content"]/div/div/div/div/a')
-    add_more = driver.find_element(By.XPATH, '//*[@id="add-more-form"]')
-    return project, task, employee, date, hr, min, memo, save, cancel, add_more
+    Memo = driver.find_element(By.XPATH, '//*[@id="memo"]')
+    Save = driver.find_element(By.XPATH, '//*[@id="save-timelog-form"]')
+    Cancel = driver.find_element(By.XPATH, '//*[@id="right-modal-content"]/div/div/div/div/a')
+    AddMore = driver.find_element(By.XPATH, '//*[@id="add-more-form"]')
+    return Project, Task, Employee, Date, Hr, Min, Memo, Save, Cancel, AddMore
 
 
 @pytest.mark.order(29)
-def test_Click_on_Timelog_page(driver, selenium):
-    # driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul/li[5]/a').click()
-    # driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul/li[5]/div/a[4]').click()
-
+def test_ClickOnTimelogPage(driver, selenium):
     ul = driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul')
     lis = ul.find_elements(By.TAG_NAME, 'li')
     i = 0
-
     # Click on Work dropdown
     for li in lis:
         i = i + 1
         try:
             if li.find_element(By.TAG_NAME, 'a').text == "Work":
-                class_attribute = li.get_attribute('class')
-                if 'closeIt' in class_attribute:
+                ClassAttribute = li.get_attribute('class')
+                if 'closeIt' in ClassAttribute:
                     # Click on work dropdown
                     li.find_element(By.TAG_NAME, 'a').click()
-
                     try:
                         # find <a> tag in work dropdown
                         a_links = li.find_elements(By.TAG_NAME, 'a')
-
                         for a in a_links:
                             if a.text == "Time Logs":
                                 a.click()
-
                     except NoSuchElementException:
                         print("You do not have access to Time Logs Page.")
-
                 else:
                     try:
                         # find <a> tag in work dropdown
                         a_links = li.find_elements(By.TAG_NAME, 'a')
-
                         for a in a_links:
                             if a.text == "Time Logs":
                                 a.click()
-
                     except NoSuchElementException:
                         print("You do not have access to Time Logs Page.")
-
         except StaleElementReferenceException:
             continue
-
     time.sleep(3)
     if driver.title == "Time Logs":
         print("Successfully reached at Time Logs page")
@@ -120,598 +94,455 @@ def test_Click_on_Timelog_page(driver, selenium):
 
 
 @pytest.mark.order(30)
-def test_Log_time_Button(driver):
-    log_time = driver.find_element(By.XPATH, '//*[@id="table-actions"]/a')
-    assert log_time.is_enabled()
+def test_LogTimeButton(driver):
+    LogTime = driver.find_element(By.XPATH, '//*[@id="table-actions"]/a')
+    assert LogTime.is_enabled()
     print("The Log Time button is Enabled.")
     logger.info("The Log Time button is Enabled.")
-    log_time.click()
+    LogTime.click()
     time.sleep(7)
 
 
 @pytest.mark.order(31)
-def test_Validate_Components(driver, nvar):
-    project, task, employee, date, hr, min, memo, save, cancel, add_more = nvar
+def test_ValidateComponents(driver, nvar):
+    Project, Task, Employee, Date, Hr, Min, Memo, Save, Cancel, AddMore = nvar
 
-    assert project.is_enabled()
-    print("The project dropdown is Enabled.")
-    logger.info("The project dropdown is Enabled.")
-
-    assert task.is_enabled()
-    print("The task dropdown is Enabled.")
-    logger.info("The task dropdown is Enabled.")
-
-    assert employee.is_enabled()
-    print("The employee dropdown is Enabled.")
-    logger.info("The employee dropdown is Enabled.")
-
-    assert date.is_enabled()
-    print("The date picker is Enabled.")
-    logger.info("The date picker is Enabled.")
-
-    assert hr.is_enabled()
+    assert Project.is_enabled()
+    print("The Project dropdown is Enabled.")
+    logger.info("The Project dropdown is Enabled.")
+    assert Task.is_enabled()
+    print("The Task dropdown is Enabled.")
+    logger.info("The Task dropdown is Enabled.")
+    assert Employee.is_enabled()
+    print("The Employee dropdown is Enabled.")
+    logger.info("The Employee dropdown is Enabled.")
+    assert Date.is_enabled()
+    print("The Date picker is Enabled.")
+    logger.info("The Date picker is Enabled.")
+    assert Hr.is_enabled()
     print("The hour dropdown is Enabled.")
     logger.info("The hour dropdown is Enabled.")
-
-    assert min.is_enabled()
-    print("The minutes dropdown is Enabled.")
-    logger.info("The minutes dropdown is Enabled.")
-
-    assert memo.is_enabled()
-    print("The memo textarea is Enabled.")
-    logger.info("The memo textarea is Enabled.")
-
-    assert save.is_enabled()
-    print("The save button is Enabled.")
-    logger.info("The save button is Enabled.")
-
-    assert cancel.is_enabled()
-    print("The cancel button is Enabled.")
-    logger.info("The cancel button is Enabled.")
-
-    assert add_more.is_enabled()
+    assert Min.is_enabled()
+    print("The Minutes dropdown is Enabled.")
+    logger.info("The Minutes dropdown is Enabled.")
+    assert Memo.is_enabled()
+    print("The Memo textarea is Enabled.")
+    logger.info("The Memo textarea is Enabled.")
+    assert Save.is_enabled()
+    print("The Save button is Enabled.")
+    logger.info("The Save button is Enabled.")
+    assert Cancel.is_enabled()
+    print("The Cancel button is Enabled.")
+    logger.info("The Cancel button is Enabled.")
+    assert AddMore.is_enabled()
     print("The Add more button is Enabled.")
     logger.info("The Add more is Enabled.")
 
 
 @pytest.mark.order(32)
-def test_with_Blank_Value(driver, nvar):
-    project, task, employee, date, hr, min, memo, save, cancel, add_more = nvar
+def test_WithBlankValue(driver, nvar):
+    Project, Task, Employee, Date, Hr, Min, Memo, Save, Cancel, AddMore = nvar
 
-    save.click()
+    Save.click()
     time.sleep(4)
-
-    project_msg = driver.find_element(By.XPATH,
+    ProjectMsg = driver.find_element(By.XPATH,
                                       '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[1]/div[1]/div/div[2]')
-    task_msg = driver.find_element(By.XPATH,
+    TaskMsg = driver.find_element(By.XPATH,
                                    '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[1]/div[2]/div/div[2]')
-    employee_msg = driver.find_element(By.XPATH,
+    EmployeeMsg = driver.find_element(By.XPATH,
                                        '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[1]/div[3]/div/div[2]')
-    endtime_msg = driver.find_element(By.XPATH,
+    EndtimeMsg = driver.find_element(By.XPATH,
                                       '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[2]/div[4]/div/div/div')
-    memo_msg = driver.find_element(By.XPATH, '//*[@id="save-timelog-data-form"]/div/div[2]/div[2]/div/div')
+    MemoMsg = driver.find_element(By.XPATH, '//*[@id="save-timelog-data-form"]/div/div[2]/div[2]/div/div')
 
-    if project_msg.text == "Please select Project":
+    if ProjectMsg.text == "Please select Project":
         print('"Please select Project." Message displayed successfully.')
         logger.info('"Please select Project." Message displayed successfully.')
-
-    if task_msg.text == "Please select Task":
+    if TaskMsg.text == "Please select Task":
         print('"Please select Task." Message displayed successfully.')
         logger.info('"Please select Task." Message displayed successfully.')
-
-    if employee_msg.text == "Please select user":
+    if EmployeeMsg.text == "Please select user":
         print('"Please select user" Message displayed successfully.')
         logger.info('"Please select user" Message displayed successfully.')
-
-    if endtime_msg.text == "Please enter end time ":
+    if EndtimeMsg.text == "Please enter end time ":
         print('"Please enter end time " Message displayed successfully.')
         logger.info('"Please enter end time " Message displayed successfully.')
-
-    if memo_msg.text == "Please enter Memo":
+    if MemoMsg.text == "Please enter Memo":
         print('"Please enter Memo" Message displayed successfully.')
         logger.info('"Please enter Memo" Message displayed successfully.')
 
 
 @pytest.mark.order(33)
-def test_with_Invalid_value(driver, nvar):
-    project, task, employee, date, hr, min, memo, save, cancel, add_more = nvar
+def test_WithInvalidValue(driver, nvar):
+    Project, Task, Employee, Date, Hr, Min, Memo, Save, Cancel, AddMore = nvar
 
-    # Click on project dropdown
-    project.click()
-    project_srch = driver.find_element(By.XPATH,
+    # Click on Project dropdown
+    Project.click()
+    ProjectSrch = driver.find_element(By.XPATH,
                                        '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[1]/div[1]/div/div/div/div[1]/input')
-
     # Search for valid option
-    project_srch.send_keys(invalid_project)
-
-    li_elements = driver.find_elements(By.TAG_NAME, 'li')
-
+    ProjectSrch.send_keys(InvalidProject)
+    LiElements = driver.find_elements(By.TAG_NAME, 'li')
     # Iterate through the <li> elements and find the first one that has the "active" class
     active_a = None
-    for li in li_elements:
+    for li in LiElements:
         if li.get_attribute('class') == 'no-results':
             print('"No result found" message displayed successfully for invalid search in Project dropdown')
             break
-
     # Click on Task dropdown
     try:
-        task.click()
-
+        Task.click()
     except StaleElementReferenceException:
-        task = driver.find_element(By.XPATH,
+        Task = driver.find_element(By.XPATH,
                                    '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[1]/div[2]/div/div/button')
-        task.click()
-
-    task_srch = driver.find_element(By.XPATH,
+        Task.click()
+    TaskSrch = driver.find_element(By.XPATH,
                                     '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[1]/div[2]/div/div/div/div[1]/input')
-
     # Search for valid option
-    task_srch.send_keys(valid_task)
-
-    li_elements = driver.find_elements(By.TAG_NAME, 'li')
-
+    TaskSrch.send_keys(ValidTask)
+    LiElements = driver.find_elements(By.TAG_NAME, 'li')
     # Iterate through the <li> elements and find the first one that has the "active" class
     active_a = None
-    for li in li_elements:
+    for li in LiElements:
         if li.get_attribute('class') == 'no-results':
             print('"No result found" message displayed successfully for invalid search in Task dropdown')
             break
-
     # Click on Employee dropdown
     try:
-        employee.click()
-
+        Employee.click()
     except StaleElementReferenceException:
-        employee = driver.find_element(By.XPATH,
+        Employee = driver.find_element(By.XPATH,
                                        '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[1]/div[3]/div/div/button')
-        employee.click()
-
-    emp_srch = driver.find_element(By.XPATH,
+        Employee.click()
+    EmpSrch = driver.find_element(By.XPATH,
                                    '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[1]/div[3]/div/div/div/div[1]/input')
-
     # Search for valid option
-    emp_srch.send_keys(valid_employee)
-
-    li_elements = driver.find_elements(By.TAG_NAME, 'li')
-
+    EmpSrch.send_keys(ValidEmployee)
+    LiElements = driver.find_elements(By.TAG_NAME, 'li')
     # Iterate through the <li> elements and find the first one that has the "active" class
     active_a = None
-    for li in li_elements:
+    for li in LiElements:
         if li.get_attribute('class') == 'no-results':
             print('"No result found" message displayed successfully for invalid search in Employee dropdown')
             break
-
     # Click on the active <li> element
     if active_a is not None:
         active_a.click()
-
     # Click on Date input
     try:
-        date.click()
-
+        Date.click()
     except StaleElementReferenceException:
-        date = driver.find_element(By.XPATH, '//*[@id="start_date"]')
-
+        Date = driver.find_element(By.XPATH, '//*[@id="start_date"]')
     # Search for valid option
-    date.clear()
-    date.send_keys(invalid_date)
-
+    Date.clear()
+    Date.send_keys(InvalidDate)
     # Click on Minutes dropdown
-
-    min = driver.find_element(By.XPATH,
+    Min = driver.find_element(By.XPATH,
                               '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[2]/div[6]/div/div/button')
-    min.click()
-
-    min_srch = driver.find_element(By.XPATH,
+    Min.click()
+    MinSrch = driver.find_element(By.XPATH,
                                    '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[2]/div[6]/div/div/div/div[1]/input')
-
     # Search for valid option
-    min_srch.send_keys(invalid_min)
-
-    li_elements = driver.find_elements(By.TAG_NAME, 'li')
-
+    MinSrch.send_keys(InvalidMin)
+    LiElements = driver.find_elements(By.TAG_NAME, 'li')
     # Iterate through the <li> elements and find the first one that has the "active" class
     active_a = None
-    for li in li_elements:
+    for li in LiElements:
         if li.get_attribute('class') == 'no-results':
             print('"No result found" message displayed successfully for invalid search in Minutes Dropdown')
             break
-
     # Click on the active <li> element
     if active_a is not None:
         active_a.click()
-
     # Click on Hours dropdown
-
-    hr = driver.find_element(By.XPATH,
+    Hr = driver.find_element(By.XPATH,
                              '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[2]/div[5]/div/div/button')
-    hr.click()
-
-    hr_srch = driver.find_element(By.XPATH,
+    Hr.click()
+    HrSrch = driver.find_element(By.XPATH,
                                   '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[2]/div[5]/div/div/div/div[1]/input')
-
     # Search for valid option
-    hr_srch.send_keys(invalid_hour)
-
-    li_elements = driver.find_elements(By.TAG_NAME, 'li')
-
+    HrSrch.send_keys(InvalidHour)
+    LiElements = driver.find_elements(By.TAG_NAME, 'li')
     # Iterate through the <li> elements and find the first one that has the "active" class
     active_a = None
-    for li in li_elements:
+    for li in LiElements:
         if li.get_attribute('class') == 'no-results':
             print('"No result found" message displayed successfully for invalid search in Hours dropdown')
             break
-
     # Click on the active <li> element
     if active_a is not None:
         active_a.click()
-
     # Click on Memo input
-
-    memo = driver.find_element(By.XPATH, '//*[@id="memo"]')
-
+    Memo = driver.find_element(By.XPATH, '//*[@id="memo"]')
     # Search for valid option
-    memo.clear()
-    memo.send_keys(invalid_memo)
-
-    # save.click()
-
-    # Close the web driver
-    # time.sleep(3)
-    # driver.close()
+    Memo.clear()
+    Memo.send_keys(InvalidMemo)
 
 
 @pytest.mark.order(34)
-def test_with_Invalid_date_Value(driver, nvar):
-    project, task, employee, date, hr, min, memo, save, cancel, add_more = nvar
+def test_WithInvalidDateValue(driver, nvar):
+    Project, Task, Employee, Date, Hr, Min, Memo, Save, Cancel, AddMore = nvar
 
-    # Click on project dropdown
-    project.click()
-    project_srch = driver.find_element(By.XPATH,
+    # Click on Project dropdown
+    Project.click()
+    ProjectSrch = driver.find_element(By.XPATH,
                                        '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[1]/div[1]/div/div/div/div[1]/input')
-
     # Search for valid option
-    project_srch.send_keys(valid_project)
-
-    li_elements = driver.find_elements(By.TAG_NAME, 'li')
-
+    ProjectSrch.send_keys(ValidProject)
+    LiElements = driver.find_elements(By.TAG_NAME, 'li')
     # Iterate through the <li> elements and find the first one that has the "active" class
     active_a = None
-    for li in li_elements:
+    for li in LiElements:
         if li.get_attribute('class') == 'active':
             active_a = li.find_element(By.TAG_NAME, 'a')
             break
-
     # Click on the active <li> element
     if active_a is not None:
         active_a.click()
-
     # Click on Task dropdown
     try:
-        task.click()
-
+        Task.click()
     except StaleElementReferenceException:
-        task = driver.find_element(By.XPATH,
+        Task = driver.find_element(By.XPATH,
                                    '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[1]/div[2]/div/div/button')
-        task.click()
-
-    task_srch = driver.find_element(By.XPATH,
+        Task.click()
+    TaskSrch = driver.find_element(By.XPATH,
                                     '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[1]/div[2]/div/div/div/div[1]/input')
-
     # Search for valid option
-    task_srch.send_keys(valid_task)
-
-    li_elements = driver.find_elements(By.TAG_NAME, 'li')
-
+    TaskSrch.send_keys(ValidTask)
+    LiElements = driver.find_elements(By.TAG_NAME, 'li')
     # Iterate through the <li> elements and find the first one that has the "active" class
     active_a = None
-    for li in li_elements:
+    for li in LiElements:
         if li.get_attribute('class') == 'active':
             active_a = li.find_element(By.TAG_NAME, 'a')
             break
-
     # Click on the active <li> element
     if active_a is not None:
         active_a.click()
-
     # Click on Employee dropdown
     try:
-        employee.click()
-
+        Employee.click()
     except StaleElementReferenceException:
-        employee = driver.find_element(By.XPATH,
+        Employee = driver.find_element(By.XPATH,
                                        '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[1]/div[3]/div/div/button')
-        employee.click()
-
-    emp_srch = driver.find_element(By.XPATH,
+        Employee.click()
+    EmpSrch = driver.find_element(By.XPATH,
                                    '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[1]/div[3]/div/div/div/div[1]/input')
-
     # Search for valid option
-    emp_srch.send_keys(valid_employee)
-
-    li_elements = driver.find_elements(By.TAG_NAME, 'li')
-
+    EmpSrch.send_keys(ValidEmployee)
+    LiElements = driver.find_elements(By.TAG_NAME, 'li')
     # Iterate through the <li> elements and find the first one that has the "active" class
     active_a = None
-    for li in li_elements:
+    for li in LiElements:
         if li.get_attribute('class') == 'active':
             active_a = li.find_element(By.TAG_NAME, 'a')
             break
-
     # Click on the active <li> element
     if active_a is not None:
         active_a.click()
-
     # Click on Minutes dropdown
-
-    min = driver.find_element(By.XPATH,
+    Min = driver.find_element(By.XPATH,
                               '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[2]/div[6]/div/div/button')
-    min.click()
-
-    min_srch = driver.find_element(By.XPATH,
+    Min.click()
+    MinSrch = driver.find_element(By.XPATH,
                                    '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[2]/div[6]/div/div/div/div[1]/input')
-
     # Search for valid option
-    min_srch.send_keys(valid_min)
-
-    li_elements = driver.find_elements(By.TAG_NAME, 'li')
-
+    MinSrch.send_keys(ValidMin)
+    LiElements = driver.find_elements(By.TAG_NAME, 'li')
     # Iterate through the <li> elements and find the first one that has the "active" class
     active_a = None
-    for li in li_elements:
+    for li in LiElements:
         if li.get_attribute('class') == 'active':
             active_a = li.find_element(By.TAG_NAME, 'a')
             break
-
     # Click on the active <li> element
     if active_a is not None:
         active_a.click()
-
     # Click on Hours dropdown
-
-    hr = driver.find_element(By.XPATH,
+    Hr = driver.find_element(By.XPATH,
                              '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[2]/div[5]/div/div/button')
-    hr.click()
-
-    hr_srch = driver.find_element(By.XPATH,
+    Hr.click()
+    HrSrch = driver.find_element(By.XPATH,
                                   '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[2]/div[5]/div/div/div/div[1]/input')
-
     # Search for valid option
-    hr_srch.send_keys(valid_hour)
-
-    li_elements = driver.find_elements(By.TAG_NAME, 'li')
-
+    HrSrch.send_keys(ValidHour)
+    LiElements = driver.find_elements(By.TAG_NAME, 'li')
     # Iterate through the <li> elements and find the first one that has the "active" class
     active_a = None
-    for li in li_elements:
+    for li in LiElements:
         if li.get_attribute('class') == 'active':
             active_a = li.find_element(By.TAG_NAME, 'a')
             break
-
     # Click on the active <li> element
     if active_a is not None:
         active_a.click()
-
     # Click on Memo input
-
-    memo = driver.find_element(By.XPATH, '//*[@id="memo"]')
-
+    Memo = driver.find_element(By.XPATH, '//*[@id="memo"]')
     # Search for valid option
-    memo.clear()
-    memo.send_keys(valid_memo)
-
+    Memo.clear()
+    Memo.send_keys(ValidMemo)
     # Click on Date input
     try:
-        date.click()
-
+        Date.click()
     except StaleElementReferenceException:
-        date = driver.find_element(By.XPATH, '//*[@id="start_date"]')
-
+        Date = driver.find_element(By.XPATH, '//*[@id="start_date"]')
     # Search for valid option
-    date.clear()
-    date.send_keys(invalid_date)
-    save.click()
-
+    Date.clear()
+    Date.send_keys(InvalidDate)
+    Save.click()
     time.sleep(2)
-
-    date_err = driver.find_element(By.XPATH, '//*[@id="body"]/div[8]')
-    if date_err.text == "A two digit day could not be found Data missing":
+    Date_err = driver.find_element(By.XPATH, '//*[@id="body"]/div[8]')
+    if Date_err.text == "A two digit day could not be found Data missing":
         print('"A two digit day could not be found Data missing" Message displayed successfully')
-
     # Close the web driver
     time.sleep(3)
 
 
 @pytest.mark.order(35)
-def test_with_Valid_Value(driver, nvar):
-    project, task, employee, date, hr, min, memo, save, cancel, add_more = nvar
+def test_WithValidValue(driver, nvar):
+    Project, Task, Employee, Date, Hr, Min, Memo, Save, Cancel, AddMore = nvar
 
-    # Click on project dropdown
-    project.click()
-    project_srch = driver.find_element(By.XPATH,
+    # Click on Project dropdown
+    Project.click()
+    ProjectSrch = driver.find_element(By.XPATH,
                                        '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[1]/div[1]/div/div/div/div[1]/input')
-
     # Search for valid option
-    project_srch.send_keys(valid_project)
-
-    li_elements = driver.find_elements(By.TAG_NAME, 'li')
-
+    ProjectSrch.send_keys(ValidProject)
+    LiElements = driver.find_elements(By.TAG_NAME, 'li')
     # Iterate through the <li> elements and find the first one that has the "active" class
     active_a = None
-    for li in li_elements:
+    for li in LiElements:
         if li.get_attribute('class') == 'active':
             active_a = li.find_element(By.TAG_NAME, 'a')
             break
-
     # Click on the active <li> element
     if active_a is not None:
         active_a.click()
-
     # Click on Task dropdown
     try:
-        task.click()
-
+        Task.click()
     except StaleElementReferenceException:
-        task = driver.find_element(By.XPATH,
+        Task = driver.find_element(By.XPATH,
                                    '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[1]/div[2]/div/div/button')
-        task.click()
-
-    task_srch = driver.find_element(By.XPATH,
+        Task.click()
+    TaskSrch = driver.find_element(By.XPATH,
                                     '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[1]/div[2]/div/div/div/div[1]/input')
-
     # Search for valid option
-    task_srch.send_keys(valid_task)
-
-    li_elements = driver.find_elements(By.TAG_NAME, 'li')
-
+    TaskSrch.send_keys(ValidTask)
+    LiElements = driver.find_elements(By.TAG_NAME, 'li')
     # Iterate through the <li> elements and find the first one that has the "active" class
     active_a = None
-    for li in li_elements:
+    for li in LiElements:
         if li.get_attribute('class') == 'active':
             active_a = li.find_element(By.TAG_NAME, 'a')
             break
-
     # Click on the active <li> element
     if active_a is not None:
         active_a.click()
-
     # Click on Employee dropdown
     try:
-        employee.click()
-
+        Employee.click()
     except StaleElementReferenceException:
-        employee = driver.find_element(By.XPATH,
+        Employee = driver.find_element(By.XPATH,
                                        '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[1]/div[3]/div/div/button')
-        employee.click()
-
-    emp_srch = driver.find_element(By.XPATH,
+        Employee.click()
+    EmpSrch = driver.find_element(By.XPATH,
                                    '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[1]/div[3]/div/div/div/div[1]/input')
-
     # Search for valid option
-    emp_srch.send_keys(valid_employee)
-
-    li_elements = driver.find_elements(By.TAG_NAME, 'li')
-
+    EmpSrch.send_keys(ValidEmployee)
+    LiElements = driver.find_elements(By.TAG_NAME, 'li')
     # Iterate through the <li> elements and find the first one that has the "active" class
     active_a = None
-    for li in li_elements:
+    for li in LiElements:
         if li.get_attribute('class') == 'active':
             active_a = li.find_element(By.TAG_NAME, 'a')
             break
-
     # Click on the active <li> element
     if active_a is not None:
         active_a.click()
-
     # Click on Date input
     try:
-        date.click()
-
+        Date.click()
     except StaleElementReferenceException:
-        date = driver.find_element(By.XPATH, '//*[@id="start_date"]')
-
+        Date = driver.find_element(By.XPATH, '//*[@id="start_date"]')
     # Search for valid option
-    date.clear()
-    date.send_keys(valid_date)
-    s_date = driver.find_element(By.XPATH, '//*[@id="start_time"]')
-    s_date.click()
-
+    Date.clear()
+    Date.send_keys(ValidDate)
+    s_Date = driver.find_element(By.XPATH, '//*[@id="start_time"]')
+    s_Date.click()
     # Click on Minutes dropdown
-
-    min = driver.find_element(By.XPATH,
+    Min = driver.find_element(By.XPATH,
                               '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[2]/div[6]/div/div/button')
-    min.click()
-
-    min_srch = driver.find_element(By.XPATH,
+    Min.click()
+    MinSrch = driver.find_element(By.XPATH,
                                    '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[2]/div[6]/div/div/div/div[1]/input')
-
     # Search for valid option
-    min_srch.send_keys(valid_min)
-
-    li_elements = driver.find_elements(By.TAG_NAME, 'li')
-
+    MinSrch.send_keys(ValidMin)
+    LiElements = driver.find_elements(By.TAG_NAME, 'li')
     # Iterate through the <li> elements and find the first one that has the "active" class
     active_a = None
-    for li in li_elements:
+    for li in LiElements:
         if li.get_attribute('class') == 'active':
             active_a = li.find_element(By.TAG_NAME, 'a')
             break
-
     # Click on the active <li> element
     if active_a is not None:
         active_a.click()
-
     # Click on Hours dropdown
-
-    hr = driver.find_element(By.XPATH,
+    Hr = driver.find_element(By.XPATH,
                              '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[2]/div[5]/div/div/button')
-    hr.click()
-
-    hr_srch = driver.find_element(By.XPATH,
+    Hr.click()
+    HrSrch = driver.find_element(By.XPATH,
                                   '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[2]/div[5]/div/div/div/div[1]/input')
-
     # Search for valid option
-    hr_srch.send_keys(valid_hour)
-
-    li_elements = driver.find_elements(By.TAG_NAME, 'li')
-
+    HrSrch.send_keys(ValidHour)
+    LiElements = driver.find_elements(By.TAG_NAME, 'li')
     # Iterate through the <li> elements and find the first one that has the "active" class
     active_a = None
-    for li in li_elements:
+    for li in LiElements:
         if li.get_attribute('class') == 'active':
             active_a = li.find_element(By.TAG_NAME, 'a')
             break
-
     # Click on the active <li> element
     if active_a is not None:
         active_a.click()
-
     # Click on Memo input
-
-    memo = driver.find_element(By.XPATH, '//*[@id="memo"]')
-
+    Memo = driver.find_element(By.XPATH, '//*[@id="memo"]')
     # Search for valid option
-    memo.clear()
-    memo.send_keys(valid_memo)
-
+    Memo.clear()
+    Memo.send_keys(ValidMemo)
     # Click on Memo input
-
-    save.click()
+    Save.click()
     time.sleep(6)
-    log_time = driver.find_element(By.XPATH, '//*[@id="table-actions"]/a')
-    if log_time.is_enabled():
-        print("The form with valid data saved successfully.")
+    LogTime = driver.find_element(By.XPATH, '//*[@id="table-actions"]/a')
+    if LogTime.is_enabled():
+        print("The form with valid data Saved successfully.")
 
 
 @pytest.mark.order(36)
-def test_Search_in_Table(driver):
-    # find the saved lead in table and click on edit button
-    row1 = driver.find_element(By.XPATH, '//table//tbody//tr[1]')
-    cell1 = row1.find_element(By.XPATH, './/td[2]')
-    var_id = cell1.text
-
-    driver.find_element(By.XPATH, f'//*[@id="dropdownMenuLink-%s"]' % var_id).click()
-    driver.find_element(By.XPATH, f'//*[@id="row-%s"]/td[8]/div/div/div/a[2]' % var_id).click()
+def test_SearchInTable(driver):
+    # find the Saved lead in table and click on edit button
+    Row1 = driver.find_element(By.XPATH, '//table//tbody//tr[1]')
+    Cell1 = Row1.find_element(By.XPATH, './/td[2]')
+    VarId = Cell1.text
+    driver.find_element(By.XPATH, f'//*[@id="dropdownMenuLink-%s"]' % VarId).click()
+    driver.find_element(By.XPATH, f'//*[@id="row-%s"]/td[8]/div/div/div/a[2]' % VarId).click()
     print("The Log searched successfully in the table")
-    time.sleep(2)
+    time.sleep(5)
 
 
 @pytest.mark.order(37)
-def test_Edit_and_Save(driver):
-    memo = driver.find_element(By.XPATH, '//*[@id="memo"]')
-
+def test_EditAndSave(driver):
+    Memo = driver.find_element(By.XPATH, '//*[@id="memo"]')
     # Search for valid option
-    memo.clear()
-    memo.send_keys("Testing Edit form by changing the value of memo textarea ...")
-
-    save = driver.find_element(By.XPATH, '//*[@id="save-timelog-form"]')
-    save.click()
+    Memo.clear()
+    Memo.send_keys("Testing Edit form by changing the value of Memo textarea ...")
+    Save = driver.find_element(By.XPATH, '//*[@id="save-timelog-form"]')
+    Save.click()
     time.sleep(6)
-
-    log_time = driver.find_element(By.XPATH, '//*[@id="table-actions"]/a')
-    if log_time.is_enabled():
-        print("The Edit form saved successfully.")
-
+    LogTime = driver.find_element(By.XPATH, '//*[@id="table-actions"]/a')
+    if LogTime.is_enabled():
+        print("The Edit form Saved successfully.")
     # Close the web driver
     time.sleep(3)
-    # driver.close()

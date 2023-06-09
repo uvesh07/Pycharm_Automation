@@ -26,7 +26,7 @@ class Testing(unittest.TestCase):
         cls.driver.find_element(By.XPATH, '//*[@id="email"]').send_keys("saurabhdhariwal.com@gmail.com")
         cls.driver.find_element(By.XPATH, '//*[@id="password"]').send_keys("addweb123")
 
-        cls.driver.save_screenshot(os.path.join(os.getcwd(), "screenshots", "Login.png"))
+        cls.driver.save_screenshot(os.path.join(os.getcwd(), "Screenshots", "Login.png"))
 
         cls.driver.find_element(By.XPATH, '//*[@id="submit-login"]').click()
         time.sleep(3)
@@ -38,7 +38,7 @@ class Testing(unittest.TestCase):
 
         if actual_title == expected_title:
             print("Successfully Logged in")
-            self.driver.save_screenshot(os.path.join(os.getcwd(), "screenshots", "Dashboard.png"))
+            self.driver.save_screenshot(os.path.join(os.getcwd(), "Screenshots", "Dashboard.png"))
             self.driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul/li[2]/a').click()
         else:
             print("Failed to Login")
@@ -53,7 +53,7 @@ class Testing(unittest.TestCase):
 
         if actual_title == expected_title:
             print("Successfully reached on Leads page")
-            self.driver.save_screenshot(os.path.join(os.getcwd(), "screenshots", "Leads.png"))
+            self.driver.save_screenshot(os.path.join(os.getcwd(), "Screenshots", "Leads.png"))
         else:
             print("Failed to reach")
             self.driver.quit()
@@ -69,7 +69,7 @@ class Testing(unittest.TestCase):
 
     def test_newlead(self):
         # Fill the New Lead form
-        self.driver.save_screenshot(os.path.join(os.getcwd(), "screenshots", "NewLead.png"))
+        self.driver.save_screenshot(os.path.join(os.getcwd(), "Screenshots", "NewLead.png"))
         # find & click on Salutation dropdown button
         select_btn = self.driver.find_element(By.XPATH,
                                               '//*[@id="save-lead-data-form"]/div/div[1]/div[1]/div/div/button')
@@ -165,7 +165,7 @@ class Testing(unittest.TestCase):
         # Enter Postal code
         self.driver.find_element(By.ID, 'postal_code').send_keys("380009")
 
-        self.driver.save_screenshot(os.path.join(os.getcwd(), "screenshots", "FilledForm.png"))
+        self.driver.save_screenshot(os.path.join(os.getcwd(), "Screenshots", "FilledForm.png"))
 
         # Check the validations and Save the form
         client_name = self.driver.find_element(By.ID, 'client_name')
@@ -192,7 +192,7 @@ class Testing(unittest.TestCase):
         self.driver.find_element(By.XPATH, f'//*[@id="dropdownMenuLink-%s"]' % var_id).click()
         time.sleep(2)
 
-        self.driver.save_screenshot(os.path.join(os.getcwd(), "screenshots", "LeadsonTable.png"))
+        self.driver.save_screenshot(os.path.join(os.getcwd(), "Screenshots", "LeadsonTable.png"))
 
         self.driver.find_element(By.XPATH, f'//*[@id="row-%s"]/td[9]/div/div/div/a[2]' % var_id).click()
         time.sleep(2)
@@ -204,14 +204,14 @@ class Testing(unittest.TestCase):
         self.driver.find_element(By.ID, 'client_email').clear()
         self.driver.find_element(By.ID, 'client_email').send_keys("test1@gmail.com")
 
-        self.driver.save_screenshot(os.path.join(os.getcwd(), "screenshots", "EditForm.png"))
+        self.driver.save_screenshot(os.path.join(os.getcwd(), "Screenshots", "EditForm.png"))
 
         self.driver.find_element(By.XPATH, '//*[@id="save-lead-form"]').click()
         time.sleep(5)
 
 
 if __name__ == "__main__":
-    os.makedirs("screenshots", exist_ok=True)
+    os.makedirs("Screenshots", exist_ok=True)
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
     suite.addTest(Testing('test_dashboard'))

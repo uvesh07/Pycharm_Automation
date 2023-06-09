@@ -30,7 +30,7 @@ class Testing(unittest.TestCase):
         cls.driver.find_element(By.XPATH, '//*[@id="email"]').send_keys("saurabhdhariwal.com@gmail.com")
         cls.driver.find_element(By.XPATH, '//*[@id="password"]').send_keys("addweb123")
 
-        # cls.driver.save_screenshot(os.path.join(os.getcwd(), "screenshots", "Login.png"))
+        # cls.driver.save_screenshot(os.path.join(os.getcwd(), "Screenshots", "Login.png"))
 
         cls.driver.find_element(By.XPATH, '//*[@id="submit-login"]').click()
         time.sleep(3)
@@ -42,7 +42,7 @@ class Testing(unittest.TestCase):
 
         if actual_title == expected_title:
             print("Successfully Logged in")
-            # self.driver.save_screenshot(os.path.join(os.getcwd(), "screenshots", "Dashboard.png"))
+            # self.driver.save_screenshot(os.path.join(os.getcwd(), "Screenshots", "Dashboard.png"))
             self.driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul/li[5]/a').click()
             self.driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul/li[5]/div/a[4]').click()
         else:
@@ -59,7 +59,7 @@ class Testing(unittest.TestCase):
         if actual_title == expected_title:
             print("Successfully reached on Time Logs page")
             time.sleep(3)
-            # self.driver.save_screenshot(os.path.join(os.getcwd(), "screenshots", "Leads.png"))
+            # self.driver.save_screenshot(os.path.join(os.getcwd(), "Screenshots", "Leads.png"))
         else:
             print("Failed to reach")
             self.driver.quit()
@@ -127,7 +127,7 @@ class Testing(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    # os.makedirs("screenshots", exist_ok=True)
+    # os.makedirs("Screenshots", exist_ok=True)
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
     suite.addTest(loader.loadTestsFromTestCase('test_dashboard'))

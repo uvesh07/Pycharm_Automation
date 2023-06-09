@@ -1,10 +1,6 @@
-import pytest
-import logging
-from datetime import datetime, timedelta
-from selenium.common import NoSuchElementException, ElementNotInteractableException
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.by import By
 import time
+
+from selenium.webdriver.common.by import By
 
 # Global variables used for different methods POC-QA-Automation
 valid_email = "saurabhdhariwal.com@gmail.com"
@@ -21,7 +17,6 @@ def test_enter_valid_creadential(driver):
     email.send_keys(valid_email)
     passwrd.send_keys(valid_pass)
     login.click()
-
     time.sleep(3)
 
 
@@ -40,7 +35,7 @@ def test_Click_file_input(driver):
     element = driver.find_element(By.XPATH, '//*[@id="customFile"]')
     # driver.execute_script("arguments[0].type = 'file';", element)
     # time.sleep(20)
-    element.send_keys(valid_addfile )
+    element.send_keys(valid_addfile)
     time.sleep(3)
     driver.find_element(By.XPATH, '//*[@id="myModal"]/div/div/div[2]/form/button').click()
     time.sleep(10)
