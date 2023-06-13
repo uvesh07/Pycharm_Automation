@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException
 from datetime import datetime
 import time
+from datetime import date, timedelta
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.select import Select
 from selenium import webdriver
@@ -13,10 +14,18 @@ import sys
 # Global variables used for different methods POC-QA-Automation
 ValidEmail = "addwebsolution@gmail.com"
 ValidPass = "addweb@123"
+Title = ""
+Message = ""
+SelSub = ""
+SelClass = ""
+Date = ""
+SelFile = ""
+Save = ""
 
 
 @pytest.fixture(name="nvar")
 def test_VariableTest(driver):
+    global Title, Message, SelSub, SelClass, Date, SelFile, Save
     Title = driver.find_element(By.XPATH, '//*[@id="title"]')
     Message = driver.find_element(By.XPATH, '//*[@id="form1"]/div/div[2]/div/div[1]/div[2]/iframe')
     SelSub = driver.find_element(By.XPATH, '//*[@id="subject_id"]')
@@ -117,7 +126,13 @@ def test_AddHomework(driver, nvar):
     driver.execute_script("arguments[0].scrollIntoView(true);", Check)
     Check.click()
     # Enter Date
-    Date.send_keys("12-06-2023")
+    # Get today's date
+    Today = date.today()
+    # Calculate tomorrow's date
+    Tomorrow = Today + timedelta(days=1)
+    # Format tomorrow's date as DD-MM-YYYY
+    FormattedDate = Tomorrow.strftime("%d-%m-%Y")
+    Date.send_keys(FormattedDate)
     # Select file
     SelFile.send_keys(ValidAddfile)
     # Submit the Form
@@ -133,6 +148,7 @@ def test_AddHomework(driver, nvar):
         TableTitle = driver.find_element(By.XPATH, f'//*[@id="DataTables_Table_0"]/tbody/tr[{i}]/td[1]/a')
         # Find the Saved Homework in the Table
         if TableTitle.text == "Test 1":
+            print("The Saved Form found in the table")
             # Click on Edit Button
             Edit = driver.find_element(By.XPATH, f'//*[@id="DataTables_Table_0"]/tbody/tr[{i}]/td[4]/a[2]')
             driver.execute_script("arguments[0].scrollIntoView(true);", Edit)
@@ -142,13 +158,18 @@ def test_AddHomework(driver, nvar):
 
 
 @pytest.mark.order(4)
-def test_EditHomework(driver, nvar):
-    Title, Message, SelSub, SelClass, Date, SelFile, Save = nvar
+def test_EditHomework(driver):
     Title = driver.find_element(By.XPATH, '//*[@id="title"]')
-    driver.execute_script("arguments[0].scrollIntoView(true);", Save)
-    # Save = driver.find_element(By.XPATH, '//*[@id="form1"]/div/div[3]/button')
+    Save = driver.find_element(By.XPATH, '//*[@id="form1"]/div/div[3]/div/button')
+    # Edit Title
     Title.clear()
     Title.send_keys("Edited Title..")
+    # Check the section
+    Check = driver.find_element(By.XPATH, '//*[@id="section_id"]/div/input')
+    driver.execute_script("arguments[0].scrollIntoView(true);", Check)
+    Check.click()
+    driver.execute_script("arguments[0].scrollIntoView(true);", Save)
+    # Save the Form
     Save.click()
     time.sleep(3)
     EditMsg = driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/section[2]/div/div/div[1]/div[2]/div[1]/div')
