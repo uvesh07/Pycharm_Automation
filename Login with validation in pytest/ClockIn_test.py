@@ -4,6 +4,8 @@ from selenium.common.exceptions import NoSuchElementException, StaleElementRefer
 from datetime import datetime
 import time
 import sys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 # Global variables used for different methods POC-QA-Automation
@@ -13,10 +15,13 @@ CurrentDay = "Nothing"
 ClockinTime = "Nothing"
 ExpectedClockinTime = "Nothing"
 UserName = "Nothing"
+wait = ""
 
 
 @pytest.mark.order(7)
 def test_ClickOnClockin(driver, selenium):
+    global wait
+    wait = WebDriverWait(driver, 30)
     try:
         # Clock-in Button
         ClockIn = driver.find_element(By.XPATH, '//*[@id="clock-in"]')
@@ -25,10 +30,11 @@ def test_ClickOnClockin(driver, selenium):
             print("Successfully reached Dashboard, and Clock-in Button is Enabled")
         # Click on Clock-in button
         ClockIn.click()
-        time.sleep(5)
+        # time.sleep(5)
+        wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="save-clock-in"]')))
         # Save the clock-in button
         driver.find_element(By.XPATH, '//*[@id="save-clock-in"]').click()
-        time.sleep(5)
+        # time.sleep(5)
     except NoSuchElementException:
         print("The User is already Clocked-in")
 
@@ -47,6 +53,7 @@ def test_VerifyClockinTimeAndGetUsername(driver, selenium):
     print("The Current Day is ", CurrentDay)
 
     # Get Clock-in time
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="fullscreen"]/div[3]/div[1]/div[2]/p/span')))
     Clockin_At = driver.find_element(By.XPATH, '//*[@id="fullscreen"]/div[3]/div[1]/div[2]/p/span').text
     ExpectedClockinTime = Clockin_At[14:22]
     print("expected time at verify clockin : " + ExpectedClockinTime)
@@ -62,7 +69,7 @@ def test_VerifyClockinTimeAndGetUsername(driver, selenium):
     name = driver.find_element(By.XPATH, '//*[@id="fullscreen"]/div[3]/div[1]/div[1]/h4').text
     UserName = name[8:]
     print("The User name is ", UserName)
-    time.sleep(5)
+    time.sleep(3)
 
 
 @pytest.mark.order(9)
@@ -101,8 +108,9 @@ def test_VerifyClockinAndAttendance(driver, selenium):
                         print("You do not have access to Attendance Page.")
         except StaleElementReferenceException:
             continue
-    time.sleep(3)
+    # time.sleep(3)
     # Click on Employee dropdown
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="filter-form"]/div/div[1]/div/div/button')))
     driver.find_element(By.XPATH, '//*[@id="filter-form"]/div/div[1]/div/div/button').click()
     EmployeeSrch = driver.find_element(By.XPATH, '//*[@id="filter-form"]/div/div[1]/div/div/div/div[1]/input')
     # Search for valid option
@@ -121,7 +129,8 @@ def test_VerifyClockinAndAttendance(driver, selenium):
     # Click on the active <li> element
     if Active_a is not None:
         Active_a.click()
-    time.sleep(7)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="example"]/tbody/tr')))
+    time.sleep(10)
     # Get the Employee name
     EmployeeName = driver.find_element(By.XPATH, '//*[@id="example"]/tbody/tr/td[1]/div/div/h5/a').text
     # Verify the Employee name
@@ -136,7 +145,8 @@ def test_VerifyClockinAndAttendance(driver, selenium):
         if th.text == CurrentDay:
             a = td.find_element(By.TAG_NAME, 'a')
             a.click()
-    time.sleep(5)
+    # time.sleep(5)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="myModalXl"]/div/div/div[2]/div[2]/div[2]/div/div[2]/div')))
     ClockinUl = driver.find_element(By.XPATH, '//*[@id="myModalXl"]/div/div/div[2]/div[2]/div[2]/div/div[2]/div')
     ClockinLis = ClockinUl.find_elements(By.TAG_NAME, 'li')
     size = sys.getsizeof(ClockinLis)
@@ -189,10 +199,12 @@ def test_ClockOut(driver):
                         print("You do not have access to Private Dashboard Page.")
         except StaleElementReferenceException:
             continue
-    time.sleep(5)
+    # time.sleep(5)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="clock-out"]')))
     # Click on Clock out
     driver.find_element(By.XPATH, '//*[@id="clock-out"]').click()
-    time.sleep(5)
+    # time.sleep(5)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="clock-in"]')))
     # Verify the Clock out
     ClockIn = driver.find_element(By.XPATH, '//*[@id="clock-in"]')
     if ClockIn.is_enabled():

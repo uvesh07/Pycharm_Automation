@@ -1,14 +1,9 @@
 import pytest
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException
-from datetime import datetime
 import time
 from datetime import date, timedelta
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.support.select import Select
-from selenium import webdriver
 from selenium.webdriver.support.ui import Select
-import sys
 
 
 # Global variables used for different methods POC-QA-Automation
@@ -70,8 +65,6 @@ def test_Login(driver):
 
 @pytest.mark.order(2)
 def test_AddBlankHomework(driver, nvar):
-    ValidAddfile = "/home/addweb/PycharmProjects/Ticktalk leads automation/Images/bg color.jpeg"
-    # time.sleep(4)
     Title, Message, SelSub, SelClass, Date, SelFile, Save = nvar
     driver.execute_script("arguments[0].scrollIntoView(true);", Save)
     Save.click()
@@ -102,8 +95,6 @@ def test_AddBlankHomework(driver, nvar):
 @pytest.mark.order(3)
 def test_AddHomework(driver, nvar):
     ValidAddfile = "/home/addweb/PycharmProjects/Ticktalk leads automation/Images/bg color.jpeg"
-    # Click on Add work
-    # driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/section[2]/div/div/div[1]/div[1]/div/a').click()
     time.sleep(4)
     Title, Message, SelSub, SelClass, Date, SelFile, Save = nvar
     # Enter Title

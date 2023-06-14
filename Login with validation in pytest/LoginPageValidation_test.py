@@ -2,6 +2,9 @@ import time
 import pytest
 from selenium.common import NoSuchElementException, StaleElementReferenceException
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 
 # Global variables used for different methods
 ValidEmail = "uvesh@addwebsolution.in"
@@ -17,19 +20,22 @@ def test_Variable_test(driver):
     Email = driver.find_element(By.XPATH, '//*[@id="email"]')
     Password = driver.find_element(By.XPATH, '//*[@id="password"]')
     Login = driver.find_element(By.XPATH, '//*[@id="submit-login"]')
-    return Email, Password, Login
+    wait = WebDriverWait(driver, 30)
+    return Email, Password, Login, wait
 
 
 @pytest.mark.order(1)
-def test_LoginPage(driver, selenium):
+def test_LoginPage(driver, var):
+    Email, Password, Login, wait = var
     assert driver.title == "AddWeb Solution"
     print("Successfully reached at Login page")
-    time.sleep(3)
+    # time.sleep(3)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="email"]')))
 
 
 @pytest.mark.order(2)
 def test_ValidateTextboxButton(driver, var):
-    Email, Password, Login = var
+    Email, Password, Login, wait = var
 
     assert Email.is_enabled()
     print("The Email textbox is Enabled.")
@@ -41,13 +47,14 @@ def test_ValidateTextboxButton(driver, var):
 
 @pytest.mark.order(3)
 def test_EnterBlankCreadential(driver, var):
-    Email, Password, Login = var
+    Email, Password, Login, wait = var
     global BlankEmail
     global BlankPass
     Email.send_keys(BlankEmail)
     Password.send_keys(BlankPass)
     Login.click()
-    time.sleep(3)
+    # time.sleep(3)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="login-form"]/section/div/div/div/div/div[1]/div')))
     EmailMsg = driver.find_element(By.XPATH, '//*[@id="login-form"]/section/div/div/div/div/div[1]/div')
     PassMsg = driver.find_element(By.XPATH, '//*[@id="password-section"]/div[1]/div')
     if EmailMsg.text == "The Email field is required.":
@@ -58,13 +65,14 @@ def test_EnterBlankCreadential(driver, var):
 
 @pytest.mark.order(4)
 def test_EnterInValidEmail(driver, var):
-    Email, Password, Login = var
+    Email, Password, Login, wait = var
     global InvalidEmail
     global ValidPass
     Email.send_keys(InvalidEmail)
     Password.send_keys(ValidPass)
     Login.click()
-    time.sleep(3)
+    # time.sleep(3)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="login-form"]/section/div/div/div/div/div[1]/div')))
     EmailMsg = driver.find_element(By.XPATH, '//*[@id="login-form"]/section/div/div/div/div/div[1]/div')
     if EmailMsg.text == "The Email must be a valid Email address.,The Email format is invalid.":
         print('"The Email must be a valid Email address.,The Email format is invalid." Message displayed successfully.')
@@ -72,7 +80,7 @@ def test_EnterInValidEmail(driver, var):
 
 @pytest.mark.order(5)
 def test_EnterInvalidPass(driver, var):
-    Email, Password, Login = var
+    Email, Password, Login, wait = var
     global ValidEmail
     global InvalidPass
     Email.clear()
@@ -80,7 +88,8 @@ def test_EnterInvalidPass(driver, var):
     Email.send_keys(ValidEmail)
     Password.send_keys(InvalidPass)
     Login.click()
-    time.sleep(3)
+    # time.sleep(3)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="login-form"]/section/div/div/div/div/div[1]/div')))
     EmailMsg = driver.find_element(By.XPATH, '//*[@id="login-form"]/section/div/div/div/div/div[1]/div')
     if EmailMsg.text == "These credentials do not match our records.":
         print('"These credentials do not match our records." Message displayed successfully.')
@@ -88,7 +97,7 @@ def test_EnterInvalidPass(driver, var):
 
 @pytest.mark.order(6)
 def test_EnterValidCreadential(driver, var):
-    Email, Password, Login = var
+    Email, Password, Login, wait = var
     global ValidEmail
     global ValidPass
     Email.clear()
@@ -97,7 +106,7 @@ def test_EnterValidCreadential(driver, var):
     Password.send_keys(ValidPass)
     Login.click()
     time.sleep(5)
-
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="sideMenuScroll"]/ul')))
     Ul = driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul')
     lis = Ul.find_elements(By.TAG_NAME, 'li')
     i = 0

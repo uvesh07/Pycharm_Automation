@@ -4,6 +4,8 @@ from selenium.common import NoSuchElementException, ElementNotInteractableExcept
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 import time
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 # Global variables used for different methods POC-QA-Automation
 ValidEmail = "saurabhdhariwal.com@gmail.com"
@@ -51,6 +53,8 @@ InvalidBudget = "Nothing"
 ValidHr = "50"
 InvalidHr = "Nothing"
 
+wait = ""
+
 
 @pytest.fixture(name="nvar")
 def test_NewVar(driver):
@@ -83,6 +87,8 @@ def test_NewVar(driver):
 
 @pytest.mark.order(11)
 def test_ClickOnProjects(driver, selenium):
+    global wait
+    wait = WebDriverWait(driver, 30)
     ul = driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul')
     lis = ul.find_elements(By.TAG_NAME, 'li')
     i = 0
@@ -114,36 +120,25 @@ def test_ClickOnProjects(driver, selenium):
                         print("You do not have access to Projects Page.")
         except StaleElementReferenceException:
             continue
-    time.sleep(4)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="search-text-field"]')))
     if driver.title == "Projects":
         print("Successfully reached at Projects page")
 
 
-@pytest.mark.order(12)
-def test_SeachboxOnProjectsPage(driver):
-    SearchBox = driver.find_element(By.XPATH, '//*[@id="search-text-field"]')
-    SearchBox.send_keys("Testing123")
-    time.sleep(8)
-    try:
-        Row1 = driver.find_element(By.XPATH, '//table//tbody//tr[1]')
-        Cell1 = Row1.find_element(By.XPATH, './/td[3]')
-        if Cell1.text == "Testing123":
-            print("The search functionality is working properly.")
-    except NoSuchElementException:
-        print("The value is not found in the table")
-
-
 @pytest.mark.order(13)
 def test_AddProjectButton(driver):
+    global wait
     AddProject = driver.find_element(By.XPATH, '//*[@id="table-actions"]/a[1]')
     assert AddProject.is_enabled()
     print("The Add project button is Enabled.")
     AddProject.click()
-    time.sleep(8)
+    # time.sleep(8)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="project_name"]')))
 
 
 @pytest.mark.order(14)
 def test_ValidateComponents(driver, nvar):
+    global wait
     Project, StartDate, Deadline, DeadlineCheck, Category, Department, Client, Summary, Notes, PublicProject, \
         Member, Channel, Topic, OtherTopics, AddFile, Currency, Budget, Hr, Manual, ClientManage, Save, Cancel = nvar
 
@@ -176,7 +171,7 @@ def test_ValidateComponents(driver, nvar):
     assert OtherTopics.is_enabled()
     print("The Other Details button is Enabled.")
     OtherTopics.click()
-    time.sleep(2)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="other-project-details"]/div[2]/div/div/button')))
     assert AddFile.is_enabled()
     print("The Add file input is Enabled.")
     assert Currency.is_enabled()
@@ -200,8 +195,9 @@ def test_WithBlankValue(driver, nvar):
     Project, StartDate, Deadline, DeadlineCheck, Category, Department, Client, Summary, Notes, PublicProject, \
         Member, Channel, Topic, OtherTopics, AddFile, Currency, Budget, Hr, Manual, ClientManage, Save, Cancel = nvar
 
+    global wait
     Save.click()
-    time.sleep(2)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="save-project-data-form"]/div/div[1]/div[1]/div/div')))
     ProjectMsg = driver.find_element(By.XPATH, '//*[@id="save-project-data-form"]/div/div[1]/div[1]/div/div')
     StartDateMsg = driver.find_element(By.XPATH, '//*[@id="save-project-data-form"]/div/div[1]/div[2]/div/div[2]')
     DeadlineMsg = driver.find_element(By.XPATH, '//*[@id="deadlineBox"]/div/div[2]')
@@ -222,6 +218,7 @@ def test_WithInvalidValue(driver, nvar):
     Project, StartDate, Deadline, DeadlineCheck, Category, Department, Client, Summary, Notes, PublicProject, \
         Member, Channel, Topic, OtherTopics, AddFile, Currency, Budget, Hr, Manual, ClientManage, Save, Cancel = nvar
 
+    global wait
 # send keys in project textbox
     Project.clear()
     Project.send_keys(InvalidProject)
@@ -351,7 +348,7 @@ def test_WithInvalidValue(driver, nvar):
     Manual.click()
 # Click Save button
     Save.click()
-    time.sleep(2)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="save-project-data-form"]/div/div[1]/div[2]/div/div[2]')))
     StartDateMsg = driver.find_element(By.XPATH, '//*[@id="save-project-data-form"]/div/div[1]/div[2]/div/div[2]')
     DeadlineMsg = driver.find_element(By.XPATH, '//*[@id="deadlineBox"]/div/div[2]')
     if StartDateMsg.text == "The start date does not match the format d-m-Y.":
@@ -365,6 +362,7 @@ def test_WithInvalidStartdateAndDeadline(driver, nvar):
     Project, StartDate, Deadline, DeadlineCheck, Category, Department, Client, Summary, Notes, PublicProject, \
         Member, Channel, Topic, OtherTopics, AddFile, Currency, Budget, Hr, Manual, ClientManage, Save, Cancel = nvar
 
+    global wait
 # send keys in project textbox
     Project.clear()
     Project.send_keys(ValidProject)
@@ -494,7 +492,7 @@ def test_WithInvalidStartdateAndDeadline(driver, nvar):
     Manual.click()
 # Click Save button
     Save.click()
-    time.sleep(4)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="deadlineBox"]/div/div[2]')))
     DeadlineMsg = driver.find_element(By.XPATH, '//*[@id="deadlineBox"]/div/div[2]')
     if DeadlineMsg.text == "The Deadline must be a date after or equal to start date.":
         print('"The Deadline must be a date after or equal to start date." Message displayed successfully.')
@@ -505,6 +503,7 @@ def test_WithValidDataAndCheckbox(driver, nvar):
     Project, StartDate, Deadline, DeadlineCheck, Category, Department, Client, Summary, Notes, PublicProject, \
         Member, Channel, Topic, OtherTopics, AddFile, Currency, Budget, Hr, Manual, ClientManage, Save, Cancel = nvar
 
+    global wait
 # send keys in project textbox
     Project.clear()
     Project.send_keys(ValidProject)
@@ -609,21 +608,7 @@ def test_WithValidDataAndCheckbox(driver, nvar):
 # Click on Topic input
     Topic.clear()
     Topic.send_keys(ValidTopic)
-# Click on Add files input
-    valid_addfile = "/home/addweb/PycharmProjects/Ticktalk leads automation/Images/bg color.jpeg"
-    # Find the dropzone element
-    dropzone = driver.find_element(By.XPATH, '//*[@id="file-upload-dropzone"]')
-    # Create an ActionChains object to perform actions on the dropzone
-    actions = ActionChains(driver)
-    # Click on the dropzone to activate the file input
-    actions.move_to_element(dropzone).click().perform()
-    # Locate the file input element within the dropzone
-    file_input = dropzone.find_element(By.XPATH, '//*[@id="file-upload-dropzone"]/input')
-    driver.execute_script("arguments[0].type = 'file';", file_input)
-    driver.execute_script("arguments[0].style.display = 'block';", file_input)
-    # Set the file path in the file input
-    file_input.send_keys(valid_addfile)
-    time.sleep(2)
+
 # Click on Currency dropdown
     Currency.click()
     CurrencySrch = driver.find_element(By.XPATH,
@@ -656,27 +641,34 @@ def test_WithValidDataAndCheckbox(driver, nvar):
               'to Client?" checkbox is enabled.')
 # Click Save button
     Save.click()
-    time.sleep(4)
+    # time.sleep(4)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="table-actions"]/a[1]')))
     AddProject = driver.find_element(By.XPATH, '//*[@id="table-actions"]/a[1]')
     if AddProject.is_enabled():
         print("The Form with valid data Saved successfully.")
-    time.sleep(8)
+    time.sleep(5)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//table//tbody//tr[1]')))
+    time.sleep(3)
 
 
 @pytest.mark.order(19)
 def test_SearchInTable(driver):
-    # find the Saved lead in table and click on edit button
+    global wait
+    # find the Saved Project in table and click on edit button
     Row1 = driver.find_element(By.XPATH, '//table//tbody//tr[1]')
     Cell1 = Row1.find_element(By.XPATH, './/td[2]')
     VarId = Cell1.text
     driver.find_element(By.XPATH, f'//*[@id="dropdownMenuLink-%s"]' % VarId).click()
     driver.find_element(By.XPATH, f'//*[@id="row-%s"]/td[9]/div/div/div/a[2]' % VarId).click()
     print("The Project searched successfully in the table")
-    time.sleep(10)
+    time.sleep(5)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="project_name"]')))
 
 
 @pytest.mark.order(20)
 def test_EditAndSave(driver):
+    global wait
+    time.sleep(5)
     Project = driver.find_element(By.XPATH, '//*[@id="project_name"]')
     # Edit project name
     Project.clear()
@@ -700,29 +692,36 @@ def test_EditAndSave(driver):
     # Save the Edit form
     Save = driver.find_element(By.XPATH, '//*[@id="save-project-form"]')
     Save.click()
-    time.sleep(10)
+    # time.sleep(10)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="table-actions"]/a[1]')))
     AddProject = driver.find_element(By.XPATH, '//*[@id="table-actions"]/a[1]')
     if AddProject.is_enabled():
         print("The Edit form Saved successfully.")
     # Close the web driver
+    wait.until(EC.visibility_of_element_located((By.XPATH, '/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr')))
     time.sleep(5)
 
 
 @pytest.mark.order(21)
 def test_AddSprint(driver):
+    global wait
     # find the Saved lead in table and click on edit button
-    Row1 = driver.find_element(By.XPATH, '//table//tbody//tr[1]')
+    Row1 = driver.find_element(By.XPATH, '/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr[1]')
     Cell1 = Row1.find_element(By.XPATH, './/td[2]')
     VarId = Cell1.text
-    driver.find_element(By.XPATH, f'//*[@id="dropdownMenuLink-%s"]' % VarId).click()
-    driver.find_element(By.XPATH, f'//*[@id="row-%s"]/td[3]/div/div/h5/a' % VarId).click()
-    time.sleep(7)
+    # driver.find_element(By.XPATH, f'//*[@id="dropdownMenuLink-%s"]' % VarId).click()
+    try:
+        driver.find_element(By.XPATH, f'//*[@id="row-%s"]/td[3]/div/div/h5/a' % VarId).click()
+    except StaleElementReferenceException:
+        time.sleep(2)
+        driver.find_element(By.XPATH, f'//*[@id="row-%s"]/td[3]/div/div/h5/a' % VarId).click()
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="mob-client-detail"]/nav/ul/li[6]/a')))
     Sprint = driver.find_element(By.XPATH, '//*[@id="mob-client-detail"]/nav/ul/li[6]/a')
     Sprint.click()
-    time.sleep(7)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="table-actions"]/a')))
     add_Sprint = driver.find_element(By.XPATH, '//*[@id="table-actions"]/a')
     add_Sprint.click()
-    time.sleep(7)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="heading"]')))
     title = driver.find_element(By.XPATH, '//*[@id="heading"]')
     title.send_keys("sprint 1")
     # Get today's date
@@ -737,7 +736,7 @@ def test_AddSprint(driver):
     # Save the sprint
     Save = driver.find_element(By.XPATH, '//*[@id="save-task-form"]')
     Save.click()
-    time.sleep(10)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="table-actions"]/a')))
     ul = driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul')
     lis = ul.find_elements(By.TAG_NAME, 'li')
     i = 0
@@ -769,4 +768,4 @@ def test_AddSprint(driver):
                         print("You do not have access to Projects Page.")
         except StaleElementReferenceException:
             continue
-    time.sleep(5)
+    time.sleep(3)

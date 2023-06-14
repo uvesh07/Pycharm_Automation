@@ -253,7 +253,7 @@ function filterTable(elem) { // eslint-disable-line no-unused-vars
 }
 </script>
     <h1>Automation Report</h1>
-    <p>Report generated on 09-Jun-2023 at 18:52:35 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a> v3.2.0</p>
+    <p>Report generated on 14-Jun-2023 at 16:09:45 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a> v3.2.0</p>
     <h2>Environment</h2>
     <table id="environment">
       <tr>
@@ -278,8 +278,8 @@ function filterTable(elem) { // eslint-disable-line no-unused-vars
         <td>Python</td>
         <td>3.10.7</td></tr></table>
     <h2>Summary</h2>
-    <p>46 tests ran in 380.73 seconds. </p>
-    <p class="filter" hidden="true">(Un)check the boxes to filter the results.</p><input checked="true" class="filter" data-test-result="passed" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="passed">41 passed</span>, <input checked="true" class="filter" data-test-result="skipped" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="skipped">0 skipped</span>, <input checked="true" class="filter" data-test-result="failed" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="failed">5 failed</span>, <input checked="true" class="filter" data-test-result="error" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="error">0 errors</span>, <input checked="true" class="filter" data-test-result="xfailed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xfailed">0 expected failures</span>, <input checked="true" class="filter" data-test-result="xpassed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xpassed">0 unexpected passes</span>
+    <p>45 tests ran in 254.06 seconds. </p>
+    <p class="filter" hidden="true">(Un)check the boxes to filter the results.</p><input checked="true" class="filter" data-test-result="passed" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="passed">45 passed</span>, <input checked="true" class="filter" data-test-result="skipped" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="skipped">0 skipped</span>, <input checked="true" class="filter" data-test-result="failed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="failed">0 failed</span>, <input checked="true" class="filter" data-test-result="error" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="error">0 errors</span>, <input checked="true" class="filter" data-test-result="xfailed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xfailed">0 expected failures</span>, <input checked="true" class="filter" data-test-result="xpassed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xpassed">0 unexpected passes</span>
     <h2>Results</h2>
     <table id="results-table">
       <thead id="results-table-head">
@@ -290,57 +290,11 @@ function filterTable(elem) { // eslint-disable-line no-unused-vars
           <th class="sortable links" col="links">Links</th></tr>
         <tr hidden="true" id="not-found-message">
           <th colspan="4">No results found. Try to check the filters</th></tr></thead>
-      <tbody class="failed results-table-row">
-        <tr>
-          <td class="col-result">Failed</td>
-          <td class="col-name">Login with validation in pytest/LoginPageValidation_test.py::test_EnterBlankCreadential</td>
-          <td class="col-duration">3.25</td>
-          <td class="col-links"></td></tr>
-        <tr>
-          <td class="extra" colspan="4">
-            <div class="log">driver = &lt;selenium.webdriver.chrome.webdriver.WebDriver (session=&quot;1990b394f69d03a2fb92e652ab141f72&quot;)&gt;<br/>var = (&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;1990b394f69d03a2fb92e652ab141f72&quot;, element=&quot;0131c4ae-a884-...te.webelement.WebElement (session=&quot;1990b394f69d03a2fb92e652ab141f72&quot;, element=&quot;b09e8281-b064-4a14-8278-04a5021cf68e&quot;)&gt;)<br/><br/>    @pytest.mark.order(3)<br/>    def test_EnterBlankCreadential(driver, var):<br/>        Email, Password, Login = var<br/>        global BlankEmail<br/>        global BlankPass<br/>        Email.send_keys(BlankEmail)<br/>        Password.send_keys(BlankPass)<br/>        Login.click()<br/>        time.sleep(3)<br/>&gt;       EmailMsg = driver.find_element(By.XPATH, &#x27;//*[@id=&quot;login-form&quot;]/section/div/div/div/div/div[1]/div&#x27;)<br/><br/>LoginPageValidation_test.py:51: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/>../../../.local/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py:831: in find_element<br/>    return self.execute(Command.FIND_ELEMENT, {&quot;using&quot;: by, &quot;value&quot;: value})[&quot;value&quot;]<br/>../../../.local/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py:440: in execute<br/>    self.error_handler.check_response(response)<br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>self = &lt;selenium.webdriver.remote.errorhandler.ErrorHandler object at 0x7fe95531e320&gt;<br/>response = {&#x27;status&#x27;: 404, &#x27;value&#x27;: &#x27;{&quot;value&quot;:{&quot;error&quot;:&quot;no such element&quot;,&quot;message&quot;:&quot;no such element: Unable to locate element: {\...\\n#16 0x55de90c1a2c7 \\u003Cunknown&gt;\\n#17 0x55de90c28093 \\u003Cunknown&gt;\\n#18 0x7fd91fe90402 \\u003Cunknown&gt;\\n&quot;}}&#x27;}<br/><br/>    def check_response(self, response: Dict[str, Any]) -&gt; None:<br/>        &quot;&quot;&quot;Checks that a JSON response from the WebDriver does not have an<br/>        error.<br/>    <br/>        :Args:<br/>         - response - The JSON response from the WebDriver server as a dictionary<br/>           object.<br/>    <br/>        :Raises: If the response contains an error message.<br/>        &quot;&quot;&quot;<br/>        status = response.get(&quot;status&quot;, None)<br/>        if not status or status == ErrorCode.SUCCESS:<br/>            return<br/>        value = None<br/>        message = response.get(&quot;message&quot;, &quot;&quot;)<br/>        screen: str = response.get(&quot;screen&quot;, &quot;&quot;)<br/>        stacktrace = None<br/>        if isinstance(status, int):<br/>            value_json = response.get(&quot;value&quot;, None)<br/>            if value_json and isinstance(value_json, str):<br/>                import json<br/>    <br/>                try:<br/>                    value = json.loads(value_json)<br/>                    if len(value) == 1:<br/>                        value = value[&quot;value&quot;]<br/>                    status = value.get(&quot;error&quot;, None)<br/>                    if not status:<br/>                        status = value.get(&quot;status&quot;, ErrorCode.UNKNOWN_ERROR)<br/>                        message = value.get(&quot;value&quot;) or value.get(&quot;message&quot;)<br/>                        if not isinstance(message, str):<br/>                            value = message<br/>                            message = message.get(&quot;message&quot;)<br/>                    else:<br/>                        message = value.get(&quot;message&quot;, None)<br/>                except ValueError:<br/>                    pass<br/>    <br/>        exception_class: Type[WebDriverException]<br/>        if status in ErrorCode.NO_SUCH_ELEMENT:<br/>            exception_class = NoSuchElementException<br/>        elif status in ErrorCode.NO_SUCH_FRAME:<br/>            exception_class = NoSuchFrameException<br/>        elif status in ErrorCode.NO_SUCH_SHADOW_ROOT:<br/>            exception_class = NoSuchShadowRootException<br/>        elif status in ErrorCode.NO_SUCH_WINDOW:<br/>            exception_class = NoSuchWindowException<br/>        elif status in ErrorCode.STALE_ELEMENT_REFERENCE:<br/>            exception_class = StaleElementReferenceException<br/>        elif status in ErrorCode.ELEMENT_NOT_VISIBLE:<br/>            exception_class = ElementNotVisibleException<br/>        elif status in ErrorCode.INVALID_ELEMENT_STATE:<br/>            exception_class = InvalidElementStateException<br/>        elif (<br/>            status in ErrorCode.INVALID_SELECTOR<br/>            or status in ErrorCode.INVALID_XPATH_SELECTOR<br/>            or status in ErrorCode.INVALID_XPATH_SELECTOR_RETURN_TYPER<br/>        ):<br/>            exception_class = InvalidSelectorException<br/>        elif status in ErrorCode.ELEMENT_IS_NOT_SELECTABLE:<br/>            exception_class = ElementNotSelectableException<br/>        elif status in ErrorCode.ELEMENT_NOT_INTERACTABLE:<br/>            exception_class = ElementNotInteractableException<br/>        elif status in ErrorCode.INVALID_COOKIE_DOMAIN:<br/>            exception_class = InvalidCookieDomainException<br/>        elif status in ErrorCode.UNABLE_TO_SET_COOKIE:<br/>            exception_class = UnableToSetCookieException<br/>        elif status in ErrorCode.TIMEOUT:<br/>            exception_class = TimeoutException<br/>        elif status in ErrorCode.SCRIPT_TIMEOUT:<br/>            exception_class = TimeoutException<br/>        elif status in ErrorCode.UNKNOWN_ERROR:<br/>            exception_class = WebDriverException<br/>        elif status in ErrorCode.UNEXPECTED_ALERT_OPEN:<br/>            exception_class = UnexpectedAlertPresentException<br/>        elif status in ErrorCode.NO_ALERT_OPEN:<br/>            exception_class = NoAlertPresentException<br/>        elif status in ErrorCode.IME_NOT_AVAILABLE:<br/>            exception_class = ImeNotAvailableException<br/>        elif status in ErrorCode.IME_ENGINE_ACTIVATION_FAILED:<br/>            exception_class = ImeActivationFailedException<br/>        elif status in ErrorCode.MOVE_TARGET_OUT_OF_BOUNDS:<br/>            exception_class = MoveTargetOutOfBoundsException<br/>        elif status in ErrorCode.JAVASCRIPT_ERROR:<br/>            exception_class = JavascriptException<br/>        elif status in ErrorCode.SESSION_NOT_CREATED:<br/>            exception_class = SessionNotCreatedException<br/>        elif status in ErrorCode.INVALID_ARGUMENT:<br/>            exception_class = InvalidArgumentException<br/>        elif status in ErrorCode.NO_SUCH_COOKIE:<br/>            exception_class = NoSuchCookieException<br/>        elif status in ErrorCode.UNABLE_TO_CAPTURE_SCREEN:<br/>            exception_class = ScreenshotException<br/>        elif status in ErrorCode.ELEMENT_CLICK_INTERCEPTED:<br/>            exception_class = ElementClickInterceptedException<br/>        elif status in ErrorCode.INSECURE_CERTIFICATE:<br/>            exception_class = InsecureCertificateException<br/>        elif status in ErrorCode.INVALID_COORDINATES:<br/>            exception_class = InvalidCoordinatesException<br/>        elif status in ErrorCode.INVALID_SESSION_ID:<br/>            exception_class = InvalidSessionIdException<br/>        elif status in ErrorCode.UNKNOWN_METHOD:<br/>            exception_class = UnknownMethodException<br/>        else:<br/>            exception_class = WebDriverException<br/>        if not value:<br/>            value = response[&quot;value&quot;]<br/>        if isinstance(value, str):<br/>            raise exception_class(value)<br/>        if message == &quot;&quot; and &quot;message&quot; in value:<br/>            message = value[&quot;message&quot;]<br/>    <br/>        screen = None  # type: ignore[assignment]<br/>        if &quot;screen&quot; in value:<br/>            screen = value[&quot;screen&quot;]<br/>    <br/>        stacktrace = None<br/>        st_value = value.get(&quot;stackTrace&quot;) or value.get(&quot;stacktrace&quot;)<br/>        if st_value:<br/>            if isinstance(st_value, str):<br/>                stacktrace = st_value.split(&quot;\n&quot;)<br/>            else:<br/>                stacktrace = []<br/>                try:<br/>                    for frame in st_value:<br/>                        line = frame.get(&quot;lineNumber&quot;, &quot;&quot;)<br/>                        file = frame.get(&quot;fileName&quot;, &quot;&lt;anonymous&gt;&quot;)<br/>                        if line:<br/>                            file = f&quot;{file}:{line}&quot;<br/>                        meth = frame.get(&quot;methodName&quot;, &quot;&lt;anonymous&gt;&quot;)<br/>                        if &quot;className&quot; in frame:<br/>                            meth = f&quot;{frame[&#x27;className&#x27;]}.{meth}&quot;<br/>                        msg = &quot;    at %s (%s)&quot;<br/>                        msg = msg % (meth, file)<br/>                        stacktrace.append(msg)<br/>                except TypeError:<br/>                    pass<br/>        if exception_class == UnexpectedAlertPresentException:<br/>            alert_text = None<br/>            if &quot;data&quot; in value:<br/>                alert_text = value[&quot;data&quot;].get(&quot;text&quot;)<br/>            elif &quot;alert&quot; in value:<br/>                alert_text = value[&quot;alert&quot;].get(&quot;text&quot;)<br/>            raise exception_class(message, screen, stacktrace, alert_text)  # type: ignore[call-arg]  # mypy is not smart enough here<br/>&gt;       raise exception_class(message, screen, stacktrace)<br/><span class="error">E       selenium.common.exceptions.NoSuchElementException: Message: no such element: Unable to locate element: {&quot;method&quot;:&quot;xpath&quot;,&quot;selector&quot;:&quot;//*[@id=&quot;login-form&quot;]/section/div/div/div/div/div[1]/div&quot;}</span><br/><span class="error">E         (Session info: chrome=112.0.5615.121)</span><br/><span class="error">E       Stacktrace:</span><br/><span class="error">E       #0 0x55de90c2ffe3 &lt;unknown&gt;</span><br/><span class="error">E       #1 0x55de9096ed36 &lt;unknown&gt;</span><br/><span class="error">E       #2 0x55de909abc4d &lt;unknown&gt;</span><br/><span class="error">E       #3 0x55de909abd61 &lt;unknown&gt;</span><br/><span class="error">E       #4 0x55de909e76a4 &lt;unknown&gt;</span><br/><span class="error">E       #5 0x55de909cc8ed &lt;unknown&gt;</span><br/><span class="error">E       #6 0x55de909e5232 &lt;unknown&gt;</span><br/><span class="error">E       #7 0x55de909cc693 &lt;unknown&gt;</span><br/><span class="error">E       #8 0x55de9099f03a &lt;unknown&gt;</span><br/><span class="error">E       #9 0x55de909a017e &lt;unknown&gt;</span><br/><span class="error">E       #10 0x55de90bf1dbd &lt;unknown&gt;</span><br/><span class="error">E       #11 0x55de90bf5c6c &lt;unknown&gt;</span><br/><span class="error">E       #12 0x55de90bff4b0 &lt;unknown&gt;</span><br/><span class="error">E       #13 0x55de90bf6d63 &lt;unknown&gt;</span><br/><span class="error">E       #14 0x55de90bc9c35 &lt;unknown&gt;</span><br/><span class="error">E       #15 0x55de90c1a138 &lt;unknown&gt;</span><br/><span class="error">E       #16 0x55de90c1a2c7 &lt;unknown&gt;</span><br/><span class="error">E       #17 0x55de90c28093 &lt;unknown&gt;</span><br/><span class="error">E       #18 0x7fd91fe90402 &lt;unknown&gt;</span><br/><br/>../../../.local/lib/python3.10/site-packages/selenium/webdriver/remote/errorhandler.py:245: NoSuchElementException<br/></div></td></tr></tbody>
-      <tbody class="failed results-table-row">
-        <tr>
-          <td class="col-result">Failed</td>
-          <td class="col-name">Login with validation in pytest/LoginPageValidation_test.py::test_EnterInValidEmail</td>
-          <td class="col-duration">1.22</td>
-          <td class="col-links"></td></tr>
-        <tr>
-          <td class="extra" colspan="4">
-            <div class="log">driver = &lt;selenium.webdriver.chrome.webdriver.WebDriver (session=&quot;1990b394f69d03a2fb92e652ab141f72&quot;)&gt;<br/>var = (&lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;1990b394f69d03a2fb92e652ab141f72&quot;, element=&quot;0131c4ae-a884-...te.webelement.WebElement (session=&quot;1990b394f69d03a2fb92e652ab141f72&quot;, element=&quot;b09e8281-b064-4a14-8278-04a5021cf68e&quot;)&gt;)<br/><br/>    @pytest.mark.order(4)<br/>    def test_EnterInValidEmail(driver, var):<br/>        Email, Password, Login = var<br/>        global InvalidEmail<br/>        global ValidPass<br/>        Email.send_keys(InvalidEmail)<br/>        Password.send_keys(ValidPass)<br/>&gt;       Login.click()<br/><br/>LoginPageValidation_test.py:66: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/>../../../.local/lib/python3.10/site-packages/selenium/webdriver/remote/webelement.py:95: in click<br/>    self._execute(Command.CLICK_ELEMENT)<br/>../../../.local/lib/python3.10/site-packages/selenium/webdriver/remote/webelement.py:405: in _execute<br/>    return self._parent.execute(command, params)<br/>../../../.local/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py:440: in execute<br/>    self.error_handler.check_response(response)<br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>self = &lt;selenium.webdriver.remote.errorhandler.ErrorHandler object at 0x7fe95531e320&gt;<br/>response = {&#x27;status&#x27;: 400, &#x27;value&#x27;: &#x27;{&quot;value&quot;:{&quot;error&quot;:&quot;element click intercepted&quot;,&quot;message&quot;:&quot;element click intercepted: Element ...\\n#20 0x55de90c1a2c7 \\u003Cunknown&gt;\\n#21 0x55de90c28093 \\u003Cunknown&gt;\\n#22 0x7fd91fe90402 \\u003Cunknown&gt;\\n&quot;}}&#x27;}<br/><br/>    def check_response(self, response: Dict[str, Any]) -&gt; None:<br/>        &quot;&quot;&quot;Checks that a JSON response from the WebDriver does not have an<br/>        error.<br/>    <br/>        :Args:<br/>         - response - The JSON response from the WebDriver server as a dictionary<br/>           object.<br/>    <br/>        :Raises: If the response contains an error message.<br/>        &quot;&quot;&quot;<br/>        status = response.get(&quot;status&quot;, None)<br/>        if not status or status == ErrorCode.SUCCESS:<br/>            return<br/>        value = None<br/>        message = response.get(&quot;message&quot;, &quot;&quot;)<br/>        screen: str = response.get(&quot;screen&quot;, &quot;&quot;)<br/>        stacktrace = None<br/>        if isinstance(status, int):<br/>            value_json = response.get(&quot;value&quot;, None)<br/>            if value_json and isinstance(value_json, str):<br/>                import json<br/>    <br/>                try:<br/>                    value = json.loads(value_json)<br/>                    if len(value) == 1:<br/>                        value = value[&quot;value&quot;]<br/>                    status = value.get(&quot;error&quot;, None)<br/>                    if not status:<br/>                        status = value.get(&quot;status&quot;, ErrorCode.UNKNOWN_ERROR)<br/>                        message = value.get(&quot;value&quot;) or value.get(&quot;message&quot;)<br/>                        if not isinstance(message, str):<br/>                            value = message<br/>                            message = message.get(&quot;message&quot;)<br/>                    else:<br/>                        message = value.get(&quot;message&quot;, None)<br/>                except ValueError:<br/>                    pass<br/>    <br/>        exception_class: Type[WebDriverException]<br/>        if status in ErrorCode.NO_SUCH_ELEMENT:<br/>            exception_class = NoSuchElementException<br/>        elif status in ErrorCode.NO_SUCH_FRAME:<br/>            exception_class = NoSuchFrameException<br/>        elif status in ErrorCode.NO_SUCH_SHADOW_ROOT:<br/>            exception_class = NoSuchShadowRootException<br/>        elif status in ErrorCode.NO_SUCH_WINDOW:<br/>            exception_class = NoSuchWindowException<br/>        elif status in ErrorCode.STALE_ELEMENT_REFERENCE:<br/>            exception_class = StaleElementReferenceException<br/>        elif status in ErrorCode.ELEMENT_NOT_VISIBLE:<br/>            exception_class = ElementNotVisibleException<br/>        elif status in ErrorCode.INVALID_ELEMENT_STATE:<br/>            exception_class = InvalidElementStateException<br/>        elif (<br/>            status in ErrorCode.INVALID_SELECTOR<br/>            or status in ErrorCode.INVALID_XPATH_SELECTOR<br/>            or status in ErrorCode.INVALID_XPATH_SELECTOR_RETURN_TYPER<br/>        ):<br/>            exception_class = InvalidSelectorException<br/>        elif status in ErrorCode.ELEMENT_IS_NOT_SELECTABLE:<br/>            exception_class = ElementNotSelectableException<br/>        elif status in ErrorCode.ELEMENT_NOT_INTERACTABLE:<br/>            exception_class = ElementNotInteractableException<br/>        elif status in ErrorCode.INVALID_COOKIE_DOMAIN:<br/>            exception_class = InvalidCookieDomainException<br/>        elif status in ErrorCode.UNABLE_TO_SET_COOKIE:<br/>            exception_class = UnableToSetCookieException<br/>        elif status in ErrorCode.TIMEOUT:<br/>            exception_class = TimeoutException<br/>        elif status in ErrorCode.SCRIPT_TIMEOUT:<br/>            exception_class = TimeoutException<br/>        elif status in ErrorCode.UNKNOWN_ERROR:<br/>            exception_class = WebDriverException<br/>        elif status in ErrorCode.UNEXPECTED_ALERT_OPEN:<br/>            exception_class = UnexpectedAlertPresentException<br/>        elif status in ErrorCode.NO_ALERT_OPEN:<br/>            exception_class = NoAlertPresentException<br/>        elif status in ErrorCode.IME_NOT_AVAILABLE:<br/>            exception_class = ImeNotAvailableException<br/>        elif status in ErrorCode.IME_ENGINE_ACTIVATION_FAILED:<br/>            exception_class = ImeActivationFailedException<br/>        elif status in ErrorCode.MOVE_TARGET_OUT_OF_BOUNDS:<br/>            exception_class = MoveTargetOutOfBoundsException<br/>        elif status in ErrorCode.JAVASCRIPT_ERROR:<br/>            exception_class = JavascriptException<br/>        elif status in ErrorCode.SESSION_NOT_CREATED:<br/>            exception_class = SessionNotCreatedException<br/>        elif status in ErrorCode.INVALID_ARGUMENT:<br/>            exception_class = InvalidArgumentException<br/>        elif status in ErrorCode.NO_SUCH_COOKIE:<br/>            exception_class = NoSuchCookieException<br/>        elif status in ErrorCode.UNABLE_TO_CAPTURE_SCREEN:<br/>            exception_class = ScreenshotException<br/>        elif status in ErrorCode.ELEMENT_CLICK_INTERCEPTED:<br/>            exception_class = ElementClickInterceptedException<br/>        elif status in ErrorCode.INSECURE_CERTIFICATE:<br/>            exception_class = InsecureCertificateException<br/>        elif status in ErrorCode.INVALID_COORDINATES:<br/>            exception_class = InvalidCoordinatesException<br/>        elif status in ErrorCode.INVALID_SESSION_ID:<br/>            exception_class = InvalidSessionIdException<br/>        elif status in ErrorCode.UNKNOWN_METHOD:<br/>            exception_class = UnknownMethodException<br/>        else:<br/>            exception_class = WebDriverException<br/>        if not value:<br/>            value = response[&quot;value&quot;]<br/>        if isinstance(value, str):<br/>            raise exception_class(value)<br/>        if message == &quot;&quot; and &quot;message&quot; in value:<br/>            message = value[&quot;message&quot;]<br/>    <br/>        screen = None  # type: ignore[assignment]<br/>        if &quot;screen&quot; in value:<br/>            screen = value[&quot;screen&quot;]<br/>    <br/>        stacktrace = None<br/>        st_value = value.get(&quot;stackTrace&quot;) or value.get(&quot;stacktrace&quot;)<br/>        if st_value:<br/>            if isinstance(st_value, str):<br/>                stacktrace = st_value.split(&quot;\n&quot;)<br/>            else:<br/>                stacktrace = []<br/>                try:<br/>                    for frame in st_value:<br/>                        line = frame.get(&quot;lineNumber&quot;, &quot;&quot;)<br/>                        file = frame.get(&quot;fileName&quot;, &quot;&lt;anonymous&gt;&quot;)<br/>                        if line:<br/>                            file = f&quot;{file}:{line}&quot;<br/>                        meth = frame.get(&quot;methodName&quot;, &quot;&lt;anonymous&gt;&quot;)<br/>                        if &quot;className&quot; in frame:<br/>                            meth = f&quot;{frame[&#x27;className&#x27;]}.{meth}&quot;<br/>                        msg = &quot;    at %s (%s)&quot;<br/>                        msg = msg % (meth, file)<br/>                        stacktrace.append(msg)<br/>                except TypeError:<br/>                    pass<br/>        if exception_class == UnexpectedAlertPresentException:<br/>            alert_text = None<br/>            if &quot;data&quot; in value:<br/>                alert_text = value[&quot;data&quot;].get(&quot;text&quot;)<br/>            elif &quot;alert&quot; in value:<br/>                alert_text = value[&quot;alert&quot;].get(&quot;text&quot;)<br/>            raise exception_class(message, screen, stacktrace, alert_text)  # type: ignore[call-arg]  # mypy is not smart enough here<br/>&gt;       raise exception_class(message, screen, stacktrace)<br/><span class="error">E       selenium.common.exceptions.ElementClickInterceptedException: Message: element click intercepted: Element &lt;button type=&quot;submit&quot; id=&quot;submit-login&quot; class=&quot;btn-primary f-w-500 rounded w-100 height-50 f-18&quot; data-prev-text=&quot;</span><br/><span class="error">E                                           Log In &lt;svg class=&amp;quot;svg-inline--fa fa-arrow-right fa-w-14 pl-1&amp;quot; aria-hidden=&amp;quot;true&amp;quot; focusable=&amp;quot;false&amp;quot; data-prefix=&amp;quot;fa&amp;quot; data-icon=&amp;quot;arrow-right&amp;quot; role=&amp;quot;img&amp;quot; xmlns=&amp;quot;http://www.w3.org/2000/svg&amp;quot; viewBox=&amp;quot;0 0 448 512&amp;quot; data-fa-i2svg=&amp;quot;&amp;quot;&gt;&lt;path fill=&amp;quot;currentColor&amp;quot; d=&amp;quot;M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z&amp;quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;!-- &lt;i class=&amp;quot;fa fa-arrow-right pl-1&amp;quot;&gt;&lt;/i&gt; Font Awesome fontawesome.com --&gt;</span><br/><span class="error">E                                       &quot;&gt;...&lt;/button&gt; is not clickable at point (765, 466). Other element would receive the click: &lt;div class=&quot;blockUI blockOverlay&quot; style=&quot;z-index: 999999; border: none; margin: 0px; padding: 0px; width: 100%; height: 100%; top: 0px; left: 0px; background-color: transparent; opacity: 0.0285225; cursor: default; position: absolute;&quot;&gt;&lt;/div&gt;</span><br/><span class="error">E         (Session info: chrome=112.0.5615.121)</span><br/><span class="error">E       Stacktrace:</span><br/><span class="error">E       #0 0x55de90c2ffe3 &lt;unknown&gt;</span><br/><span class="error">E       #1 0x55de9096ed36 &lt;unknown&gt;</span><br/><span class="error">E       #2 0x55de909b2aef &lt;unknown&gt;</span><br/><span class="error">E       #3 0x55de909b0a31 &lt;unknown&gt;</span><br/><span class="error">E       #4 0x55de909ae2de &lt;unknown&gt;</span><br/><span class="error">E       #5 0x55de909ad358 &lt;unknown&gt;</span><br/><span class="error">E       #6 0x55de909a10c5 &lt;unknown&gt;</span><br/><span class="error">E       #7 0x55de909cc8c2 &lt;unknown&gt;</span><br/><span class="error">E       #8 0x55de909a0943 &lt;unknown&gt;</span><br/><span class="error">E       #9 0x55de909cca8e &lt;unknown&gt;</span><br/><span class="error">E       #10 0x55de909e5232 &lt;unknown&gt;</span><br/><span class="error">E       #11 0x55de909cc693 &lt;unknown&gt;</span><br/><span class="error">E       #12 0x55de9099f03a &lt;unknown&gt;</span><br/><span class="error">E       #13 0x55de909a017e &lt;unknown&gt;</span><br/><span class="error">E       #14 0x55de90bf1dbd &lt;unknown&gt;</span><br/><span class="error">E       #15 0x55de90bf5c6c &lt;unknown&gt;</span><br/><span class="error">E       #16 0x55de90bff4b0 &lt;unknown&gt;</span><br/><span class="error">E       #17 0x55de90bf6d63 &lt;unknown&gt;</span><br/><span class="error">E       #18 0x55de90bc9c35 &lt;unknown&gt;</span><br/><span class="error">E       #19 0x55de90c1a138 &lt;unknown&gt;</span><br/><span class="error">E       #20 0x55de90c1a2c7 &lt;unknown&gt;</span><br/><span class="error">E       #21 0x55de90c28093 &lt;unknown&gt;</span><br/><span class="error">E       #22 0x7fd91fe90402 &lt;unknown&gt;</span><br/><br/>../../../.local/lib/python3.10/site-packages/selenium/webdriver/remote/errorhandler.py:245: ElementClickInterceptedException<br/></div></td></tr></tbody>
-      <tbody class="failed results-table-row">
-        <tr>
-          <td class="col-result">Failed</td>
-          <td class="col-name">Login with validation in pytest/ClockIn_test.py::test_VerifyClockinTimeAndGetUsername</td>
-          <td class="col-duration">0.02</td>
-          <td class="col-links"></td></tr>
-        <tr>
-          <td class="extra" colspan="4">
-            <div class="log">driver = &lt;selenium.webdriver.chrome.webdriver.WebDriver (session=&quot;1990b394f69d03a2fb92e652ab141f72&quot;)&gt;<br/>selenium = &lt;selenium.webdriver.chrome.webdriver.WebDriver (session=&quot;1990b394f69d03a2fb92e652ab141f72&quot;)&gt;<br/><br/>    @pytest.mark.order(8)<br/>    def test_VerifyClockinTimeAndGetUsername(driver, selenium):<br/>        global ClockinTime<br/>        global ExpectedClockinTime<br/>        global UserName<br/>        global CurrentDay<br/>    <br/>        # Get Current Date<br/>        CurrentDate = datetime.now()<br/>        CurrentDay = CurrentDate.strftime(&quot;%d&quot;)<br/>        CurrentDay = CurrentDay.lstrip(&quot;0&quot;)<br/>        print(&quot;The Current Day is &quot;, CurrentDay)<br/>    <br/>        # Get Clock-in time<br/>&gt;       Clockin_At = driver.find_element(By.XPATH, &#x27;//*[@id=&quot;fullscreen&quot;]/div[3]/div[1]/div[2]/p/span&#x27;).text<br/><br/>ClockIn_test.py:50: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/>../../../.local/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py:831: in find_element<br/>    return self.execute(Command.FIND_ELEMENT, {&quot;using&quot;: by, &quot;value&quot;: value})[&quot;value&quot;]<br/>../../../.local/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py:440: in execute<br/>    self.error_handler.check_response(response)<br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>self = &lt;selenium.webdriver.remote.errorhandler.ErrorHandler object at 0x7fe95531e320&gt;<br/>response = {&#x27;status&#x27;: 404, &#x27;value&#x27;: &#x27;{&quot;value&quot;:{&quot;error&quot;:&quot;no such element&quot;,&quot;message&quot;:&quot;no such element: Unable to locate element: {\...\\n#16 0x55de90c1a2c7 \\u003Cunknown&gt;\\n#17 0x55de90c28093 \\u003Cunknown&gt;\\n#18 0x7fd91fe90402 \\u003Cunknown&gt;\\n&quot;}}&#x27;}<br/><br/>    def check_response(self, response: Dict[str, Any]) -&gt; None:<br/>        &quot;&quot;&quot;Checks that a JSON response from the WebDriver does not have an<br/>        error.<br/>    <br/>        :Args:<br/>         - response - The JSON response from the WebDriver server as a dictionary<br/>           object.<br/>    <br/>        :Raises: If the response contains an error message.<br/>        &quot;&quot;&quot;<br/>        status = response.get(&quot;status&quot;, None)<br/>        if not status or status == ErrorCode.SUCCESS:<br/>            return<br/>        value = None<br/>        message = response.get(&quot;message&quot;, &quot;&quot;)<br/>        screen: str = response.get(&quot;screen&quot;, &quot;&quot;)<br/>        stacktrace = None<br/>        if isinstance(status, int):<br/>            value_json = response.get(&quot;value&quot;, None)<br/>            if value_json and isinstance(value_json, str):<br/>                import json<br/>    <br/>                try:<br/>                    value = json.loads(value_json)<br/>                    if len(value) == 1:<br/>                        value = value[&quot;value&quot;]<br/>                    status = value.get(&quot;error&quot;, None)<br/>                    if not status:<br/>                        status = value.get(&quot;status&quot;, ErrorCode.UNKNOWN_ERROR)<br/>                        message = value.get(&quot;value&quot;) or value.get(&quot;message&quot;)<br/>                        if not isinstance(message, str):<br/>                            value = message<br/>                            message = message.get(&quot;message&quot;)<br/>                    else:<br/>                        message = value.get(&quot;message&quot;, None)<br/>                except ValueError:<br/>                    pass<br/>    <br/>        exception_class: Type[WebDriverException]<br/>        if status in ErrorCode.NO_SUCH_ELEMENT:<br/>            exception_class = NoSuchElementException<br/>        elif status in ErrorCode.NO_SUCH_FRAME:<br/>            exception_class = NoSuchFrameException<br/>        elif status in ErrorCode.NO_SUCH_SHADOW_ROOT:<br/>            exception_class = NoSuchShadowRootException<br/>        elif status in ErrorCode.NO_SUCH_WINDOW:<br/>            exception_class = NoSuchWindowException<br/>        elif status in ErrorCode.STALE_ELEMENT_REFERENCE:<br/>            exception_class = StaleElementReferenceException<br/>        elif status in ErrorCode.ELEMENT_NOT_VISIBLE:<br/>            exception_class = ElementNotVisibleException<br/>        elif status in ErrorCode.INVALID_ELEMENT_STATE:<br/>            exception_class = InvalidElementStateException<br/>        elif (<br/>            status in ErrorCode.INVALID_SELECTOR<br/>            or status in ErrorCode.INVALID_XPATH_SELECTOR<br/>            or status in ErrorCode.INVALID_XPATH_SELECTOR_RETURN_TYPER<br/>        ):<br/>            exception_class = InvalidSelectorException<br/>        elif status in ErrorCode.ELEMENT_IS_NOT_SELECTABLE:<br/>            exception_class = ElementNotSelectableException<br/>        elif status in ErrorCode.ELEMENT_NOT_INTERACTABLE:<br/>            exception_class = ElementNotInteractableException<br/>        elif status in ErrorCode.INVALID_COOKIE_DOMAIN:<br/>            exception_class = InvalidCookieDomainException<br/>        elif status in ErrorCode.UNABLE_TO_SET_COOKIE:<br/>            exception_class = UnableToSetCookieException<br/>        elif status in ErrorCode.TIMEOUT:<br/>            exception_class = TimeoutException<br/>        elif status in ErrorCode.SCRIPT_TIMEOUT:<br/>            exception_class = TimeoutException<br/>        elif status in ErrorCode.UNKNOWN_ERROR:<br/>            exception_class = WebDriverException<br/>        elif status in ErrorCode.UNEXPECTED_ALERT_OPEN:<br/>            exception_class = UnexpectedAlertPresentException<br/>        elif status in ErrorCode.NO_ALERT_OPEN:<br/>            exception_class = NoAlertPresentException<br/>        elif status in ErrorCode.IME_NOT_AVAILABLE:<br/>            exception_class = ImeNotAvailableException<br/>        elif status in ErrorCode.IME_ENGINE_ACTIVATION_FAILED:<br/>            exception_class = ImeActivationFailedException<br/>        elif status in ErrorCode.MOVE_TARGET_OUT_OF_BOUNDS:<br/>            exception_class = MoveTargetOutOfBoundsException<br/>        elif status in ErrorCode.JAVASCRIPT_ERROR:<br/>            exception_class = JavascriptException<br/>        elif status in ErrorCode.SESSION_NOT_CREATED:<br/>            exception_class = SessionNotCreatedException<br/>        elif status in ErrorCode.INVALID_ARGUMENT:<br/>            exception_class = InvalidArgumentException<br/>        elif status in ErrorCode.NO_SUCH_COOKIE:<br/>            exception_class = NoSuchCookieException<br/>        elif status in ErrorCode.UNABLE_TO_CAPTURE_SCREEN:<br/>            exception_class = ScreenshotException<br/>        elif status in ErrorCode.ELEMENT_CLICK_INTERCEPTED:<br/>            exception_class = ElementClickInterceptedException<br/>        elif status in ErrorCode.INSECURE_CERTIFICATE:<br/>            exception_class = InsecureCertificateException<br/>        elif status in ErrorCode.INVALID_COORDINATES:<br/>            exception_class = InvalidCoordinatesException<br/>        elif status in ErrorCode.INVALID_SESSION_ID:<br/>            exception_class = InvalidSessionIdException<br/>        elif status in ErrorCode.UNKNOWN_METHOD:<br/>            exception_class = UnknownMethodException<br/>        else:<br/>            exception_class = WebDriverException<br/>        if not value:<br/>            value = response[&quot;value&quot;]<br/>        if isinstance(value, str):<br/>            raise exception_class(value)<br/>        if message == &quot;&quot; and &quot;message&quot; in value:<br/>            message = value[&quot;message&quot;]<br/>    <br/>        screen = None  # type: ignore[assignment]<br/>        if &quot;screen&quot; in value:<br/>            screen = value[&quot;screen&quot;]<br/>    <br/>        stacktrace = None<br/>        st_value = value.get(&quot;stackTrace&quot;) or value.get(&quot;stacktrace&quot;)<br/>        if st_value:<br/>            if isinstance(st_value, str):<br/>                stacktrace = st_value.split(&quot;\n&quot;)<br/>            else:<br/>                stacktrace = []<br/>                try:<br/>                    for frame in st_value:<br/>                        line = frame.get(&quot;lineNumber&quot;, &quot;&quot;)<br/>                        file = frame.get(&quot;fileName&quot;, &quot;&lt;anonymous&gt;&quot;)<br/>                        if line:<br/>                            file = f&quot;{file}:{line}&quot;<br/>                        meth = frame.get(&quot;methodName&quot;, &quot;&lt;anonymous&gt;&quot;)<br/>                        if &quot;className&quot; in frame:<br/>                            meth = f&quot;{frame[&#x27;className&#x27;]}.{meth}&quot;<br/>                        msg = &quot;    at %s (%s)&quot;<br/>                        msg = msg % (meth, file)<br/>                        stacktrace.append(msg)<br/>                except TypeError:<br/>                    pass<br/>        if exception_class == UnexpectedAlertPresentException:<br/>            alert_text = None<br/>            if &quot;data&quot; in value:<br/>                alert_text = value[&quot;data&quot;].get(&quot;text&quot;)<br/>            elif &quot;alert&quot; in value:<br/>                alert_text = value[&quot;alert&quot;].get(&quot;text&quot;)<br/>            raise exception_class(message, screen, stacktrace, alert_text)  # type: ignore[call-arg]  # mypy is not smart enough here<br/>&gt;       raise exception_class(message, screen, stacktrace)<br/><span class="error">E       selenium.common.exceptions.NoSuchElementException: Message: no such element: Unable to locate element: {&quot;method&quot;:&quot;xpath&quot;,&quot;selector&quot;:&quot;//*[@id=&quot;fullscreen&quot;]/div[3]/div[1]/div[2]/p/span&quot;}</span><br/><span class="error">E         (Session info: chrome=112.0.5615.121)</span><br/><span class="error">E       Stacktrace:</span><br/><span class="error">E       #0 0x55de90c2ffe3 &lt;unknown&gt;</span><br/><span class="error">E       #1 0x55de9096ed36 &lt;unknown&gt;</span><br/><span class="error">E       #2 0x55de909abc4d &lt;unknown&gt;</span><br/><span class="error">E       #3 0x55de909abd61 &lt;unknown&gt;</span><br/><span class="error">E       #4 0x55de909e76a4 &lt;unknown&gt;</span><br/><span class="error">E       #5 0x55de909cc8ed &lt;unknown&gt;</span><br/><span class="error">E       #6 0x55de909e5232 &lt;unknown&gt;</span><br/><span class="error">E       #7 0x55de909cc693 &lt;unknown&gt;</span><br/><span class="error">E       #8 0x55de9099f03a &lt;unknown&gt;</span><br/><span class="error">E       #9 0x55de909a017e &lt;unknown&gt;</span><br/><span class="error">E       #10 0x55de90bf1dbd &lt;unknown&gt;</span><br/><span class="error">E       #11 0x55de90bf5c6c &lt;unknown&gt;</span><br/><span class="error">E       #12 0x55de90bff4b0 &lt;unknown&gt;</span><br/><span class="error">E       #13 0x55de90bf6d63 &lt;unknown&gt;</span><br/><span class="error">E       #14 0x55de90bc9c35 &lt;unknown&gt;</span><br/><span class="error">E       #15 0x55de90c1a138 &lt;unknown&gt;</span><br/><span class="error">E       #16 0x55de90c1a2c7 &lt;unknown&gt;</span><br/><span class="error">E       #17 0x55de90c28093 &lt;unknown&gt;</span><br/><span class="error">E       #18 0x7fd91fe90402 &lt;unknown&gt;</span><br/><br/>../../../.local/lib/python3.10/site-packages/selenium/webdriver/remote/errorhandler.py:245: NoSuchElementException<br/> ------------------------------Captured stdout call------------------------------ <br/>The Current Day is  9
-<br/></div></td></tr></tbody>
-      <tbody class="failed results-table-row">
-        <tr>
-          <td class="col-result">Failed</td>
-          <td class="col-name">Login with validation in pytest/ClockIn_test.py::test_VerifyClockinAndAttendance</td>
-          <td class="col-duration">4.56</td>
-          <td class="col-links"></td></tr>
-        <tr>
-          <td class="extra" colspan="4">
-            <div class="log">driver = &lt;selenium.webdriver.chrome.webdriver.WebDriver (session=&quot;1990b394f69d03a2fb92e652ab141f72&quot;)&gt;<br/>selenium = &lt;selenium.webdriver.chrome.webdriver.WebDriver (session=&quot;1990b394f69d03a2fb92e652ab141f72&quot;)&gt;<br/><br/>    @pytest.mark.order(9)<br/>    def test_VerifyClockinAndAttendance(driver, selenium):<br/>        global ClockinTime<br/>        global ExpectedClockinTime<br/>        global UserName<br/>        Ul = driver.find_element(By.XPATH, &#x27;//*[@id=&quot;sideMenuScroll&quot;]/ul&#x27;)<br/>        lis = Ul.find_elements(By.TAG_NAME, &#x27;li&#x27;)<br/>        i = 0<br/>        for li in lis:<br/>            i = i + 1<br/>            try:<br/>                if li.find_element(By.TAG_NAME, &#x27;a&#x27;).text == &quot;HR&quot;:<br/>                    ClassAttribute = li.get_attribute(&#x27;class&#x27;)<br/>                    if &#x27;closeIt&#x27; in ClassAttribute:<br/>                        # Click on HR dropdown<br/>                        li.find_element(By.TAG_NAME, &#x27;a&#x27;).click()<br/>                        try:<br/>                            # find &lt;a&gt; tag in work dropdown<br/>                            a_links = li.find_elements(By.TAG_NAME, &#x27;a&#x27;)<br/>    <br/>                            for a in a_links:<br/>                                if a.text == &quot;Attendance&quot;:<br/>                                    a.click()<br/>                        except NoSuchElementException:<br/>                            print(&quot;You do not have access to Attendance Page.&quot;)<br/>                    else:<br/>                        try:<br/>                            # find &lt;a&gt; tag in work dropdown<br/>                            a_links = li.find_elements(By.TAG_NAME, &#x27;a&#x27;)<br/>                            for a in a_links:<br/>                                if a.text == &quot;Attendance&quot;:<br/>                                    a.click()<br/>                        except NoSuchElementException:<br/>                            print(&quot;You do not have access to Attendance Page.&quot;)<br/>            except StaleElementReferenceException:<br/>                continue<br/>        time.sleep(3)<br/>        # Click on Employee dropdown<br/>&gt;       driver.find_element(By.XPATH, &#x27;//*[@id=&quot;filter-form&quot;]/div/div[1]/div/div/button&#x27;).click()<br/><br/>ClockIn_test.py:106: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/>../../../.local/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py:831: in find_element<br/>    return self.execute(Command.FIND_ELEMENT, {&quot;using&quot;: by, &quot;value&quot;: value})[&quot;value&quot;]<br/>../../../.local/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py:440: in execute<br/>    self.error_handler.check_response(response)<br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>self = &lt;selenium.webdriver.remote.errorhandler.ErrorHandler object at 0x7fe95531e320&gt;<br/>response = {&#x27;status&#x27;: 404, &#x27;value&#x27;: &#x27;{&quot;value&quot;:{&quot;error&quot;:&quot;no such element&quot;,&quot;message&quot;:&quot;no such element: Unable to locate element: {\...\\n#16 0x55de90c1a2c7 \\u003Cunknown&gt;\\n#17 0x55de90c28093 \\u003Cunknown&gt;\\n#18 0x7fd91fe90402 \\u003Cunknown&gt;\\n&quot;}}&#x27;}<br/><br/>    def check_response(self, response: Dict[str, Any]) -&gt; None:<br/>        &quot;&quot;&quot;Checks that a JSON response from the WebDriver does not have an<br/>        error.<br/>    <br/>        :Args:<br/>         - response - The JSON response from the WebDriver server as a dictionary<br/>           object.<br/>    <br/>        :Raises: If the response contains an error message.<br/>        &quot;&quot;&quot;<br/>        status = response.get(&quot;status&quot;, None)<br/>        if not status or status == ErrorCode.SUCCESS:<br/>            return<br/>        value = None<br/>        message = response.get(&quot;message&quot;, &quot;&quot;)<br/>        screen: str = response.get(&quot;screen&quot;, &quot;&quot;)<br/>        stacktrace = None<br/>        if isinstance(status, int):<br/>            value_json = response.get(&quot;value&quot;, None)<br/>            if value_json and isinstance(value_json, str):<br/>                import json<br/>    <br/>                try:<br/>                    value = json.loads(value_json)<br/>                    if len(value) == 1:<br/>                        value = value[&quot;value&quot;]<br/>                    status = value.get(&quot;error&quot;, None)<br/>                    if not status:<br/>                        status = value.get(&quot;status&quot;, ErrorCode.UNKNOWN_ERROR)<br/>                        message = value.get(&quot;value&quot;) or value.get(&quot;message&quot;)<br/>                        if not isinstance(message, str):<br/>                            value = message<br/>                            message = message.get(&quot;message&quot;)<br/>                    else:<br/>                        message = value.get(&quot;message&quot;, None)<br/>                except ValueError:<br/>                    pass<br/>    <br/>        exception_class: Type[WebDriverException]<br/>        if status in ErrorCode.NO_SUCH_ELEMENT:<br/>            exception_class = NoSuchElementException<br/>        elif status in ErrorCode.NO_SUCH_FRAME:<br/>            exception_class = NoSuchFrameException<br/>        elif status in ErrorCode.NO_SUCH_SHADOW_ROOT:<br/>            exception_class = NoSuchShadowRootException<br/>        elif status in ErrorCode.NO_SUCH_WINDOW:<br/>            exception_class = NoSuchWindowException<br/>        elif status in ErrorCode.STALE_ELEMENT_REFERENCE:<br/>            exception_class = StaleElementReferenceException<br/>        elif status in ErrorCode.ELEMENT_NOT_VISIBLE:<br/>            exception_class = ElementNotVisibleException<br/>        elif status in ErrorCode.INVALID_ELEMENT_STATE:<br/>            exception_class = InvalidElementStateException<br/>        elif (<br/>            status in ErrorCode.INVALID_SELECTOR<br/>            or status in ErrorCode.INVALID_XPATH_SELECTOR<br/>            or status in ErrorCode.INVALID_XPATH_SELECTOR_RETURN_TYPER<br/>        ):<br/>            exception_class = InvalidSelectorException<br/>        elif status in ErrorCode.ELEMENT_IS_NOT_SELECTABLE:<br/>            exception_class = ElementNotSelectableException<br/>        elif status in ErrorCode.ELEMENT_NOT_INTERACTABLE:<br/>            exception_class = ElementNotInteractableException<br/>        elif status in ErrorCode.INVALID_COOKIE_DOMAIN:<br/>            exception_class = InvalidCookieDomainException<br/>        elif status in ErrorCode.UNABLE_TO_SET_COOKIE:<br/>            exception_class = UnableToSetCookieException<br/>        elif status in ErrorCode.TIMEOUT:<br/>            exception_class = TimeoutException<br/>        elif status in ErrorCode.SCRIPT_TIMEOUT:<br/>            exception_class = TimeoutException<br/>        elif status in ErrorCode.UNKNOWN_ERROR:<br/>            exception_class = WebDriverException<br/>        elif status in ErrorCode.UNEXPECTED_ALERT_OPEN:<br/>            exception_class = UnexpectedAlertPresentException<br/>        elif status in ErrorCode.NO_ALERT_OPEN:<br/>            exception_class = NoAlertPresentException<br/>        elif status in ErrorCode.IME_NOT_AVAILABLE:<br/>            exception_class = ImeNotAvailableException<br/>        elif status in ErrorCode.IME_ENGINE_ACTIVATION_FAILED:<br/>            exception_class = ImeActivationFailedException<br/>        elif status in ErrorCode.MOVE_TARGET_OUT_OF_BOUNDS:<br/>            exception_class = MoveTargetOutOfBoundsException<br/>        elif status in ErrorCode.JAVASCRIPT_ERROR:<br/>            exception_class = JavascriptException<br/>        elif status in ErrorCode.SESSION_NOT_CREATED:<br/>            exception_class = SessionNotCreatedException<br/>        elif status in ErrorCode.INVALID_ARGUMENT:<br/>            exception_class = InvalidArgumentException<br/>        elif status in ErrorCode.NO_SUCH_COOKIE:<br/>            exception_class = NoSuchCookieException<br/>        elif status in ErrorCode.UNABLE_TO_CAPTURE_SCREEN:<br/>            exception_class = ScreenshotException<br/>        elif status in ErrorCode.ELEMENT_CLICK_INTERCEPTED:<br/>            exception_class = ElementClickInterceptedException<br/>        elif status in ErrorCode.INSECURE_CERTIFICATE:<br/>            exception_class = InsecureCertificateException<br/>        elif status in ErrorCode.INVALID_COORDINATES:<br/>            exception_class = InvalidCoordinatesException<br/>        elif status in ErrorCode.INVALID_SESSION_ID:<br/>            exception_class = InvalidSessionIdException<br/>        elif status in ErrorCode.UNKNOWN_METHOD:<br/>            exception_class = UnknownMethodException<br/>        else:<br/>            exception_class = WebDriverException<br/>        if not value:<br/>            value = response[&quot;value&quot;]<br/>        if isinstance(value, str):<br/>            raise exception_class(value)<br/>        if message == &quot;&quot; and &quot;message&quot; in value:<br/>            message = value[&quot;message&quot;]<br/>    <br/>        screen = None  # type: ignore[assignment]<br/>        if &quot;screen&quot; in value:<br/>            screen = value[&quot;screen&quot;]<br/>    <br/>        stacktrace = None<br/>        st_value = value.get(&quot;stackTrace&quot;) or value.get(&quot;stacktrace&quot;)<br/>        if st_value:<br/>            if isinstance(st_value, str):<br/>                stacktrace = st_value.split(&quot;\n&quot;)<br/>            else:<br/>                stacktrace = []<br/>                try:<br/>                    for frame in st_value:<br/>                        line = frame.get(&quot;lineNumber&quot;, &quot;&quot;)<br/>                        file = frame.get(&quot;fileName&quot;, &quot;&lt;anonymous&gt;&quot;)<br/>                        if line:<br/>                            file = f&quot;{file}:{line}&quot;<br/>                        meth = frame.get(&quot;methodName&quot;, &quot;&lt;anonymous&gt;&quot;)<br/>                        if &quot;className&quot; in frame:<br/>                            meth = f&quot;{frame[&#x27;className&#x27;]}.{meth}&quot;<br/>                        msg = &quot;    at %s (%s)&quot;<br/>                        msg = msg % (meth, file)<br/>                        stacktrace.append(msg)<br/>                except TypeError:<br/>                    pass<br/>        if exception_class == UnexpectedAlertPresentException:<br/>            alert_text = None<br/>            if &quot;data&quot; in value:<br/>                alert_text = value[&quot;data&quot;].get(&quot;text&quot;)<br/>            elif &quot;alert&quot; in value:<br/>                alert_text = value[&quot;alert&quot;].get(&quot;text&quot;)<br/>            raise exception_class(message, screen, stacktrace, alert_text)  # type: ignore[call-arg]  # mypy is not smart enough here<br/>&gt;       raise exception_class(message, screen, stacktrace)<br/><span class="error">E       selenium.common.exceptions.NoSuchElementException: Message: no such element: Unable to locate element: {&quot;method&quot;:&quot;xpath&quot;,&quot;selector&quot;:&quot;//*[@id=&quot;filter-form&quot;]/div/div[1]/div/div/button&quot;}</span><br/><span class="error">E         (Session info: chrome=112.0.5615.121)</span><br/><span class="error">E       Stacktrace:</span><br/><span class="error">E       #0 0x55de90c2ffe3 &lt;unknown&gt;</span><br/><span class="error">E       #1 0x55de9096ed36 &lt;unknown&gt;</span><br/><span class="error">E       #2 0x55de909abc4d &lt;unknown&gt;</span><br/><span class="error">E       #3 0x55de909abd61 &lt;unknown&gt;</span><br/><span class="error">E       #4 0x55de909e76a4 &lt;unknown&gt;</span><br/><span class="error">E       #5 0x55de909cc8ed &lt;unknown&gt;</span><br/><span class="error">E       #6 0x55de909e5232 &lt;unknown&gt;</span><br/><span class="error">E       #7 0x55de909cc693 &lt;unknown&gt;</span><br/><span class="error">E       #8 0x55de9099f03a &lt;unknown&gt;</span><br/><span class="error">E       #9 0x55de909a017e &lt;unknown&gt;</span><br/><span class="error">E       #10 0x55de90bf1dbd &lt;unknown&gt;</span><br/><span class="error">E       #11 0x55de90bf5c6c &lt;unknown&gt;</span><br/><span class="error">E       #12 0x55de90bff4b0 &lt;unknown&gt;</span><br/><span class="error">E       #13 0x55de90bf6d63 &lt;unknown&gt;</span><br/><span class="error">E       #14 0x55de90bc9c35 &lt;unknown&gt;</span><br/><span class="error">E       #15 0x55de90c1a138 &lt;unknown&gt;</span><br/><span class="error">E       #16 0x55de90c1a2c7 &lt;unknown&gt;</span><br/><span class="error">E       #17 0x55de90c28093 &lt;unknown&gt;</span><br/><span class="error">E       #18 0x7fd91fe90402 &lt;unknown&gt;</span><br/><br/>../../../.local/lib/python3.10/site-packages/selenium/webdriver/remote/errorhandler.py:245: NoSuchElementException<br/></div></td></tr></tbody>
-      <tbody class="failed results-table-row">
-        <tr>
-          <td class="col-result">Failed</td>
-          <td class="col-name">Login with validation in pytest/TasksPageValidations_test.py::test_ClickOnTask</td>
-          <td class="col-duration">6.93</td>
-          <td class="col-links"></td></tr>
-        <tr>
-          <td class="extra" colspan="4">
-            <div class="log">driver = &lt;selenium.webdriver.chrome.webdriver.WebDriver (session=&quot;1990b394f69d03a2fb92e652ab141f72&quot;)&gt;<br/>selenium = &lt;selenium.webdriver.chrome.webdriver.WebDriver (session=&quot;1990b394f69d03a2fb92e652ab141f72&quot;)&gt;<br/><br/>    @pytest.mark.order(22)<br/>    def test_ClickOnTask(driver, selenium):<br/>        ul = driver.find_element(By.XPATH, &#x27;//*[@id=&quot;sideMenuScroll&quot;]/ul&#x27;)<br/>        lis = ul.find_elements(By.TAG_NAME, &#x27;li&#x27;)<br/>        i = 0<br/>        # Click on Work dropdown<br/>        for li in lis:<br/>            i = i + 1<br/>            try:<br/>                if li.find_element(By.TAG_NAME, &#x27;a&#x27;).text == &quot;Work&quot;:<br/>                    class_attribute = li.get_attribute(&#x27;class&#x27;)<br/>                    if &#x27;closeIt&#x27; in class_attribute:<br/>                        # Click on work dropdown<br/>                        li.find_element(By.TAG_NAME, &#x27;a&#x27;).click()<br/>                        try:<br/>                            # find &lt;a&gt; tag in work dropdown<br/>                            a_links = li.find_elements(By.TAG_NAME, &#x27;a&#x27;)<br/>                            for a in a_links:<br/>                                if a.text == &quot;Tasks&quot;:<br/>                                    a.click()<br/>                        except NoSuchElementException:<br/>                            print(&quot;You do not have access to Tasks Page.&quot;)<br/>                    else:<br/>                        try:<br/>                            # find &lt;a&gt; tag in work dropdown<br/>                            a_links = li.find_elements(By.TAG_NAME, &#x27;a&#x27;)<br/>                            for a in a_links:<br/>                                if a.text == &quot;Tasks&quot;:<br/>                                    a.click()<br/>                        except NoSuchElementException:<br/>                            print(&quot;You do not have access to Tasks Page.&quot;)<br/>            except StaleElementReferenceException:<br/>                continue<br/>        time.sleep(4)<br/>&gt;       if driver.Title == &quot;Tasks&quot;:<br/><span class="error">E       AttributeError: &#x27;WebDriver&#x27; object has no attribute &#x27;Title&#x27;</span><br/><br/>TasksPageValidations_test.py:98: AttributeError<br/></div></td></tr></tbody>
       <tbody class="passed results-table-row">
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/LoginPageValidation_test.py::test_LoginPage</td>
-          <td class="col-duration">5.38</td>
+          <td class="col-duration">2.81</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -351,7 +305,7 @@ function filterTable(elem) { // eslint-disable-line no-unused-vars
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/LoginPageValidation_test.py::test_ValidateTextboxButton</td>
-          <td class="col-duration">0.10</td>
+          <td class="col-duration">0.05</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -362,8 +316,27 @@ The Login button is Enabled.
       <tbody class="passed results-table-row">
         <tr>
           <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/LoginPageValidation_test.py::test_EnterBlankCreadential</td>
+          <td class="col-duration">0.84</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>&quot;The password field is required.&quot; Message displayed successfully.
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/LoginPageValidation_test.py::test_EnterInValidEmail</td>
+          <td class="col-duration">0.79</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/LoginPageValidation_test.py::test_EnterInvalidPass</td>
-          <td class="col-duration">3.36</td>
+          <td class="col-duration">0.86</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -373,7 +346,7 @@ The Login button is Enabled.
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/LoginPageValidation_test.py::test_EnterValidCreadential</td>
-          <td class="col-duration">9.75</td>
+          <td class="col-duration">9.99</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -382,7 +355,7 @@ The Login button is Enabled.
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/ClockIn_test.py::test_ClickOnClockin</td>
-          <td class="col-duration">10.24</td>
+          <td class="col-duration">0.70</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -391,8 +364,34 @@ The Login button is Enabled.
       <tbody class="passed results-table-row">
         <tr>
           <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/ClockIn_test.py::test_VerifyClockinTimeAndGetUsername</td>
+          <td class="col-duration">4.71</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>The Current Day is  14
+expected time at verify clockin : 04:05 pm
+clockin time at verify clockin : 04:05
+The clockin time is 04:05
+The current time is 16:05
+The User name is  Pathan UveshMohammad
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/ClockIn_test.py::test_VerifyClockinAndAttendance</td>
+          <td class="col-duration">23.18</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>The Employee&#x27;s Name has been matched.
+The actual clockin : 04:05 pm matched with expected clockin time : 04:05 pm
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/ClockIn_test.py::test_ClockOut</td>
-          <td class="col-duration">16.58</td>
+          <td class="col-duration">9.24</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -402,7 +401,7 @@ The Login button is Enabled.
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/ProjectsPageValidation_test.py::test_ClickOnProjects</td>
-          <td class="col-duration">6.04</td>
+          <td class="col-duration">2.20</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -411,18 +410,8 @@ The Login button is Enabled.
       <tbody class="passed results-table-row">
         <tr>
           <td class="col-result">Passed</td>
-          <td class="col-name">Login with validation in pytest/ProjectsPageValidation_test.py::test_SeachboxOnProjectsPage</td>
-          <td class="col-duration">8.24</td>
-          <td class="col-links"></td></tr>
-        <tr>
-          <td class="extra" colspan="4">
-            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>The search functionality is working properly.
-<br/></div></td></tr></tbody>
-      <tbody class="passed results-table-row">
-        <tr>
-          <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/ProjectsPageValidation_test.py::test_AddProjectButton</td>
-          <td class="col-duration">8.15</td>
+          <td class="col-duration">8.11</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -432,7 +421,7 @@ The Login button is Enabled.
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/ProjectsPageValidation_test.py::test_ValidateComponents</td>
-          <td class="col-duration">2.73</td>
+          <td class="col-duration">6.46</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -463,7 +452,7 @@ The Cancel button is Enabled.
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/ProjectsPageValidation_test.py::test_WithBlankValue</td>
-          <td class="col-duration">2.38</td>
+          <td class="col-duration">1.02</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -474,7 +463,7 @@ The Cancel button is Enabled.
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/ProjectsPageValidation_test.py::test_WithInvalidValue</td>
-          <td class="col-duration">6.58</td>
+          <td class="col-duration">5.75</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -490,7 +479,7 @@ The Cancel button is Enabled.
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/ProjectsPageValidation_test.py::test_WithInvalidStartdateAndDeadline</td>
-          <td class="col-duration">8.84</td>
+          <td class="col-duration">5.85</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -499,7 +488,7 @@ The Cancel button is Enabled.
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/ProjectsPageValidation_test.py::test_WithValidDataAndCheckbox</td>
-          <td class="col-duration">19.05</td>
+          <td class="col-duration">13.55</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -511,7 +500,7 @@ The Form with valid data Saved successfully.
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/ProjectsPageValidation_test.py::test_SearchInTable</td>
-          <td class="col-duration">10.33</td>
+          <td class="col-duration">5.31</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -521,7 +510,7 @@ The Form with valid data Saved successfully.
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/ProjectsPageValidation_test.py::test_EditAndSave</td>
-          <td class="col-duration">16.11</td>
+          <td class="col-duration">11.10</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -531,7 +520,7 @@ The Form with valid data Saved successfully.
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/ProjectsPageValidation_test.py::test_AddSprint</td>
-          <td class="col-duration">47.09</td>
+          <td class="col-duration">12.11</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -539,18 +528,18 @@ The Form with valid data Saved successfully.
       <tbody class="passed results-table-row">
         <tr>
           <td class="col-result">Passed</td>
-          <td class="col-name">Login with validation in pytest/TasksPageValidations_test.py::test_SearchboxOnTaskPage</td>
-          <td class="col-duration">8.30</td>
+          <td class="col-name">Login with validation in pytest/TasksPageValidations_test.py::test_ClickOnTask</td>
+          <td class="col-duration">2.44</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
-            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>The search functionality is working properly.
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>Successfully reached at Tasks page
 <br/></div></td></tr></tbody>
       <tbody class="passed results-table-row">
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/TasksPageValidations_test.py::test_AddTaskButton</td>
-          <td class="col-duration">5.16</td>
+          <td class="col-duration">7.16</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -560,7 +549,7 @@ The Form with valid data Saved successfully.
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/TasksPageValidations_test.py::test_ValidateComponents</td>
-          <td class="col-duration">3.91</td>
+          <td class="col-duration">6.03</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -583,8 +572,19 @@ The Cancel button is Enabled.
       <tbody class="passed results-table-row">
         <tr>
           <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/TasksPageValidations_test.py::test_WithBlankValue</td>
+          <td class="col-duration">1.03</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>&quot;The heading field is required.&quot; Message displayed successfully.
+&quot;Select at least 1 member&quot; Message displayed successfully.
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/TasksPageValidations_test.py::test_WithValidData</td>
-          <td class="col-duration">16.43</td>
+          <td class="col-duration">13.50</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -594,7 +594,7 @@ The Cancel button is Enabled.
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/TasksPageValidations_test.py::test_SearchInTable</td>
-          <td class="col-duration">10.25</td>
+          <td class="col-duration">6.94</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -604,7 +604,7 @@ The Cancel button is Enabled.
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/TasksPageValidations_test.py::test_EditAndSave</td>
-          <td class="col-duration">16.43</td>
+          <td class="col-duration">6.43</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -614,7 +614,7 @@ The Cancel button is Enabled.
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/TimeLogPageValidation_test.py::test_ClickOnTimelogPage</td>
-          <td class="col-duration">5.53</td>
+          <td class="col-duration">2.52</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -624,7 +624,7 @@ The Cancel button is Enabled.
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/TimeLogPageValidation_test.py::test_LogTimeButton</td>
-          <td class="col-duration">7.11</td>
+          <td class="col-duration">9.87</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -634,7 +634,7 @@ The Cancel button is Enabled.
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/TimeLogPageValidation_test.py::test_ValidateComponents</td>
-          <td class="col-duration">0.32</td>
+          <td class="col-duration">0.27</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -653,7 +653,7 @@ The Add more button is Enabled.
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/TimeLogPageValidation_test.py::test_WithBlankValue</td>
-          <td class="col-duration">4.40</td>
+          <td class="col-duration">1.18</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -666,7 +666,7 @@ The Add more button is Enabled.
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/TimeLogPageValidation_test.py::test_WithInvalidValue</td>
-          <td class="col-duration">2.84</td>
+          <td class="col-duration">3.11</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -680,7 +680,7 @@ The Add more button is Enabled.
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/TimeLogPageValidation_test.py::test_WithInvalidDateValue</td>
-          <td class="col-duration">9.62</td>
+          <td class="col-duration">9.74</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -690,7 +690,7 @@ The Add more button is Enabled.
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/TimeLogPageValidation_test.py::test_WithValidValue</td>
-          <td class="col-duration">9.41</td>
+          <td class="col-duration">6.39</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -700,7 +700,7 @@ The Add more button is Enabled.
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/TimeLogPageValidation_test.py::test_SearchInTable</td>
-          <td class="col-duration">5.24</td>
+          <td class="col-duration">3.81</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -710,7 +710,7 @@ The Add more button is Enabled.
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/TimeLogPageValidation_test.py::test_EditAndSave</td>
-          <td class="col-duration">9.40</td>
+          <td class="col-duration">3.43</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -720,7 +720,7 @@ The Add more button is Enabled.
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/DeleteData_test.py::test_ClickOnTimelogPage</td>
-          <td class="col-duration">5.40</td>
+          <td class="col-duration">2.30</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -730,7 +730,7 @@ The Add more button is Enabled.
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/DeleteData_test.py::test_TimeLogSearch</td>
-          <td class="col-duration">10.19</td>
+          <td class="col-duration">12.20</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -739,7 +739,7 @@ The Add more button is Enabled.
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/DeleteData_test.py::test_DeleteTimeLog</td>
-          <td class="col-duration">18.53</td>
+          <td class="col-duration">3.42</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -750,7 +750,7 @@ The Task Testing Log deleted successfully from the table
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/DeleteData_test.py::test_ClickOnTasksPage</td>
-          <td class="col-duration">5.24</td>
+          <td class="col-duration">5.43</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -760,7 +760,7 @@ The Task Testing Log deleted successfully from the table
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/DeleteData_test.py::test_TaskSearch</td>
-          <td class="col-duration">7.19</td>
+          <td class="col-duration">0.27</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -769,17 +769,18 @@ The Task Testing Log deleted successfully from the table
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/DeleteData_test.py::test_DeleteTask</td>
-          <td class="col-duration">5.05</td>
+          <td class="col-duration">6.11</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
-            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>There are 1 Rows in Tasks
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>There are 10 Rows in Tasks
+The &#x27;Task Testing&#x27; Task deleted successfully from the table
 <br/></div></td></tr></tbody>
       <tbody class="passed results-table-row">
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/DeleteData_test.py::test_ClickOnProjectsPage</td>
-          <td class="col-duration">4.98</td>
+          <td class="col-duration">2.03</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -789,7 +790,7 @@ The Task Testing Log deleted successfully from the table
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/DeleteData_test.py::test_ProjectSearch</td>
-          <td class="col-duration">7.18</td>
+          <td class="col-duration">10.09</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
@@ -798,9 +799,10 @@ The Task Testing Log deleted successfully from the table
         <tr>
           <td class="col-result">Passed</td>
           <td class="col-name">Login with validation in pytest/DeleteData_test.py::test_DeleteProject</td>
-          <td class="col-duration">5.04</td>
+          <td class="col-duration">3.35</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
             <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>There are 1 Rows in Projects
+The &#x27;Project Testing&#x27; Project deleted successfully from the table
 <br/></div></td></tr></tbody></table></body></html>

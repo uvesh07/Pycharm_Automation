@@ -1,3 +1,19 @@
+# # Click on Add files input
+#     valid_addfile = "/home/addweb/PycharmProjects/Ticktalk leads automation/Images/bg color.jpeg"
+#     # Find the dropzone element
+#     dropzone = driver.find_element(By.XPATH, '//*[@id="file-upload-dropzone"]')
+#     # Create an ActionChains object to perform actions on the dropzone
+#     actions = ActionChains(driver)
+#     # Click on the dropzone to activate the file input
+#     actions.move_to_element(dropzone).click().perform()
+#     # Locate the file input element within the dropzone
+#     file_input = dropzone.find_element(By.XPATH, '//*[@id="file-upload-dropzone"]/input')
+#     driver.execute_script("arguments[0].type = 'file';", file_input)
+#     driver.execute_script("arguments[0].style.display = 'block';", file_input)
+#     # Set the file path in the file input
+#     file_input.send_keys(valid_addfile)
+#     time.sleep(2)
+
 # def zip_folder(folder_path, zip_file_path):
 #     shutil.make_archive(zip_file_path, 'zip', folder_path)
 #

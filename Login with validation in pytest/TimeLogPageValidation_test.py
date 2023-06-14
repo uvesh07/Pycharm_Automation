@@ -3,6 +3,8 @@ import logging
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import StaleElementReferenceException, NoSuchElementException
 import time
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 # create a logger instance
 logger = logging.getLogger(__name__)
@@ -33,6 +35,8 @@ InvalidMin = "60"
 ValidMemo = "Testing......"
 InvalidMemo = "Testing......"
 
+wait = ""
+
 
 @pytest.fixture(name="nvar")
 def test_NewVar(driver):
@@ -54,8 +58,10 @@ def test_NewVar(driver):
     return Project, Task, Employee, Date, Hr, Min, Memo, Save, Cancel, AddMore
 
 
-@pytest.mark.order(29)
+@pytest.mark.order(30)
 def test_ClickOnTimelogPage(driver, selenium):
+    global wait
+    wait = WebDriverWait(driver, 30)
     ul = driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul')
     lis = ul.find_elements(By.TAG_NAME, 'li')
     i = 0
@@ -87,23 +93,26 @@ def test_ClickOnTimelogPage(driver, selenium):
                         print("You do not have access to Time Logs Page.")
         except StaleElementReferenceException:
             continue
-    time.sleep(3)
+    # time.sleep(3)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="table-actions"]/a')))
     if driver.title == "Time Logs":
         print("Successfully reached at Time Logs page")
         logger.info("Successfully reached at Time Logs page")
 
 
-@pytest.mark.order(30)
+@pytest.mark.order(31)
 def test_LogTimeButton(driver):
     LogTime = driver.find_element(By.XPATH, '//*[@id="table-actions"]/a')
     assert LogTime.is_enabled()
     print("The Log Time button is Enabled.")
     logger.info("The Log Time button is Enabled.")
     LogTime.click()
-    time.sleep(7)
+    # time.sleep(7)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[1]/div[1]/div/div/button')))
+    time.sleep(3)
 
 
-@pytest.mark.order(31)
+@pytest.mark.order(32)
 def test_ValidateComponents(driver, nvar):
     Project, Task, Employee, Date, Hr, Min, Memo, Save, Cancel, AddMore = nvar
 
@@ -139,12 +148,14 @@ def test_ValidateComponents(driver, nvar):
     logger.info("The Add more is Enabled.")
 
 
-@pytest.mark.order(32)
+@pytest.mark.order(33)
 def test_WithBlankValue(driver, nvar):
     Project, Task, Employee, Date, Hr, Min, Memo, Save, Cancel, AddMore = nvar
 
     Save.click()
-    time.sleep(4)
+    # time.sleep(4)
+    wait.until(EC.visibility_of_element_located(
+        (By.XPATH, '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[1]/div[1]/div/div[2]')))
     ProjectMsg = driver.find_element(By.XPATH,
                                       '//*[@id="save-timelog-data-form"]/div/div[2]/div[1]/div[1]/div[1]/div/div[2]')
     TaskMsg = driver.find_element(By.XPATH,
@@ -172,7 +183,7 @@ def test_WithBlankValue(driver, nvar):
         logger.info('"Please enter Memo" Message displayed successfully.')
 
 
-@pytest.mark.order(33)
+@pytest.mark.order(34)
 def test_WithInvalidValue(driver, nvar):
     Project, Task, Employee, Date, Hr, Min, Memo, Save, Cancel, AddMore = nvar
 
@@ -279,7 +290,7 @@ def test_WithInvalidValue(driver, nvar):
     Memo.send_keys(InvalidMemo)
 
 
-@pytest.mark.order(34)
+@pytest.mark.order(35)
 def test_WithInvalidDateValue(driver, nvar):
     Project, Task, Employee, Date, Hr, Min, Memo, Save, Cancel, AddMore = nvar
 
@@ -392,6 +403,7 @@ def test_WithInvalidDateValue(driver, nvar):
     Date.send_keys(InvalidDate)
     Save.click()
     time.sleep(2)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="body"]/div[8]')))
     Date_err = driver.find_element(By.XPATH, '//*[@id="body"]/div[8]')
     if Date_err.text == "A two digit day could not be found Data missing":
         print('"A two digit day could not be found Data missing" Message displayed successfully')
@@ -399,7 +411,7 @@ def test_WithInvalidDateValue(driver, nvar):
     time.sleep(3)
 
 
-@pytest.mark.order(35)
+@pytest.mark.order(36)
 def test_WithValidValue(driver, nvar):
     Project, Task, Employee, Date, Hr, Min, Memo, Save, Cancel, AddMore = nvar
 
@@ -514,13 +526,15 @@ def test_WithValidValue(driver, nvar):
     Memo.send_keys(ValidMemo)
     # Click on Memo input
     Save.click()
-    time.sleep(6)
+    # time.sleep(6)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//table//tbody//tr')))
+    time.sleep(3)
     LogTime = driver.find_element(By.XPATH, '//*[@id="table-actions"]/a')
     if LogTime.is_enabled():
         print("The form with valid data Saved successfully.")
 
 
-@pytest.mark.order(36)
+@pytest.mark.order(37)
 def test_SearchInTable(driver):
     # find the Saved lead in table and click on edit button
     Row1 = driver.find_element(By.XPATH, '//table//tbody//tr[1]')
@@ -529,10 +543,12 @@ def test_SearchInTable(driver):
     driver.find_element(By.XPATH, f'//*[@id="dropdownMenuLink-%s"]' % VarId).click()
     driver.find_element(By.XPATH, f'//*[@id="row-%s"]/td[8]/div/div/div/a[2]' % VarId).click()
     print("The Log searched successfully in the table")
-    time.sleep(5)
+    # time.sleep(5)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="memo"]')))
+    time.sleep(3)
 
 
-@pytest.mark.order(37)
+@pytest.mark.order(38)
 def test_EditAndSave(driver):
     Memo = driver.find_element(By.XPATH, '//*[@id="memo"]')
     # Search for valid option
@@ -540,7 +556,8 @@ def test_EditAndSave(driver):
     Memo.send_keys("Testing Edit form by changing the value of Memo textarea ...")
     Save = driver.find_element(By.XPATH, '//*[@id="save-timelog-form"]')
     Save.click()
-    time.sleep(6)
+    # time.sleep(6)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="table-actions"]/a')))
     LogTime = driver.find_element(By.XPATH, '//*[@id="table-actions"]/a')
     if LogTime.is_enabled():
         print("The Edit form Saved successfully.")

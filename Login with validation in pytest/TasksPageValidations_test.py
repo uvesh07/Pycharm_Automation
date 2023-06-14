@@ -3,6 +3,8 @@ import logging
 from selenium.common import NoSuchElementException, ElementNotInteractableException, StaleElementReferenceException
 from selenium.webdriver.common.by import By
 import time
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 # create a logger instance
 logger = logging.getLogger(__name__)
@@ -38,6 +40,8 @@ InvalidStatus = "$$ Nothing $$"
 ValidDescription = "Testing Description..."
 InvalidDescription = "$$ Nothing $$"
 
+wait = ""
+
 
 @pytest.fixture(name="nvar")
 def test_NewVar(driver):
@@ -63,6 +67,8 @@ def test_NewVar(driver):
 
 @pytest.mark.order(22)
 def test_ClickOnTask(driver, selenium):
+    global wait
+    wait = WebDriverWait(driver, 30)
     ul = driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul')
     lis = ul.find_elements(By.TAG_NAME, 'li')
     i = 0
@@ -94,38 +100,28 @@ def test_ClickOnTask(driver, selenium):
                         print("You do not have access to Tasks Page.")
         except StaleElementReferenceException:
             continue
-    time.sleep(4)
-    if driver.Title == "Tasks":
+    # time.sleep(4)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="search-text-field"]')))
+    if driver.title == "Tasks":
         print("Successfully reached at Tasks page")
         logger.info("Successfully reached at Tasks page")
 
 
-@pytest.mark.order(23)
-def test_SearchboxOnTaskPage(driver):
-    SearchBox = driver.find_element(By.XPATH, '//*[@id="search-text-field"]')
-    SearchBox.send_keys("Testing")
-    time.sleep(8)
-    try:
-        Row1 = driver.find_element(By.XPATH, '//table//tbody//tr[1]')
-        Cell1 = Row1.find_element(By.XPATH, './/td[3]')
-        if Cell1.text == "Testing":
-            print("The search functionality is working properly.")
-    except NoSuchElementException:
-        print("The value is not found in the table")
-
-
 @pytest.mark.order(24)
 def test_AddTaskButton(driver):
+    global wait
     AddTask = driver.find_element(By.XPATH, '//*[@id="table-actions"]/a[1]')
     assert AddTask.is_enabled()
     print("The Add Task button is Enabled.")
     logger.info("The Add Task button is Enabled.")
     AddTask.click()
-    time.sleep(5)
+    # time.sleep(5)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="heading"]')))
 
 
 @pytest.mark.order(25)
 def test_ValidateComponents(driver, nvar):
+    global wait
     Title, Category, Project, StartDate, Duedate, WithoutDuedate, Assigned, Lable, Status, Description, \
         OtherTopics, Milestone, Priority, Save, Cancel = nvar
 
@@ -163,7 +159,7 @@ def test_ValidateComponents(driver, nvar):
     print("The Other Details button is Enabled.")
     logger.info("The Other Details button is Enabled.")
     OtherTopics.click()
-    time.sleep(2)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="other-details"]/div[1]/div/div[1]/div/div/button')))
     assert Milestone.is_enabled()
     print("The Milestones dropdown is Enabled.")
     logger.info("The Milestones dropdown is Enabled.")
@@ -179,7 +175,27 @@ def test_ValidateComponents(driver, nvar):
 
 
 @pytest.mark.order(26)
+def test_WithBlankValue(driver, nvar):
+    global wait
+    Title, Category, Project, StartDate, Duedate, WithoutDuedate, Assigned, Lable, Status, Description, \
+        OtherTopics, Milestone, Priority, Save, Cancel = nvar
+
+    StartDate.clear()
+    Duedate.clear()
+    Save.click()
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="save-task-data-form"]/div/div[1]/div[1]/div/div')))
+    TaskMsg = driver.find_element(By.XPATH, '//*[@id="save-task-data-form"]/div/div[1]/div[1]/div/div')
+    AssignedMsg = driver.find_element(By.XPATH, '//*[@id="save-task-data-form"]/div/div[1]/div[9]/div/div/div[4]')
+
+    if TaskMsg.text == "The heading field is required.":
+        print('"The heading field is required." Message displayed successfully.')
+    if AssignedMsg.text == "Select at least 1 member":
+        print('"Select at least 1 member" Message displayed successfully.')
+
+
+@pytest.mark.order(27)
 def test_WithValidData(driver, nvar):
+    global wait
     Title, Category, Project, StartDate, Duedate, WithoutDuedate, Assigned, Lable, Status, Description, \
         OtherTopics, Milestone, Priority, Save, Cancel = nvar
 
@@ -295,11 +311,13 @@ def test_WithValidData(driver, nvar):
     sel.select_by_visible_text("Low")
     # Save the Add task form
     Save.click()
-    time.sleep(8)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//table//tbody//tr')))
+    time.sleep(5)
 
 
-@pytest.mark.order(27)
+@pytest.mark.order(28)
 def test_SearchInTable(driver):
+    global wait
     # find the Saved lead in table and click on edit button
     Row1 = driver.find_element(By.XPATH, '//table//tbody//tr[1]')
     Cell1 = Row1.find_element(By.XPATH, './/td[2]')
@@ -307,12 +325,13 @@ def test_SearchInTable(driver):
     driver.find_element(By.XPATH, f'//*[@id="dropdownMenuLink-%s"]' % VarId).click()
     driver.find_element(By.XPATH, f'//*[@id="row-%s"]/td[10]/div/div/div/a[2]' % VarId).click()
     print("The task searched successfully in the table")
-    time.sleep(10)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="save-task-data-form"]/div/div[1]/div[11]/div/div/button')))
+    time.sleep(3)
 
 
-@pytest.mark.order(28)
+@pytest.mark.order(29)
 def test_EditAndSave(driver):
-
+    global wait
     # Edit Status of Project
     Status = driver.find_element(By.XPATH, '//*[@id="save-task-data-form"]/div/div[1]/div[11]/div/div/button')
     Status.click()
@@ -350,7 +369,7 @@ def test_EditAndSave(driver):
     # Save the Edit form
     Save = driver.find_element(By.XPATH, '//*[@id="save-task-form"]')
     Save.click()
-    time.sleep(10)
+    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="table-actions"]/a')))
     AddProject = driver.find_element(By.XPATH, '//*[@id="table-actions"]/a')
     if AddProject.is_enabled():
         print("The Edit form Saved successfully.")
