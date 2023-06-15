@@ -2,6 +2,7 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from rocketchat_API.rocketchat import RocketChat
+from selenium.webdriver.chrome.options import Options
 
 # Global variables to store test results
 Message = "This is for testing purpose."
@@ -24,7 +25,10 @@ def setup():
     service = Service('/home/addweb/PycharmProjects/FirstScript/Drivers/chromedriver.exe')
     # create a webdriver object and pass the Service object
     global driver
-    driver = webdriver.Chrome(service=service)
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--window-size=1280,1024")
+    driver = webdriver.Chrome(service=service, options=chrome_options)
     # Login to the site
     driver.get('https://ttstage.addwebprojects.com/login')
     driver.maximize_window()

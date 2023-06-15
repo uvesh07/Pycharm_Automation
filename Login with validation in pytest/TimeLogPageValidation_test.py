@@ -558,6 +558,7 @@ def test_EditAndSave(driver):
     Save.click()
     # time.sleep(6)
     wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="table-actions"]/a')))
+    time.sleep(3)
     LogTime = driver.find_element(By.XPATH, '//*[@id="table-actions"]/a')
     if LogTime.is_enabled():
         print("The Edit form Saved successfully.")

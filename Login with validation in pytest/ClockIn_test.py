@@ -1,4 +1,5 @@
 import pytest
+from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException
 from datetime import datetime
@@ -6,6 +7,7 @@ import time
 import sys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import os
 
 
 # Global variables used for different methods POC-QA-Automation
@@ -36,6 +38,10 @@ def test_ClickOnClockin(driver, selenium):
         driver.find_element(By.XPATH, '//*[@id="save-clock-in"]').click()
         # time.sleep(5)
     except NoSuchElementException:
+        driver.save_screenshot(os.path.join(os.getcwd(), "Screenshots", "Dashboard.png"))
+        over = driver.find_element(By.XPATH, '//*[@id="mob-client-detail"]/a[2]/span')
+        if over.is_enabled():
+            print("The User is on Admin Dashboard")
         print("The User is already Clocked-in")
 
 
@@ -78,36 +84,11 @@ def test_VerifyClockinAndAttendance(driver, selenium):
     global ExpectedClockinTime
     global UserName
     Ul = driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul')
-    lis = Ul.find_elements(By.TAG_NAME, 'li')
-    i = 0
-    for li in lis:
-        i = i + 1
-        try:
-            if li.find_element(By.TAG_NAME, 'a').text == "HR":
-                ClassAttribute = li.get_attribute('class')
-                if 'closeIt' in ClassAttribute:
-                    # Click on HR dropdown
-                    li.find_element(By.TAG_NAME, 'a').click()
-                    try:
-                        # find <a> tag in work dropdown
-                        a_links = li.find_elements(By.TAG_NAME, 'a')
-
-                        for a in a_links:
-                            if a.text == "Attendance":
-                                a.click()
-                    except NoSuchElementException:
-                        print("You do not have access to Attendance Page.")
-                else:
-                    try:
-                        # find <a> tag in work dropdown
-                        a_links = li.find_elements(By.TAG_NAME, 'a')
-                        for a in a_links:
-                            if a.text == "Attendance":
-                                a.click()
-                    except NoSuchElementException:
-                        print("You do not have access to Attendance Page.")
-        except StaleElementReferenceException:
-            continue
+    element = Ul.find_element(By.LINK_TEXT, "HR")
+    actions = ActionChains(driver)
+    actions.move_to_element(element).click().perform()
+    element = Ul.find_element(By.LINK_TEXT, "Attendance")
+    actions.move_to_element(element).click().perform()
     # time.sleep(3)
     # Click on Employee dropdown
     wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="filter-form"]/div/div[1]/div/div/button')))
@@ -169,36 +150,11 @@ def test_VerifyClockinAndAttendance(driver, selenium):
 @pytest.mark.order(10)
 def test_ClockOut(driver):
     Ul = driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul')
-    lis = Ul.find_elements(By.TAG_NAME, 'li')
-    i = 0
-    # Clcik on Private Dashboard
-    for li in lis:
-        i = i + 1
-        try:
-            if li.find_element(By.TAG_NAME, 'a').text == "Dashboard":
-                ClassAttribute = li.get_attribute('class')
-                if 'closeIt' in ClassAttribute:
-                    # Click on Dashboard dropdown
-                    li.find_element(By.TAG_NAME, 'a').click()
-                    try:
-                        # find <a> tag in work dropdown
-                        a_links = li.find_elements(By.TAG_NAME, 'a')
-                        for a in a_links:
-                            if a.text == "Private Dashboard":
-                                a.click()
-                    except NoSuchElementException:
-                        print("You do not have access to Private Dashboard Page.")
-                else:
-                    try:
-                        # find <a> tag in work dropdown
-                        a_links = li.find_elements(By.TAG_NAME, 'a')
-                        for a in a_links:
-                            if a.text == "Private Dashboard":
-                                a.click()
-                    except NoSuchElementException:
-                        print("You do not have access to Private Dashboard Page.")
-        except StaleElementReferenceException:
-            continue
+    element = Ul.find_element(By.LINK_TEXT, "Dashboard")
+    actions = ActionChains(driver)
+    actions.move_to_element(element).click().perform()
+    element = Ul.find_element(By.LINK_TEXT, "Private Dashboard")
+    actions.move_to_element(element).click().perform()
     # time.sleep(5)
     wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="clock-out"]')))
     # Click on Clock out

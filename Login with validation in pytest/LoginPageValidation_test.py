@@ -4,6 +4,7 @@ from selenium.common import NoSuchElementException, StaleElementReferenceExcepti
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
 
 
 # Global variables used for different methods
@@ -74,8 +75,8 @@ def test_EnterInValidEmail(driver, var):
     # time.sleep(3)
     wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="login-form"]/section/div/div/div/div/div[1]/div')))
     EmailMsg = driver.find_element(By.XPATH, '//*[@id="login-form"]/section/div/div/div/div/div[1]/div')
-    if EmailMsg.text == "The Email must be a valid Email address.,The Email format is invalid.":
-        print('"The Email must be a valid Email address.,The Email format is invalid." Message displayed successfully.')
+    if EmailMsg.text == "The email must be a valid email address.,The email format is invalid.":
+        print('"The email must be a valid email address.,The email format is invalid." Message displayed successfully.')
 
 
 @pytest.mark.order(5)
@@ -106,35 +107,12 @@ def test_EnterValidCreadential(driver, var):
     Password.send_keys(ValidPass)
     Login.click()
     time.sleep(5)
-    wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="sideMenuScroll"]/ul')))
+    # wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="sideMenuScroll"]/ul')))
     Ul = driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul')
-    lis = Ul.find_elements(By.TAG_NAME, 'li')
-    i = 0
-    for li in lis:
-        i = i + 1
-        try:
-            if li.find_element(By.TAG_NAME, 'a').text == "Dashboard":
-                ClassAttribute = li.get_attribute('class')
-                if 'closeIt' in ClassAttribute:
-                    # Click on Dashboard dropdown
-                    li.find_element(By.TAG_NAME, 'a').click()
-                    try:
-                        # find <a> tag in work dropdown
-                        a_links = li.find_elements(By.TAG_NAME, 'a')
-                        for a in a_links:
-                            if a.text == "Private Dashboard":
-                                a.click()
-                    except NoSuchElementException:
-                        print("You do not have access to Private Dashboard Page.")
-                else:
-                    try:
-                        # find <a> tag in work dropdown
-                        a_links = li.find_elements(By.TAG_NAME, 'a')
-                        for a in a_links:
-                            if a.text == "Private Dashboard":
-                                a.click()
-                    except NoSuchElementException:
-                        print("You do not have access to Private Dashboard Page.")
-        except StaleElementReferenceException:
-            continue
+    element = Ul.find_element(By.LINK_TEXT, "Private Dashboard")
+    if element.is_enabled():
+        print("The Private dashboard is displayed properly")
+
+    actions = ActionChains(driver)
+    actions.move_to_element(element).click().perform()
     time.sleep(3)

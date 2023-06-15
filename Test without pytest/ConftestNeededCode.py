@@ -1,3 +1,48 @@
+# @pytest.mark.order(10)
+# def test_ClockOut(driver):
+#     Ul = driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul')
+#     lis = Ul.find_elements(By.TAG_NAME, 'li')
+#     i = 0
+#     # Clcik on Private Dashboard
+#     for li in lis:
+#         i = i + 1
+#         try:
+#             if li.find_element(By.TAG_NAME, 'a').text == "Dashboard":
+#                 ClassAttribute = li.get_attribute('class')
+#                 if 'closeIt' in ClassAttribute:
+#                     # Click on Dashboard dropdown
+#                     li.find_element(By.TAG_NAME, 'a').click()
+#                     try:
+#                         # find <a> tag in work dropdown
+#                         a_links = li.find_elements(By.TAG_NAME, 'a')
+#                         for a in a_links:
+#                             if a.text == "Private Dashboard":
+#                                 a.click()
+#                     except NoSuchElementException:
+#                         print("You do not have access to Private Dashboard Page.")
+#                 else:
+#                     try:
+#                         # find <a> tag in work dropdown
+#                         a_links = li.find_elements(By.TAG_NAME, 'a')
+#                         for a in a_links:
+#                             if a.text == "Private Dashboard":
+#                                 a.click()
+#                     except NoSuchElementException:
+#                         print("You do not have access to Private Dashboard Page.")
+#         except StaleElementReferenceException:
+#             continue
+#     # time.sleep(5)
+#     wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="clock-out"]')))
+#     # Click on Clock out
+#     driver.find_element(By.XPATH, '//*[@id="clock-out"]').click()
+#     # time.sleep(5)
+#     wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="clock-in"]')))
+#     # Verify the Clock out
+#     ClockIn = driver.find_element(By.XPATH, '//*[@id="clock-in"]')
+#     if ClockIn.is_enabled():
+#         print("Clocked out successfully.")
+#     time.sleep(5)
+
 # # Click on Add files input
 #     valid_addfile = "/home/addweb/PycharmProjects/Ticktalk leads automation/Images/bg color.jpeg"
 #     # Find the dropzone element
