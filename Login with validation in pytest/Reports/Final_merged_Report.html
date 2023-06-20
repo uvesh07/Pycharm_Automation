@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Automation Report</title>
+    <link href="assets/style.css" rel="stylesheet" type="text/css"/></head>
+  <body onLoad="init()">
+    <script>/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+function toArray(iter) {
+    if (iter === null) {
+        return null;
+    }
+    return Array.prototype.slice.call(iter);
+}
+
+function find(selector, elem) { // eslint-disable-line no-redeclare
+    if (!elem) {
+        elem = document;
+    }
+    return elem.querySelector(selector);
+}
+
+function findAll(selector, elem) {
+    if (!elem) {
+        elem = document;
+    }
+    return toArray(elem.querySelectorAll(selector));
+}
+
+function sortColumn(elem) {
+    toggleSortStates(elem);
+    const colIndex = toArray(elem.parentNode.childNodes).indexOf(elem);
+    let key;
+    if (elem.classList.contains('result')) {
+        key = keyResult;
+    } else if (elem.classList.contains('links')) {
+        key = keyLink;
+    } else {
+        key = keyAlpha;
+    }
+    sortTable(elem, key(colIndex));
+}
+
+function showAllExtras() { // eslint-disable-line no-unused-vars
+    findAll('.col-result').forEach(showExtras);
+}
+
+function hideAllExtras() { // eslint-disable-line no-unused-vars
+    findAll('.col-result').forEach(hideExtras);
+}
+
+function showExtras(colresultElem) {
+    const extras = colresultElem.parentNode.nextElementSibling;
+    const expandcollapse = colresultElem.firstElementChild;
+    extras.classList.remove('collapsed');
+    expandcollapse.classList.remove('expander');
+    expandcollapse.classList.add('collapser');
+}
+
+function hideExtras(colresultElem) {
+    const extras = colresultElem.parentNode.nextElementSibling;
+    const expandcollapse = colresultElem.firstElementChild;
+    extras.classList.add('collapsed');
+    expandcollapse.classList.remove('collapser');
+    expandcollapse.classList.add('expander');
+}
+
+function showFilters() {
+    let visibleString = getQueryParameter('visible') || 'all';
+    visibleString = visibleString.toLowerCase();
+    const checkedItems = visibleString.split(',');
+
+    const filterItems = document.getElementsByClassName('filter');
+    for (let i = 0; i < filterItems.length; i++) {
+        filterItems[i].hidden = false;
+
+        if (visibleString != 'all') {
+            filterItems[i].checked = checkedItems.includes(filterItems[i].getAttribute('data-test-result'));
+            filterTable(filterItems[i]);
+        }
+    }
+}
+
+function addCollapse() {
+    // Add links for show/hide all
+    const resulttable = find('table#results-table');
+    const showhideall = document.createElement('p');
+    showhideall.innerHTML = '<a href="javascript:showAllExtras()">Show all details</a> / ' +
+                            '<a href="javascript:hideAllExtras()">Hide all details</a>';
+    resulttable.parentElement.insertBefore(showhideall, resulttable);
+
+    // Add show/hide link to each result
+    findAll('.col-result').forEach(function(elem) {
+        const collapsed = getQueryParameter('collapsed') || 'Passed';
+        const extras = elem.parentNode.nextElementSibling;
+        const expandcollapse = document.createElement('span');
+        if (extras.classList.contains('collapsed')) {
+            expandcollapse.classList.add('expander');
+        } else if (collapsed.includes(elem.innerHTML)) {
+            extras.classList.add('collapsed');
+            expandcollapse.classList.add('expander');
+        } else {
+            expandcollapse.classList.add('collapser');
+        }
+        elem.appendChild(expandcollapse);
+
+        elem.addEventListener('click', function(event) {
+            if (event.currentTarget.parentNode.nextElementSibling.classList.contains('collapsed')) {
+                showExtras(event.currentTarget);
+            } else {
+                hideExtras(event.currentTarget);
+            }
+        });
+    });
+}
+
+function getQueryParameter(name) {
+    const match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+}
+
+function init () { // eslint-disable-line no-unused-vars
+    resetSortHeaders();
+
+    addCollapse();
+
+    showFilters();
+
+    sortColumn(find('.initial-sort'));
+
+    findAll('.sortable').forEach(function(elem) {
+        elem.addEventListener('click',
+            function() {
+                sortColumn(elem);
+            }, false);
+    });
+}
+
+function sortTable(clicked, keyFunc) {
+    const rows = findAll('.results-table-row');
+    const reversed = !clicked.classList.contains('asc');
+    const sortedRows = sort(rows, keyFunc, reversed);
+    /* Whole table is removed here because browsers acts much slower
+     * when appending existing elements.
+     */
+    const thead = document.getElementById('results-table-head');
+    document.getElementById('results-table').remove();
+    const parent = document.createElement('table');
+    parent.id = 'results-table';
+    parent.appendChild(thead);
+    sortedRows.forEach(function(elem) {
+        parent.appendChild(elem);
+    });
+    document.getElementsByTagName('BODY')[0].appendChild(parent);
+}
+
+function sort(items, keyFunc, reversed) {
+    const sortArray = items.map(function(item, i) {
+        return [keyFunc(item), i];
+    });
+
+    sortArray.sort(function(a, b) {
+        const keyA = a[0];
+        const keyB = b[0];
+
+        if (keyA == keyB) return 0;
+
+        if (reversed) {
+            return keyA < keyB ? 1 : -1;
+        } else {
+            return keyA > keyB ? 1 : -1;
+        }
+    });
+
+    return sortArray.map(function(item) {
+        const index = item[1];
+        return items[index];
+    });
+}
+
+function keyAlpha(colIndex) {
+    return function(elem) {
+        return elem.childNodes[1].childNodes[colIndex].firstChild.data.toLowerCase();
+    };
+}
+
+function keyLink(colIndex) {
+    return function(elem) {
+        const dataCell = elem.childNodes[1].childNodes[colIndex].firstChild;
+        return dataCell == null ? '' : dataCell.innerText.toLowerCase();
+    };
+}
+
+function keyResult(colIndex) {
+    return function(elem) {
+        const strings = ['Error', 'Failed', 'Rerun', 'XFailed', 'XPassed',
+            'Skipped', 'Passed'];
+        return strings.indexOf(elem.childNodes[1].childNodes[colIndex].firstChild.data);
+    };
+}
+
+function resetSortHeaders() {
+    findAll('.sort-icon').forEach(function(elem) {
+        elem.parentNode.removeChild(elem);
+    });
+    findAll('.sortable').forEach(function(elem) {
+        const icon = document.createElement('div');
+        icon.className = 'sort-icon';
+        icon.textContent = 'vvv';
+        elem.insertBefore(icon, elem.firstChild);
+        elem.classList.remove('desc', 'active');
+        elem.classList.add('asc', 'inactive');
+    });
+}
+
+function toggleSortStates(elem) {
+    //if active, toggle between asc and desc
+    if (elem.classList.contains('active')) {
+        elem.classList.toggle('asc');
+        elem.classList.toggle('desc');
+    }
+
+    //if inactive, reset all other functions and add ascending active
+    if (elem.classList.contains('inactive')) {
+        resetSortHeaders();
+        elem.classList.remove('inactive');
+        elem.classList.add('active');
+    }
+}
+
+function isAllRowsHidden(value) {
+    return value.hidden == false;
+}
+
+function filterTable(elem) { // eslint-disable-line no-unused-vars
+    const outcomeAtt = 'data-test-result';
+    const outcome = elem.getAttribute(outcomeAtt);
+    const classOutcome = outcome + ' results-table-row';
+    const outcomeRows = document.getElementsByClassName(classOutcome);
+
+    for(let i = 0; i < outcomeRows.length; i++){
+        outcomeRows[i].hidden = !elem.checked;
+    }
+
+    const rows = findAll('.results-table-row').filter(isAllRowsHidden);
+    const allRowsHidden = rows.length == 0 ? true : false;
+    const notFoundMessage = document.getElementById('not-found-message');
+    notFoundMessage.hidden = !allRowsHidden;
+}
+</script>
+    <h1>Automation Report</h1>
+    <p>Report generated on 20-Jun-2023 at 15:48:27 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a> v3.2.0</p>
+    <h2>Environment</h2>
+    <table id="environment">
+      <tr>
+        <td>Base URL</td>
+        <td></td></tr>
+      <tr>
+        <td>Capabilities</td>
+        <td>{}</td></tr>
+      <tr>
+        <td>Driver</td>
+        <td>None</td></tr>
+      <tr>
+        <td>Packages</td>
+        <td>{"pluggy": "1.0.0", "pytest": "6.2.5"}</td></tr>
+      <tr>
+        <td>Platform</td>
+        <td>Linux-5.19.0-43-generic-x86_64-with-glibc2.36</td></tr>
+      <tr>
+        <td>Plugins</td>
+        <td>{"base-url": "2.0.0", "html": "3.2.0", "metadata": "2.0.4", "ordering": "0.6", "reportportal": "5.1.8", "selenium": "4.0.0", "testmon": "2.0.8", "testrail": "2.9.0", "variables": "2.0.0", "xdist": "3.3.1"}</td></tr>
+      <tr>
+        <td>Python</td>
+        <td>3.10.7</td></tr></table>
+    <h2>Summary</h2>
+    <p>45 tests ran in 376.46 seconds. </p>
+    <p class="filter" hidden="true">(Un)check the boxes to filter the results.</p><input checked="true" class="filter" data-test-result="passed" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="passed">43 passed</span>, <input checked="true" class="filter" data-test-result="skipped" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="skipped">0 skipped</span>, <input checked="true" class="filter" data-test-result="failed" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="failed">2 failed</span>, <input checked="true" class="filter" data-test-result="error" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="error">0 errors</span>, <input checked="true" class="filter" data-test-result="xfailed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xfailed">0 expected failures</span>, <input checked="true" class="filter" data-test-result="xpassed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xpassed">0 unexpected passes</span>
+    <h2>Results</h2>
+    <table id="results-table">
+      <thead id="results-table-head">
+        <tr>
+          <th class="sortable result initial-sort" col="result">Result</th>
+          <th class="sortable" col="name">Test</th>
+          <th class="sortable" col="duration">Duration</th>
+          <th class="sortable links" col="links">Links</th></tr>
+        <tr hidden="true" id="not-found-message">
+          <th colspan="4">No results found. Try to check the filters</th></tr></thead>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">Login with validation in pytest/DeleteData_test.py::test_DeleteTask</td>
+          <td class="col-duration">36.34</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">driver = &lt;selenium.webdriver.chrome.webdriver.WebDriver (session=&quot;01e1931476a96daaf267d3cc423cf0a4&quot;)&gt;<br/><br/>    @pytest.mark.order(44)<br/>    def test_DeleteTask(driver):<br/>        Table = driver.find_element(By.XPATH, &#x27;/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody&#x27;)<br/>        Rows = Table.find_elements(By.TAG_NAME, &#x27;tr&#x27;)<br/>        length = len(Rows)<br/>        print(&quot;There are %s Rows in Tasks&quot; % length)<br/>    <br/>        for i in range(1,length + 1):<br/>            NewLength = len(Rows)<br/>            if NewLength != 1:<br/>                Cell1 = driver.find_element(By.XPATH, f&#x27;/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr[{i}]/td[3]/div/div/h5&#x27;)<br/>                TaskName = Cell1.text<br/>                if TaskName == &quot;Task Testing&quot;:<br/>                    driver.find_element(By.XPATH, f&#x27;/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr[{i}]/td[10]/div/div/a&#x27;).click()<br/>                    driver.find_element(By.XPATH, f&#x27;/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr[{i}]/td[10]/div/div/div/a[3]&#x27;).click()<br/>                    wait.until(EC.visibility_of_element_located((By.XPATH, &#x27;/html/body/div[8]/div/div[3]/button[1]&#x27;)))<br/>                    time.sleep(2)<br/>                    driver.find_element(By.XPATH, &#x27;/html/body/div[8]/div/div[3]/button[1]&#x27;).click()<br/>                    # wait.until(EC.visibility_of_element_located((By.XPATH, &#x27;//*[@id=&quot;table-actions&quot;]/a[1]&#x27;)))<br/>                    time.sleep(3)<br/>                    expected_row_count = 1<br/>    <br/>                    def wait_until_row_count(driver):<br/>                        rows = driver.find_element(By.XPATH,<br/>                                                    &#x27;/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr/td&#x27;).text<br/>                        Cell1 = driver.find_element(By.XPATH,<br/>                                                    f&#x27;/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr[1]/td[3]/h5&#x27;).text<br/>    <br/>                        if rows == &quot;No data available in table&quot;:<br/>                            print(&quot;Rows are emplty&quot;)<br/>                            return True<br/>    <br/>                        if Cell1 != &quot;Task Testing&quot;:<br/>                            return True<br/>                        # return rows == &quot;No data available in table&quot; or Cell1 != &quot;Task Testing&quot;<br/>    <br/>&gt;                   wait.until(wait_until_row_count)<br/><br/>DeleteData_test.py:269: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>self = &lt;selenium.webdriver.support.wait.WebDriverWait (session=&quot;01e1931476a96daaf267d3cc423cf0a4&quot;)&gt;<br/>method = &lt;function test_DeleteTask.&lt;locals&gt;.wait_until_row_count at 0x7f0509d1c9d0&gt;, message = &#x27;&#x27;<br/><br/>    def until(self, method, message: str = &quot;&quot;):<br/>        &quot;&quot;&quot;Calls the method provided with the driver as an argument until the \<br/>        return value does not evaluate to ``False``.<br/>    <br/>        :param method: callable(WebDriver)<br/>        :param message: optional message for :exc:`TimeoutException`<br/>        :returns: the result of the last call to `method`<br/>        :raises: :exc:`selenium.common.exceptions.TimeoutException` if timeout occurs<br/>        &quot;&quot;&quot;<br/>        screen = None<br/>        stacktrace = None<br/>    <br/>        end_time = time.monotonic() + self._timeout<br/>        while True:<br/>            try:<br/>                value = method(self._driver)<br/>                if value:<br/>                    return value<br/>            except self._ignored_exceptions as exc:<br/>                screen = getattr(exc, &quot;screen&quot;, None)<br/>                stacktrace = getattr(exc, &quot;stacktrace&quot;, None)<br/>            time.sleep(self._poll)<br/>            if time.monotonic() &gt; end_time:<br/>                break<br/>&gt;       raise TimeoutException(message, screen, stacktrace)<br/><span class="error">E       selenium.common.exceptions.TimeoutException: Message: </span><br/><span class="error">E       Stacktrace:</span><br/><span class="error">E       #0 0x559f3aa30fe3 &lt;unknown&gt;</span><br/><span class="error">E       #1 0x559f3a76fd36 &lt;unknown&gt;</span><br/><span class="error">E       #2 0x559f3a7acc4d &lt;unknown&gt;</span><br/><span class="error">E       #3 0x559f3a7acd61 &lt;unknown&gt;</span><br/><span class="error">E       #4 0x559f3a7e86a4 &lt;unknown&gt;</span><br/><span class="error">E       #5 0x559f3a7cd8ed &lt;unknown&gt;</span><br/><span class="error">E       #6 0x559f3a7e6232 &lt;unknown&gt;</span><br/><span class="error">E       #7 0x559f3a7cd693 &lt;unknown&gt;</span><br/><span class="error">E       #8 0x559f3a7a003a &lt;unknown&gt;</span><br/><span class="error">E       #9 0x559f3a7a117e &lt;unknown&gt;</span><br/><span class="error">E       #10 0x559f3a9f2dbd &lt;unknown&gt;</span><br/><span class="error">E       #11 0x559f3a9f6c6c &lt;unknown&gt;</span><br/><span class="error">E       #12 0x559f3aa004b0 &lt;unknown&gt;</span><br/><span class="error">E       #13 0x559f3a9f7d63 &lt;unknown&gt;</span><br/><span class="error">E       #14 0x559f3a9cac35 &lt;unknown&gt;</span><br/><span class="error">E       #15 0x559f3aa1b138 &lt;unknown&gt;</span><br/><span class="error">E       #16 0x559f3aa1b2c7 &lt;unknown&gt;</span><br/><span class="error">E       #17 0x559f3aa29093 &lt;unknown&gt;</span><br/><span class="error">E       #18 0x7f3086890402 &lt;unknown&gt;</span><br/><br/>../../../.local/lib/python3.10/site-packages/selenium/webdriver/support/wait.py:95: TimeoutException<br/> ------------------------------Captured stdout call------------------------------ <br/>There are 10 Rows in Tasks
+<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">Login with validation in pytest/DeleteData_test.py::test_DeleteProject</td>
+          <td class="col-duration">37.04</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">driver = &lt;selenium.webdriver.chrome.webdriver.WebDriver (session=&quot;01e1931476a96daaf267d3cc423cf0a4&quot;)&gt;<br/><br/>    @pytest.mark.order(47)<br/>    def test_DeleteProject(driver):<br/>        Table = driver.find_element(By.XPATH, &#x27;/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody&#x27;)<br/>        Rows = Table.find_elements(By.TAG_NAME, &#x27;tr&#x27;)<br/>        length = len(Rows)<br/>        print(&quot;There are %s Rows in Projects&quot; % length)<br/>        for i in range(1,length + 1):<br/>            NewLength = len(Rows)<br/>            if NewLength != 1:<br/>                Cell1 = driver.find_element(By.XPATH, f&#x27;/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr[{i}]/td[3]/div/div/h5&#x27;)<br/>                project_name = Cell1.text<br/>                if project_name == &quot;Project Testing&quot;:<br/>                    driver.find_element(By.XPATH,<br/>                                        f&#x27;/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr[{i}]/td[9]/div/div/a&#x27;).click()<br/>                    driver.find_element(By.XPATH,<br/>                                        f&#x27;/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr[{i}]/td[9]/div/div/div/a[7]&#x27;).click()<br/>                    wait.until(EC.visibility_of_element_located((By.XPATH, &#x27;/html/body/div[7]/div/div[3]/button[1]&#x27;)))<br/>                    time.sleep(2)<br/>                    driver.find_element(By.XPATH, &#x27;/html/body/div[7]/div/div[3]/button[1]&#x27;).click()<br/>                    # wait.until(EC.visibility_of_element_located((By.XPATH, &#x27;//*[@id=&quot;table-actions&quot;]/a[1]&#x27;)))<br/>                    time.sleep(3)<br/>                    expected_row_count = 1<br/>    <br/>                    def wait_until_row_count(driver):<br/>                        rows = driver.find_element(By.XPATH,<br/>                                                    &#x27;/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr/td&#x27;).text<br/>                        Cell1 = driver.find_element(By.XPATH,<br/>                                                    f&#x27;/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr[1]/td[3]/h5&#x27;).text<br/>                        print(&quot;rows text: &quot; + rows)<br/>                        if rows == &quot;No data available in table&quot;:<br/>                            print(&quot;Rows are Empty&quot;)<br/>                            return True<br/>    <br/>                        if Cell1 != &quot;Project Testing&quot;:<br/>                            return True<br/>                        # return rows == &quot;No data available in table&quot; or Cell1 != &quot;Task Testing&quot;<br/>    <br/>&gt;                   wait.until(wait_until_row_count)<br/><br/>DeleteData_test.py:404: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>self = &lt;selenium.webdriver.support.wait.WebDriverWait (session=&quot;01e1931476a96daaf267d3cc423cf0a4&quot;)&gt;<br/>method = &lt;function test_DeleteProject.&lt;locals&gt;.wait_until_row_count at 0x7f0509d1c670&gt;, message = &#x27;&#x27;<br/><br/>    def until(self, method, message: str = &quot;&quot;):<br/>        &quot;&quot;&quot;Calls the method provided with the driver as an argument until the \<br/>        return value does not evaluate to ``False``.<br/>    <br/>        :param method: callable(WebDriver)<br/>        :param message: optional message for :exc:`TimeoutException`<br/>        :returns: the result of the last call to `method`<br/>        :raises: :exc:`selenium.common.exceptions.TimeoutException` if timeout occurs<br/>        &quot;&quot;&quot;<br/>        screen = None<br/>        stacktrace = None<br/>    <br/>        end_time = time.monotonic() + self._timeout<br/>        while True:<br/>            try:<br/>                value = method(self._driver)<br/>                if value:<br/>                    return value<br/>            except self._ignored_exceptions as exc:<br/>                screen = getattr(exc, &quot;screen&quot;, None)<br/>                stacktrace = getattr(exc, &quot;stacktrace&quot;, None)<br/>            time.sleep(self._poll)<br/>            if time.monotonic() &gt; end_time:<br/>                break<br/>&gt;       raise TimeoutException(message, screen, stacktrace)<br/><span class="error">E       selenium.common.exceptions.TimeoutException: Message: </span><br/><span class="error">E       Stacktrace:</span><br/><span class="error">E       #0 0x559f3aa30fe3 &lt;unknown&gt;</span><br/><span class="error">E       #1 0x559f3a76fd36 &lt;unknown&gt;</span><br/><span class="error">E       #2 0x559f3a7acc4d &lt;unknown&gt;</span><br/><span class="error">E       #3 0x559f3a7acd61 &lt;unknown&gt;</span><br/><span class="error">E       #4 0x559f3a7e86a4 &lt;unknown&gt;</span><br/><span class="error">E       #5 0x559f3a7cd8ed &lt;unknown&gt;</span><br/><span class="error">E       #6 0x559f3a7e6232 &lt;unknown&gt;</span><br/><span class="error">E       #7 0x559f3a7cd693 &lt;unknown&gt;</span><br/><span class="error">E       #8 0x559f3a7a003a &lt;unknown&gt;</span><br/><span class="error">E       #9 0x559f3a7a117e &lt;unknown&gt;</span><br/><span class="error">E       #10 0x559f3a9f2dbd &lt;unknown&gt;</span><br/><span class="error">E       #11 0x559f3a9f6c6c &lt;unknown&gt;</span><br/><span class="error">E       #12 0x559f3aa004b0 &lt;unknown&gt;</span><br/><span class="error">E       #13 0x559f3a9f7d63 &lt;unknown&gt;</span><br/><span class="error">E       #14 0x559f3a9cac35 &lt;unknown&gt;</span><br/><span class="error">E       #15 0x559f3aa1b138 &lt;unknown&gt;</span><br/><span class="error">E       #16 0x559f3aa1b2c7 &lt;unknown&gt;</span><br/><span class="error">E       #17 0x559f3aa29093 &lt;unknown&gt;</span><br/><span class="error">E       #18 0x7f3086890402 &lt;unknown&gt;</span><br/><br/>../../../.local/lib/python3.10/site-packages/selenium/webdriver/support/wait.py:95: TimeoutException<br/> ------------------------------Captured stdout call------------------------------ <br/>There are 10 Rows in Projects
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/LoginPageValidation_test.py::test_LoginPage</td>
+          <td class="col-duration">2.49</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -----------------------------Captured stdout setup------------------------------ <br/>Launch browser
+<br/> ------------------------------Captured stdout call------------------------------ <br/>Successfully reached at Login page
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/LoginPageValidation_test.py::test_ValidateTextboxButton</td>
+          <td class="col-duration">0.05</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>The Email textbox is Enabled.
+The Password textbox is Enabled.
+The Login button is Enabled.
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/LoginPageValidation_test.py::test_EnterBlankCreadential</td>
+          <td class="col-duration">0.82</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>&quot;The password field is required.&quot; Message displayed successfully.
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/LoginPageValidation_test.py::test_EnterInValidEmail</td>
+          <td class="col-duration">0.80</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>&quot;The email must be a valid email address.,The email format is invalid.&quot; Message displayed successfully.
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/LoginPageValidation_test.py::test_EnterInvalidPass</td>
+          <td class="col-duration">0.86</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>&quot;These credentials do not match our records.&quot; Message displayed successfully.
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/LoginPageValidation_test.py::test_EnterValidCreadential</td>
+          <td class="col-duration">8.66</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>The Private dashboard is displayed properly
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/ClockIn_test.py::test_ClickOnClockin</td>
+          <td class="col-duration">0.75</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>Successfully reached Dashboard, and Clock-in Button is Enabled
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/ClockIn_test.py::test_VerifyClockinTimeAndGetUsername</td>
+          <td class="col-duration">6.73</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>The Current Day is  20
+expected time at verify clockin : 03:42 pm
+clockin time at verify clockin : 03:42
+The clockin time is 03:42
+The current time is 15:42
+The User name is  Pathan UveshMohammad
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/ClockIn_test.py::test_VerifyClockinAndAttendance</td>
+          <td class="col-duration">25.59</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>The Employee&#x27;s Name has been matched.
+The actual clockin : 03:42 pm matched with expected clockin time : 03:42 pm
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/ClockIn_test.py::test_ClockOut</td>
+          <td class="col-duration">13.28</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>The Clock out Button is Enabled
+Clocked out successfully.
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/ProjectsPageValidation_test.py::test_ClickOnProjects</td>
+          <td class="col-duration">2.47</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>Successfully reached at Projects page
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/ProjectsPageValidation_test.py::test_AddProjectButton</td>
+          <td class="col-duration">7.41</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>The Add project button is Enabled.
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/ProjectsPageValidation_test.py::test_ValidateComponents</td>
+          <td class="col-duration">5.75</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>The project textbox is Enabled.
+The start date input is Enabled.
+The Deadline input is Enabled.
+The Deadline checkbox is Enabled.
+The Category dropdown is Enabled.
+The Department dropdown is Enabled.
+The Client dropdown is Enabled.
+The Summary textarea is Enabled.
+The Notes textarea is Enabled.
+The Public project checkbox is Enabled.
+The Member dropdown is Enabled.
+The Channel dropdown is Enabled.
+The Topic input is Enabled.
+The Other Details button is Enabled.
+The Add file input is Enabled.
+The Currency dropdown is Enabled.
+The Budget input is Enabled.
+The Hours input is Enabled.
+The Allow Manual time logs checkbox is Enabled.
+The Client can manage tasks of this project checkbox is Enabled.
+The Save button is Enabled.
+The Cancel button is Enabled.
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/ProjectsPageValidation_test.py::test_WithBlankValue</td>
+          <td class="col-duration">3.98</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>&quot;The project name field is required.&quot; Message displayed successfully.
+&quot;The start date field is required.&quot; Message displayed successfully.
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/ProjectsPageValidation_test.py::test_WithInvalidValue</td>
+          <td class="col-duration">8.55</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>&quot;No result found&quot; message displayed successfully for invalid search in Hours dropdown
+&quot;No result found&quot; message displayed successfully for invalid search in Hours dropdown
+&quot;No result found&quot; message displayed successfully for invalid search in Hours dropdown
+&quot;No result found&quot; message displayed successfully for invalid search in Hours dropdown
+&quot;No result found&quot; message displayed successfully for invalid search in Hours dropdown
+&quot;No result found&quot; message displayed successfully for invalid search in Hours dropdown
+&quot;The start date does not match the format d-m-Y.&quot; Message displayed successfully.
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/ProjectsPageValidation_test.py::test_WithInvalidStartdateAndDeadline</td>
+          <td class="col-duration">8.76</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/ProjectsPageValidation_test.py::test_WithValidDataAndCheckbox</td>
+          <td class="col-duration">11.39</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>When user check the &quot;There is no project Deadline&quot; checkbox the Deadline element removed successfully
+When user check the &quot;The Client can manage tasks of this project&quot; checkbox the &quot;Send task notification to Client?&quot; checkbox is enabled.
+The Form with valid data Saved successfully.
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/ProjectsPageValidation_test.py::test_SearchInTable</td>
+          <td class="col-duration">7.30</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>The Project searched successfully in the table
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/ProjectsPageValidation_test.py::test_EditAndSave</td>
+          <td class="col-duration">16.36</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>The Edit form Saved successfully.
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/ProjectsPageValidation_test.py::test_AddSprint</td>
+          <td class="col-duration">18.12</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/TasksPageValidations_test.py::test_ClickOnTask</td>
+          <td class="col-duration">5.46</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>Successfully reached at Tasks page
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/TasksPageValidations_test.py::test_AddTaskButton</td>
+          <td class="col-duration">8.68</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>The Add Task button is Enabled.
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/TasksPageValidations_test.py::test_ValidateComponents</td>
+          <td class="col-duration">3.88</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>The Title textbox is Enabled.
+The Category dropdown is Enabled.
+The Project dropdown is Enabled.
+The start date input is Enabled.
+The Due date input is Enabled.
+The WithoutDuedate checkbox is Enabled.
+The Assigned To dropdown is Enabled.
+The Lable dropdown is Enabled.
+The Status dropdown is Enabled.
+The Description textarea is Enabled.
+The Other Details button is Enabled.
+The Milestones dropdown is Enabled.
+The Priority dropdown is Enabled.
+The Save button is Enabled.
+The Cancel button is Enabled.
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/TasksPageValidations_test.py::test_WithBlankValue</td>
+          <td class="col-duration">4.11</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>&quot;The heading field is required.&quot; Message displayed successfully.
+&quot;Select at least 1 member&quot; Message displayed successfully.
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/TasksPageValidations_test.py::test_WithValidData</td>
+          <td class="col-duration">15.35</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>When user check the &quot;There is no Project deadline&quot; checkbox the Deadline element removed successfully
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/TasksPageValidations_test.py::test_SearchInTable</td>
+          <td class="col-duration">6.91</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>The task searched successfully in the table
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/TasksPageValidations_test.py::test_EditAndSave</td>
+          <td class="col-duration">13.56</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>The Edit form Saved successfully.
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/TimeLogPageValidation_test.py::test_ClickOnTimelogPage</td>
+          <td class="col-duration">5.27</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>Successfully reached at Time Logs page
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/TimeLogPageValidation_test.py::test_LogTimeButton</td>
+          <td class="col-duration">8.85</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>The Log Time button is Enabled.
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/TimeLogPageValidation_test.py::test_ValidateComponents</td>
+          <td class="col-duration">0.36</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>The Project dropdown is Enabled.
+The Task dropdown is Enabled.
+The Employee dropdown is Enabled.
+The Date picker is Enabled.
+The hour dropdown is Enabled.
+The Minutes dropdown is Enabled.
+The Memo textarea is Enabled.
+The Save button is Enabled.
+The Cancel button is Enabled.
+The Add more button is Enabled.
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/TimeLogPageValidation_test.py::test_WithBlankValue</td>
+          <td class="col-duration">3.07</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>&quot;Please select Project.&quot; Message displayed successfully.
+&quot;Please select Task.&quot; Message displayed successfully.
+&quot;Please select user&quot; Message displayed successfully.
+&quot;Please enter Memo&quot; Message displayed successfully.
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/TimeLogPageValidation_test.py::test_WithInvalidValue</td>
+          <td class="col-duration">2.95</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>&quot;No result found&quot; message displayed successfully for invalid search in Project dropdown
+&quot;No result found&quot; message displayed successfully for invalid search in Task dropdown
+&quot;No result found&quot; message displayed successfully for invalid search in Employee dropdown
+&quot;No result found&quot; message displayed successfully for invalid search in Minutes Dropdown
+&quot;No result found&quot; message displayed successfully for invalid search in Hours dropdown
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/TimeLogPageValidation_test.py::test_WithInvalidDateValue</td>
+          <td class="col-duration">9.97</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>&quot;A two digit day could not be found Data missing&quot; Message displayed successfully
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/TimeLogPageValidation_test.py::test_WithValidValue</td>
+          <td class="col-duration">12.45</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>The form with valid data Saved successfully.
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/TimeLogPageValidation_test.py::test_SearchInTable</td>
+          <td class="col-duration">5.81</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>The Log searched successfully in the table
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/TimeLogPageValidation_test.py::test_EditAndSave</td>
+          <td class="col-duration">6.38</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>The Edit form Saved successfully.
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/DeleteData_test.py::test_ClickOnTimelogPage</td>
+          <td class="col-duration">2.46</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>Successfully reached at Time Logs page
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/DeleteData_test.py::test_TimeLogSearch</td>
+          <td class="col-duration">14.24</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/DeleteData_test.py::test_DeleteTimeLog</td>
+          <td class="col-duration">8.59</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>There are 6 Rows in time log
+The Task Testing Log deleted successfully from the table
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/DeleteData_test.py::test_ClickOnTasksPage</td>
+          <td class="col-duration">5.30</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>Successfully reached at Tasks page
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/DeleteData_test.py::test_TaskSearch</td>
+          <td class="col-duration">2.28</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/DeleteData_test.py::test_ClickOnProjectsPage</td>
+          <td class="col-duration">4.35</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>Successfully reached at Projects page
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Login with validation in pytest/DeleteData_test.py::test_ProjectSearch</td>
+          <td class="col-duration">2.24</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody></table></body></html>
