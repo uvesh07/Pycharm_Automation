@@ -1,12 +1,9 @@
-import html
-import pytest
 import os
-import pytest_html
-from selenium import webdriver
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from rocketchat_API.rocketchat import RocketChat
 from selenium.webdriver.chrome.options import Options
+from behave import fixture, use_fixture
+from rocketchat_API.rocketchat import RocketChat
 
 # Global variables to store test results
 Message = "This is for testing purpose."
@@ -17,33 +14,30 @@ NumErrors = 0
 NumSkipped = 0
 
 
-# In conftest.py
+# Fixture for setting up the driver
+@fixture
+def driver(context):
+    # create a Service object for the ChromeDriver
+    service = Service('/home/addweb/PycharmProjects/FirstScript/Drivers/chromedriver.exe')
+    # create a webdriver object and pass the Service object
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--window-size=1280,1024")
+    chrome_options.add_argument(f"user-data-dir={context.config.base_directory}/chrome-profile")
+    context.driver = webdriver.Chrome(service=service, options=chrome_options)
+    # Login to the site
+    context.driver.get('https://ttstage.addwebprojects.com/login')
+    context.driver.maximize_window()
+    print("Launch browser")
+    yield context.driver
+    # Teardown - close the driver after the test completes
+    context.driver.quit()
+
+
 def pytest_collection_modifyitems(config, items):
     # Sort the test items based on the marker order
     items.sort(key=lambda x: int(x.get_closest_marker("order").args[0]))
 
-
-@pytest.fixture(scope="session", autouse=True, name="driver")
-def setup(request):
-    # create a Service object for the ChromeDriver
-    service = Service('/home/addweb/PycharmProjects/FirstScript/Drivers/chromedriver.exe')
-    # create a webdriver object and pass the Service object
-    global driver
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--window-size=1280,1024")
-    chrome_options.add_argument(f"user-data-dir={pytest.config.rootdir}/chrome-profile")
-    driver = webdriver.Chrome(service=service, options=chrome_options)
-    # Login to the site
-    driver.get('https://ttstage.addwebprojects.com/login')
-    driver.maximize_window()
-    print("Launch browser")
-    return driver
-
-
-@pytest.mark.optionalhook
-def pytest_html_report_title(report):
-    report.title = "Test Report with Screenshots"
 
 def pytest_runtest_makereport(item, call):
     global TotalTests, NumPassed, NumFailed, NumErrors, NumSkipped
@@ -86,3 +80,7 @@ def pytest_terminal_summary(terminalreporter):
 
 def pytest_html_report_title(report):
     report.title = "Automation Report"
+
+
+def before_all(context):
+    use_fixture(driver, context)

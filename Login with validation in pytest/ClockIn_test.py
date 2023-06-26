@@ -21,12 +21,13 @@ wait = ""
 
 
 @pytest.mark.order(7)
+@pytest.mark.screenshot
 def test_ClickOnClockin(driver, selenium):
     global wait
     wait = WebDriverWait(driver, 30)
     try:
         # Clock-in Button
-        ClockIn = driver.find_element(By.XPATH, '//*[@id="clock-in"]')
+        ClockIn = driver.find_element(By.XPATH, '//*[@id="clock-in"]1')
         # Verify the clock-in button
         if ClockIn.is_enabled():
             print("Successfully reached Dashboard, and Clock-in Button is Enabled")
@@ -46,6 +47,7 @@ def test_ClickOnClockin(driver, selenium):
 
 
 @pytest.mark.order(8)
+@pytest.mark.screenshot
 def test_VerifyClockinTimeAndGetUsername(driver, selenium):
     global ClockinTime
     global ExpectedClockinTime
@@ -80,6 +82,7 @@ def test_VerifyClockinTimeAndGetUsername(driver, selenium):
 
 
 @pytest.mark.order(9)
+@pytest.mark.screenshot
 def test_VerifyClockinAndAttendance(driver, selenium):
     global ClockinTime
     global ExpectedClockinTime
@@ -151,6 +154,7 @@ def test_VerifyClockinAndAttendance(driver, selenium):
 
 
 @pytest.mark.order(10)
+@pytest.mark.screenshot
 def test_ClockOut(driver):
     Ul = driver.find_element(By.XPATH, '//*[@id="sideMenuScroll"]/ul')
     element = Ul.find_element(By.LINK_TEXT, "Dashboard")

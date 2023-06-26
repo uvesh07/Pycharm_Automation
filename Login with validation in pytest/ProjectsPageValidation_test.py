@@ -346,7 +346,9 @@ def test_WithInvalidValue(driver, nvar):
     Hr.clear()
     Hr.send_keys(InvalidHr)
 # Click on Manual timelog checkbox
-    Manual.click()
+#     actions = ActionChains(driver)
+#     actions.move_to_element(Manual).perform()
+#     Manual.click()
 # Click Save button
     Save.click()
     wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="save-project-data-form"]/div/div[1]/div[2]/div/div[2]')))
@@ -491,7 +493,7 @@ def test_WithInvalidStartdateAndDeadline(driver, nvar):
     Hr.clear()
     Hr.send_keys(ValidHr)
 # Click on Manual timelog checkbox
-    Manual.click()
+#     Manual.click()
 # Click Save button
     Save.click()
     wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="deadlineBox"]/div/div[2]')))
@@ -635,9 +637,9 @@ def test_WithValidDataAndCheckbox(driver, nvar):
     Hr.clear()
     Hr.send_keys(ValidHr)
 # Click on Manual timelog checkbox
-    Manual.click()
+#     Manual.click()
 # Check the Client can manage tasks of this project checkbox
-    ClientManage.click()
+#     ClientManage.click()
     task_notification = driver.find_element(By.XPATH, '//*[@id="client_task_notification"]')
     if task_notification.is_enabled():
         print('When user check the "The Client can manage tasks of this project" checkbox the "Send task notification '
@@ -663,7 +665,7 @@ def test_SearchInTable(driver):
     VarId = Cell1.text
     driver.find_element(By.XPATH, f'//*[@id="dropdownMenuLink-%s"]' % VarId).click()
     time.sleep(2)
-    driver.find_element(By.XPATH, f'//*[@id="row-%s"]/td[9]/div/div/div/a[2]' % VarId).click()
+    driver.find_element(By.XPATH, f'//*[@id="row-%s"]/td[10]/div/div/div/a[2]' % VarId).click()
     print("The Project searched successfully in the table")
     time.sleep(5)
     wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="project_name"]')))

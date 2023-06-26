@@ -115,26 +115,26 @@ def test_DeleteTimeLog(driver):
                 wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="body"]/div[8]/div/div[3]/button[1]')))
                 time.sleep(2)
                 driver.find_element(By.XPATH, '//*[@id="body"]/div[8]/div/div[3]/button[1]').click()
-                # wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="table-actions"]/a')))
+                wait.until(EC.invisibility_of_element_located((By.XPATH, '/html/body/div[7]')))
                 time.sleep(3)
-                expected_row_count = 1
-
-                def wait_until_row_count(driver):
-                    rows = driver.find_element(By.XPATH,
-                                                '/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr/td').text
-                    Cell1 = driver.find_element(By.XPATH,
-                                                f'/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr[1]/td[3]/h5').text
-
-                    if rows == "No data available in table":
-                        print("Rows are Empty")
-                        return True
-
-                    if Cell1 != "Task Testing":
-                        return True
-                    # return rows == "No data available in table" or Cell1 != "Task Testing"
-
-                wait.until(wait_until_row_count)
-                time.sleep(3)
+                # expected_row_count = 1
+                #
+                # def wait_until_row_count(driver):
+                #     rows = driver.find_elements(By.XPATH,
+                #                                 '/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr/td')
+                #     Cell1 = driver.find_element(By.XPATH,
+                #                                 f'/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr[1]/td[3]/h5').text
+                #
+                #     if rows == 1:
+                #         print("Rows are Empty")
+                #         return True
+                #
+                #     if Cell1 != "Task Testing":
+                #         return True
+                #     # return rows == "No data available in table" or Cell1 != "Task Testing"
+                #
+                # wait.until(wait_until_row_count)
+                # time.sleep(3)
                 print("The " + TaskName + " Log deleted successfully from the table")
                 break
         else:
@@ -146,26 +146,26 @@ def test_DeleteTimeLog(driver):
                 wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="body"]/div[8]/div/div[3]/button[1]')))
                 time.sleep(2)
                 driver.find_element(By.XPATH, '//*[@id="body"]/div[8]/div/div[3]/button[1]').click()
-                # wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="table-actions"]/a')))
+                wait.until(EC.invisibility_of_element_located((By.XPATH, '/html/body/div[7]')))
                 time.sleep(3)
-                expected_row_count = 1
-
-                def wait_until_row_count(driver):
-                    rows = driver.find_element(By.XPATH,
-                                                '/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr/td').text
-                    Cell1 = driver.find_element(By.XPATH,
-                                                f'/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr[1]/td[3]/h5').text
-
-                    if rows == "No data available in table":
-                        print("Rows are Empty")
-                        return True
-
-                    if Cell1 != "Task Testing":
-                        return True
-                    # return rows == "No data available in table" or Cell1 != "Task Testing"
-
-                wait.until(wait_until_row_count)
-                time.sleep(3)
+                # expected_row_count = 1
+                #
+                # def wait_until_row_count(driver):
+                #     rows = driver.find_elements(By.XPATH,
+                #                                 '/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr/td')
+                #     Cell1 = driver.find_element(By.XPATH,
+                #                                 f'/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr[1]/td[3]/h5').text
+                #
+                #     if rows == 1:
+                #         print("Rows are Empty")
+                #         return True
+                #
+                #     if Cell1 != "Task Testing":
+                #         return True
+                #     # return rows == "No data available in table" or Cell1 != "Task Testing"
+                #
+                # wait.until(wait_until_row_count)
+                # time.sleep(3)
                 print("The " + TaskName + " Log deleted successfully from the table")
                 break
 
@@ -248,26 +248,26 @@ def test_DeleteTask(driver):
                 wait.until(EC.visibility_of_element_located((By.XPATH, '/html/body/div[8]/div/div[3]/button[1]')))
                 time.sleep(2)
                 driver.find_element(By.XPATH, '/html/body/div[8]/div/div[3]/button[1]').click()
-                # wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="table-actions"]/a[1]')))
+                wait.until(EC.invisibility_of_element_located((By.XPATH, '/html/body/div[7]')))
                 time.sleep(3)
-                expected_row_count = 1
-
-                def wait_until_row_count(driver):
-                    rows = driver.find_element(By.XPATH,
-                                                '/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr/td').text
-                    Cell1 = driver.find_element(By.XPATH,
-                                                f'/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr[1]/td[3]/h5').text
-
-                    if rows == "No data available in table":
-                        print("Rows are emplty")
-                        return True
-
-                    if Cell1 != "Task Testing":
-                        return True
-                    # return rows == "No data available in table" or Cell1 != "Task Testing"
-
-                wait.until(wait_until_row_count)
-                time.sleep(3)
+                # expected_row_count = 1
+                #
+                # def wait_until_row_count(driver):
+                #     rows = driver.find_elements(By.XPATH,
+                #                                 '/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr/td')
+                #     Cell1 = driver.find_element(By.XPATH,
+                #                                 f'/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr[1]/td[3]/h5').text
+                #
+                #     if rows == 1:
+                #         print("Rows are emplty")
+                #         return True
+                #
+                #     if Cell1 != "Task Testing":
+                #         return True
+                #     # return rows == "No data available in table" or Cell1 != "Task Testing"
+                #
+                # wait.until(wait_until_row_count)
+                # time.sleep(3)
                 print("The '" + TaskName + "' Task deleted successfully from the table")
                 break
         else:
@@ -280,26 +280,26 @@ def test_DeleteTask(driver):
                 wait.until(EC.visibility_of_element_located((By.XPATH, '/html/body/div[8]/div/div[3]/button[1]')))
                 time.sleep(2)
                 driver.find_element(By.XPATH, '/html/body/div[8]/div/div[3]/button[1]').click()
-                # wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="table-actions"]/a[1]')))
+                wait.until(EC.invisibility_of_element_located((By.XPATH, '/html/body/div[7]')))
                 time.sleep(3)
-                expected_row_count = 1
-
-                def wait_until_row_count(driver):
-                    rows = driver.find_element(By.XPATH,
-                                                '/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr/td').text
-                    Cell1 = driver.find_element(By.XPATH,
-                                                f'/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr[1]/td[3]/h5').text
-
-                    if rows == "No data available in table":
-                        print("Rows are Empty")
-                        return True
-
-                    if Cell1 != "Task Testing":
-                        return True
-                    # return rows == "No data available in table" or Cell1 != "Task Testing"
-
-                wait.until(wait_until_row_count)
-                time.sleep(3)
+                # expected_row_count = 1
+                #
+                # def wait_until_row_count(driver):
+                #     rows = driver.find_elements(By.XPATH,
+                #                                 '/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr/td')
+                #     Cell1 = driver.find_element(By.XPATH,
+                #                                 f'/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr[1]/td[3]/h5').text
+                #
+                #     if rows == 1:
+                #         print("Rows are Empty")
+                #         return True
+                #
+                #     if Cell1 != "Task Testing":
+                #         return True
+                #     # return rows == "No data available in table" or Cell1 != "Task Testing"
+                #
+                # wait.until(wait_until_row_count)
+                # time.sleep(3)
                 print("The '" + TaskName + "' Task deleted successfully from the table")
                 break
 
@@ -377,32 +377,32 @@ def test_DeleteProject(driver):
             project_name = Cell1.text
             if project_name == "Project Testing":
                 driver.find_element(By.XPATH,
-                                    f'/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr[{i}]/td[9]/div/div/a').click()
+                                    f'/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr[{i}]/td[10]/div/div/a').click()
                 driver.find_element(By.XPATH,
-                                    f'/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr[{i}]/td[9]/div/div/div/a[7]').click()
+                                    f'/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr[{i}]/td[10]/div/div/div/a[7]').click()
                 wait.until(EC.visibility_of_element_located((By.XPATH, '/html/body/div[7]/div/div[3]/button[1]')))
                 time.sleep(2)
                 driver.find_element(By.XPATH, '/html/body/div[7]/div/div[3]/button[1]').click()
-                # wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="table-actions"]/a[1]')))
+                wait.until(EC.invisibility_of_element_located((By.XPATH, '/html/body/div[7]')))
                 time.sleep(3)
-                expected_row_count = 1
-
-                def wait_until_row_count(driver):
-                    rows = driver.find_element(By.XPATH,
-                                                '/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr/td').text
-                    Cell1 = driver.find_element(By.XPATH,
-                                                f'/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr[1]/td[3]/h5').text
-                    print("rows text: " + rows)
-                    if rows == "No data available in table":
-                        print("Rows are Empty")
-                        return True
-
-                    if Cell1 != "Project Testing":
-                        return True
-                    # return rows == "No data available in table" or Cell1 != "Task Testing"
-
-                wait.until(wait_until_row_count)
-                time.sleep(3)
+                # expected_row_count = 1
+                #
+                # def wait_until_row_count(driver):
+                #     rows = driver.find_elements(By.XPATH,
+                #                                 '/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr/td')
+                #     Cell1 = driver.find_element(By.XPATH,
+                #                                 f'/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr[1]/td[3]/h5').text
+                #     print("rows text: " + rows)
+                #     if rows == 1:
+                #         print("Rows are Empty")
+                #         return True
+                #
+                #     if Cell1 != "Project Testing":
+                #         return True
+                #     # return rows == "No data available in table" or Cell1 != "Task Testing"
+                #
+                # wait.until(wait_until_row_count)
+                # time.sleep(3)
                 print("The '" + project_name + "' Task deleted successfully from the table")
                 break
         else:
@@ -411,31 +411,31 @@ def test_DeleteProject(driver):
             project_name = Cell1.text
             if project_name == "Project Testing":
                 driver.find_element(By.XPATH,
-                                    f'/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr/td[9]/div/div/a').click()
+                                    f'/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr/td[10]/div/div/a').click()
                 driver.find_element(By.XPATH,
-                                    f'/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr/td[9]/div/div/div/a[7]').click()
+                                    f'/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr/td[10]/div/div/div/a[7]').click()
                 wait.until(EC.visibility_of_element_located((By.XPATH, '/html/body/div[7]/div/div[3]/button[1]')))
                 time.sleep(2)
                 driver.find_element(By.XPATH, '/html/body/div[7]/div/div[3]/button[1]').click()
-                # wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="table-actions"]/a[1]')))
-                # time.sleep(3)
-                expected_row_count = 1
-
-                def wait_until_row_count(driver):
-                    rows = driver.find_element(By.XPATH,
-                                                '/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr/td').text
-                    Cell1 = driver.find_element(By.XPATH,
-                                                f'/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr[1]/td[3]/h5').text
-                    print("rows text: " + rows)
-                    if rows == "No data available in table":
-                        print("Rows are Empty")
-                        return True
-
-                    if Cell1 != "Project Testing":
-                        return True
-                    # return rows == "No data available in table" or Cell1 != "Task Testing"
-
-                wait.until(wait_until_row_count)
+                wait.until(EC.invisibility_of_element_located((By.XPATH, '/html/body/div[7]')))
                 time.sleep(3)
+                # expected_row_count = 1
+                #
+                # def wait_until_row_count(driver):
+                #     rows = driver.find_elements(By.XPATH,
+                #                                 '/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr/td')
+                #     Cell1 = driver.find_element(By.XPATH,
+                #                                 f'/html/body/div[1]/section/div[4]/div[2]/div/div[2]/div/table/tbody/tr[1]/td[3]/h5').text
+                #     print("rows text: " + rows)
+                #     if rows == 1:
+                #         print("Rows are Empty")
+                #         return True
+                #
+                #     if Cell1 != "Project Testing":
+                #         return True
+                #     # return rows == "No data available in table" or Cell1 != "Task Testing"
+                #
+                # wait.until(wait_until_row_count)
+                # time.sleep(3)
                 print("The '" + project_name + "' Project deleted successfully from the table")
                 break
